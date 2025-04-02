@@ -9,12 +9,14 @@ package presentacion_equipo1.RevisionCV;
  * @author paula
  */
 public class IniciarSesionRH extends javax.swing.JFrame {
+    //prueba commit :)
 
     /**
      * Creates new form IniciarSesionRH
      */
     public IniciarSesionRH() {
         initComponents();
+        
     }
 
     /**
