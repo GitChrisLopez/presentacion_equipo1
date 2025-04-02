@@ -1,0 +1,46 @@
+# Archivos de NetBeans
+nbproject/private/
+build/
+dist/
+nbbuild/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+# Archivos de compilación
+#*.class
+#*.jar
+#*.war
+#*.ear
+
+# Archivos de configuración del IDE (NetBeans, IntelliJ, Eclipse)
+*.iml
+*.ipr
+*.iws
+.idea/
+.metadata/
+*.swp
+.DS_Store
+
+# Dependencias descargadas por Maven o Gradle
+.mvn/
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+dependency-reduced-pom.xml
+releases/
+dependency-cache/
+build/
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Archivos de logs y temporales
+*.log
+hs_err_pid*
+*.tmp
+*.bak
+
+# Configuración de sistema y entornos virtuales
+.env
+*.properties
+*.settings

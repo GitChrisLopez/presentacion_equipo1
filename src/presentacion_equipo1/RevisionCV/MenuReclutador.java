@@ -59,6 +59,11 @@ public class MenuReclutador extends javax.swing.JFrame {
         });
 
         jButtonListasCV.setText("Listas de CV (filtro II)");
+        jButtonListasCV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonListasCVActionPerformed(evt);
+            }
+        });
 
         jButtonRegistarRH.setText("Registrar nuevo reclutador");
 
@@ -111,9 +116,9 @@ public class MenuReclutador extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonRevisionCV)
@@ -149,6 +154,12 @@ public class MenuReclutador extends javax.swing.JFrame {
         revision.setVisible(rootPaneCheckingEnabled);
         
     }//GEN-LAST:event_jButtonRevisionCVActionPerformed
+
+    private void jButtonListasCVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonListasCVActionPerformed
+        // TODO add your handling code here:
+        ListaCV listaCV = new ListaCV();
+        listaCV.setVisible(rootPaneCheckingEnabled);
+    }//GEN-LAST:event_jButtonListasCVActionPerformed
 
     /**
      * @param args the command line arguments
