@@ -1,4 +1,4 @@
-package presentacion_equipo1.RevisionCV;
+package imagenes;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
