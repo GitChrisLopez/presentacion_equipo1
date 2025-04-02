@@ -157,8 +157,8 @@ public class MenuReclutador extends javax.swing.JFrame {
 
     private void jButtonListasCVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonListasCVActionPerformed
         // TODO add your handling code here:
-        ListaCV listaCV = new ListaCV();
-        listaCV.setVisible(rootPaneCheckingEnabled);
+//        ListaCV listaCV = new ListaCV();
+//        listaCV.setVisible(rootPaneCheckingEnabled);
     }//GEN-LAST:event_jButtonListasCVActionPerformed
 
     /**
@@ -172,7 +172,7 @@ public class MenuReclutador extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }

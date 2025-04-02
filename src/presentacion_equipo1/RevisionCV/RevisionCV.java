@@ -4,20 +4,53 @@
  */
 package presentacion_equipo1.RevisionCV;
 
+import java.awt.Component;
+import java.awt.Desktop;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
+import javax.swing.AbstractCellEditor;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
 
 /**
  *
- * @author paula
+ * @author Ragzard
  */
 public class RevisionCV extends javax.swing.JFrame {
 
+    private DefaultTableModel model;
+
     /**
-     * Creates new form RevisionCV
+     * Creates new form ListaCV
      */
     public RevisionCV() {
         initComponents();
+
+        model = new DefaultTableModel(new Object[]{"Nombre", "Apellido Paterno", "Apellido Materno", "Archivo PDF", "Estado"}, 0);
+        jTable.setModel(model);
+        
+        jTable.setRowHeight(20);
+
+        model.addRow(new Object[]{"Henry", "Soto", "Cota", null, "Filtrado"});
+        model.addRow(new Object[]{"Henry", "Soto", "Cota", null, "Filtrado"});
+        model.addRow(new Object[]{"Henry", "Soto", "Cota", null, "Filtrado"});
+        model.addRow(new Object[]{"Henry", "Soto", "Cota", null, "Filtrado"});
+        
+        jTable.getColumnModel().getColumn(3).setCellRenderer(new PDFRenderer());
+        jTable.getColumnModel().getColumn(3).setCellEditor(new PDFEditor());
+
+        
+        setVisible(true);
     }
 
     /**
@@ -29,116 +62,113 @@ public class RevisionCV extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
-        jLabelFotoCV = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jProgressBarFiltro = new javax.swing.JProgressBar();
+        jPanel = new javax.swing.JPanel();
+        jLabelTitle = new javax.swing.JLabel();
+        jLabelSubTitle = new javax.swing.JLabel();
+        jScrollPane = new javax.swing.JScrollPane();
+        jTable = new javax.swing.JTable();
+        jBtnEnd = new javax.swing.JButton();
+        jBtnNext = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setFont(new java.awt.Font("Nirmala UI Semilight", 1, 24)); // NOI18N
-        jLabel1.setText("Revisión automatizada");
+        jLabelTitle.setFont(new java.awt.Font("Nirmala UI Semilight", 1, 24)); // NOI18N
+        jLabelTitle.setText("Revisión automatizada");
 
-        jLabel5.setFont(new java.awt.Font("Nirmala UI Semilight", 0, 14)); // NOI18N
-        jLabel5.setText("Haz clic en filtro para automatizar tu selección de candidatos");
+        jLabelSubTitle.setFont(new java.awt.Font("Nirmala UI Semilight", 0, 14)); // NOI18N
+        jLabelSubTitle.setText("Lista de candidatos");
 
-        jLabel17.setFont(new java.awt.Font("Nirmala UI Semilight", 0, 14)); // NOI18N
-        jLabel17.setText("____________________________________________________________________________________________________");
+        jScrollPane.setViewportView(jTable);
 
-        jLabelFotoCV.setIcon(new javax.swing.ImageIcon(getClass().getResource("/presentacion_equipo1/cvprueba2.png"))); // NOI18N
-
-        jButton1.setBackground(new java.awt.Color(0, 0, 0));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Filtro");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jBtnEnd.setBackground(new java.awt.Color(204, 204, 204));
+        jBtnEnd.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jBtnEnd.setText("Finalizar");
+        jBtnEnd.setBorder(null);
+        jBtnEnd.setMargin(new java.awt.Insets(2, 14, 20, 20));
+        jBtnEnd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jProgressBarFiltro.setForeground(new java.awt.Color(51, 51, 255));
+        jBtnNext.setBackground(new java.awt.Color(0, 0, 0));
+        jBtnNext.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jBtnNext.setForeground(new java.awt.Color(255, 255, 255));
+        jBtnNext.setText("Filtro");
+        jBtnNext.setBorder(null);
+        jBtnNext.setMargin(new java.awt.Insets(2, 14, 20, 20));
+        jBtnNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jProgressBarFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel1)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabelFotoCV, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jLabel17)))
-                .addContainerGap(326, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanelLayout = new javax.swing.GroupLayout(jPanel);
+        jPanel.setLayout(jPanelLayout);
+        jPanelLayout.setHorizontalGroup(
+            jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 111, Short.MAX_VALUE)
-                        .addComponent(jLabelFotoCV, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(43, 43, 43))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel17)
+                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelLayout.createSequentialGroup()
+                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 553, Short.MAX_VALUE)
+                            .addGroup(jPanelLayout.createSequentialGroup()
+                                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabelTitle)
+                                    .addComponent(jLabelSubTitle))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addGroup(jPanelLayout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jBtnNext, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jProgressBarFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(16, 16, 16))))
+                        .addComponent(jBtnEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28))))
+        );
+        jPanelLayout.setVerticalGroup(
+            jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelTitle)
+                .addGap(18, 18, 18)
+                .addComponent(jLabelSubTitle)
+                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(89, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jBtnEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jBtnNext, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(23, 23, 23))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-    jProgressBarFiltro.setIndeterminate(true); 
-    jProgressBarFiltro.setVisible(true);       
+    }//GEN-LAST:event_jButton2ActionPerformed
 
-    // hilo para no bloquear la interfaz
-    new Thread(() -> {
-        try {
-            Thread.sleep(1000); 
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
-        }
-        
-        // Ocultar la barra después de 5 segundos
-        SwingUtilities.invokeLater(() -> {
-            jProgressBarFiltro.setVisible(false);
-            JOptionPane.showMessageDialog(null, "CV analizado.");
-        });
-    }).start();
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -152,7 +182,7 @@ public class RevisionCV extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -167,6 +197,7 @@ public class RevisionCV extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(RevisionCV.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -175,14 +206,78 @@ public class RevisionCV extends javax.swing.JFrame {
             }
         });
     }
+    
+    // Renderizador para mostrar el botón o el archivo PDF
+    class PDFRenderer extends DefaultTableCellRenderer {
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            if (value == null) {
+                return new JButton("Seleccionar PDF");
+            } else {
+                return new JLabel("<html><a href='#'>" + ((File) value).getName() + "</a></html>");
+            }
+        }
+    }
+
+    // Editor de celda para manejar selección de archivo y apertura
+    class PDFEditor extends AbstractCellEditor implements TableCellEditor, ActionListener {
+        private JButton button = new JButton("Seleccionar PDF");
+        private JLabel label = new JLabel();
+        private File selectedFile;
+        private int row;
+
+        public PDFEditor() {
+            button.addActionListener(this);
+        }
+
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+            this.row = row;
+            if (value == null) {
+                return button;
+            } else {
+                selectedFile = (File) value;
+                label.setText("<html><a href='#'>" + selectedFile.getName() + "</a></html>");
+                label.addMouseListener(new MouseAdapter() {
+                    public void mouseClicked(MouseEvent e) {
+                        abrirPDF(selectedFile);
+                    }
+                });
+                return label;
+            }
+        }
+
+        public Object getCellEditorValue() {
+            return selectedFile;
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Archivos PDF", "pdf"));
+            int option = fileChooser.showOpenDialog(null);
+            if (option == JFileChooser.APPROVE_OPTION) {
+                selectedFile = fileChooser.getSelectedFile();
+                model.setValueAt(selectedFile, row, 3); // Columna PDF
+//                model.setValueAt("Subido", row, 4); // Estado cambia a "Subido"
+            }
+            fireEditingStopped();
+        }
+    }
+
+    // Método para abrir el archivo PDF
+    private void abrirPDF(File file) {
+        try {
+            Desktop.getDesktop().open(file);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "No se pudo abrir el archivo.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabelFotoCV;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JProgressBar jProgressBarFiltro;
+    private javax.swing.JButton jBtnEnd;
+    private javax.swing.JButton jBtnNext;
+    private javax.swing.JLabel jLabelSubTitle;
+    private javax.swing.JLabel jLabelTitle;
+    private javax.swing.JPanel jPanel;
+    private javax.swing.JScrollPane jScrollPane;
+    private javax.swing.JTable jTable;
     // End of variables declaration//GEN-END:variables
 }
