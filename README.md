@@ -1,2 +1,7 @@
-El proyecto fue realizado con la ayuda de Paula Alejandra García Galicia y Chris Fitch Lopez.
-Realizado en Java NeatBeans 23.
+El proyecto fue realizado con Java NeatBeans 23.
+Carmen Dayanna Beltrán Flores
+Chris Fitch López 
+Henry Soto 
+Paula García
+Oscar Adrián Castán López 
+

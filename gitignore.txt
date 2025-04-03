@@ -1,0 +1,22 @@
+# Archivos de sistema (macOS, Windows)
+.DS_Store
+Thumbs.db
+
+# Carpetas de compilación de NetBeans
+**/build/
+**/dist/
+**/nbproject/private/
+
+# Archivos generados por compilación
+*.class
+*.log
+
+# Archivos de backup temporales
+*~
+*.bak
+
+# Ignora todos los .jar...
+*.jar
+
+# ...excepto los .jar en cualquier carpeta llamada lib
+!**/lib/*.jar
