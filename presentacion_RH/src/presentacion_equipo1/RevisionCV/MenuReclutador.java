@@ -15,6 +15,7 @@ public class MenuReclutador extends javax.swing.JFrame {
      */
     public MenuReclutador() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -180,8 +181,11 @@ public class MenuReclutador extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void revisionCVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_revisionCVActionPerformed
-        RevisionCV Rcv = new RevisionCV();
-        Rcv.setVisible(true);
+//        RevisionCV Rcv = new RevisionCV();
+//        Rcv.setVisible(true);
+
+        SeleccionCV SCV = new SeleccionCV();
+        SCV.setVisible(true);
         this.dispose();
 
     }//GEN-LAST:event_revisionCVActionPerformed
