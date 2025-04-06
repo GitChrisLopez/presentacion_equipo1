@@ -36,7 +36,6 @@ public class MenuReclutador extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         actualizarC = new javax.swing.JButton();
         estadoC = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         cerrarSesion1 = new javax.swing.JButton();
 
@@ -68,9 +67,14 @@ public class MenuReclutador extends javax.swing.JFrame {
 
         jLabel3.setText("Reclutamiento");
 
-        jLabel4.setText("Alta a reclutadores");
+        jLabel4.setText("Alta a candidatos");
 
         actualizarC.setText("Actualizar datos del candidato");
+        actualizarC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actualizarCActionPerformed(evt);
+            }
+        });
 
         estadoC.setText("Estado del candidato");
         estadoC.addActionListener(new java.awt.event.ActionListener() {
@@ -78,9 +82,6 @@ public class MenuReclutador extends javax.swing.JFrame {
                 estadoCActionPerformed(evt);
             }
         });
-
-        jLabel5.setBackground(new java.awt.Color(153, 153, 153));
-        jLabel5.setText("(activo, pausa,inactivo)");
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/rhfoto2.png"))); // NOI18N
 
@@ -119,10 +120,7 @@ public class MenuReclutador extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(actualizarC)
                                     .addComponent(registrarC)
-                                    .addComponent(estadoC)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addComponent(jLabel5)))))
+                                    .addComponent(estadoC))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(19, 19, 19))
             .addGroup(layout.createSequentialGroup()
@@ -167,9 +165,7 @@ public class MenuReclutador extends javax.swing.JFrame {
                         .addComponent(listasCV)))
                 .addGap(8, 8, 8)
                 .addComponent(estadoC)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel5)
-                .addContainerGap(75, Short.MAX_VALUE))
+                .addContainerGap(103, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(539, Short.MAX_VALUE)
@@ -207,8 +203,16 @@ public class MenuReclutador extends javax.swing.JFrame {
     }//GEN-LAST:event_estadoCActionPerformed
 
     private void cerrarSesion1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarSesion1ActionPerformed
-        // TODO add your handling code here:
+        IniciarSesionRH ISRH = new IniciarSesionRH();
+        ISRH.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_cerrarSesion1ActionPerformed
+
+    private void actualizarCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarCActionPerformed
+        SeleccionCV SCV = new SeleccionCV();
+        SCV.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_actualizarCActionPerformed
 
     /**
      * @param args the command line arguments
@@ -254,7 +258,6 @@ public class MenuReclutador extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabelFotoRH;
     private javax.swing.JButton listasCV;
     private javax.swing.JButton registrarC;

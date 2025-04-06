@@ -49,10 +49,6 @@
                                   <Component id="actualizarC" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="registrarC" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="estadoC" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Group type="102" attributes="0">
-                                      <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                                      <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                                  </Group>
                               </Group>
                           </Group>
                       </Group>
@@ -117,9 +113,7 @@
               </Group>
               <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
               <Component id="estadoC" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="75" max="32767" attributes="0"/>
+              <EmptySpace pref="103" max="32767" attributes="0"/>
           </Group>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
@@ -173,13 +167,16 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Alta a reclutadores"/>
+        <Property name="text" type="java.lang.String" value="Alta a candidatos"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="actualizarC">
       <Properties>
         <Property name="text" type="java.lang.String" value="Actualizar datos del candidato"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="actualizarCActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="estadoC">
       <Properties>
@@ -188,14 +185,6 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="estadoCActionPerformed"/>
       </Events>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel5">
-      <Properties>
-        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="99" green="99" red="99" type="rgb"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="(activo, pausa,inactivo)"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
