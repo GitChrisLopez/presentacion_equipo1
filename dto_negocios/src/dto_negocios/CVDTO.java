@@ -9,18 +9,19 @@ package dto_negocios;
  * @author Adrián
  */
 public class CVDTO {
-    String nombre, apellidos, telefono, correo;
+    String nombre, apellidos, telefono, correo,puesto;
     boolean estado;
 
-    public CVDTO(String nombre, String apellidos, String telefono, String correo, boolean estado) {
+    public CVDTO(String nombre, String apellidos, String telefono, String correo,String puesto, boolean estado) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.telefono = telefono;
         this.correo = correo;
+        this.puesto = puesto;
         this.estado = estado;
     }
 
-    public String getNombre() {
+   public String getNombre() {
         return nombre;
     }
 
@@ -52,6 +53,15 @@ public class CVDTO {
         this.correo = correo;
     }
 
+    public String getPuesto() {
+        return puesto;
+    }
+
+    public void setPuesto(String puesto) {
+        this.puesto = puesto;
+    }
+
+    
     public boolean isEstado() {
         return estado;
     }
@@ -62,8 +72,9 @@ public class CVDTO {
 
     @Override
     public String toString() {
-        return "CvDTO{" + "nombre=" + nombre + ", apellidos=" + apellidos + ", telefono=" + telefono + ", correo=" + correo + ", estado=" + estado + '}';
+        return "CVDTO{" + "nombre=" + nombre + ", apellidos=" + apellidos + ", telefono=" + telefono + ", correo=" + correo + ", puesto=" + puesto + ", estado=" + estado + '}';
     }
+
     
     
 }
