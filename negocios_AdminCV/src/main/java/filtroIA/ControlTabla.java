@@ -30,6 +30,6 @@ public class ControlTabla {
             return;
         }
 
-        modelo.setValueAt("Filtrado", filaSeleccionada, 3); // Columna 3 = "Estado"
+        modelo.setValueAt("Filtrado", filaSeleccionada, 5); // Columna 6 = "Estado"
     }
 }

@@ -4,7 +4,7 @@
  */
 package presentacion_equipo1.RevisionCV;
 
-import dto_negocios.ReclutadorDTO;
+import dto.ReclutadorDTO;
 import javax.swing.JOptionPane;
 
 /**

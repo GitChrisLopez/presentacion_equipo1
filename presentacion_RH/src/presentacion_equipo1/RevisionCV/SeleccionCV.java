@@ -7,6 +7,9 @@ package presentacion_equipo1.RevisionCV;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import filtroIA.ControlTabla;
+import objetosnegocio.*;
+import dto.*;
+import java.util.List;
 
 /**
  *
@@ -26,31 +29,43 @@ public class SeleccionCV extends javax.swing.JFrame {
         setLocationRelativeTo(null);
 
         // Crear modelo de la tabla
-        modeloTabla = new DefaultTableModel(new Object[]{"Nombre", "Apellido Paterno", "Apellido Materno", "Estado"}, 0);
+        modeloTabla = new DefaultTableModel(new Object[]{"Nombre", "Apellido", "Telefono", "Email", "Puesto", "Estado"}, 0);
         jTable1.setModel(modeloTabla);
         jTable1.setRowHeight(22);
-
         // Evitar que las columnas se puedan mover con el mouse
         jTable1.getTableHeader().setReorderingAllowed(false);
-
-        // Agregar unas filas de ejemplo
-        modeloTabla.addRow(new Object[]{"Henry", "Soto", "Cota", "Sin Filtrar"});
-        modeloTabla.addRow(new Object[]{"Henry", "Soto", "Cota", "Sin Filtrar"});
-        modeloTabla.addRow(new Object[]{"Henry", "Soto", "Cota", "Sin Filtrar"});
-        modeloTabla.addRow(new Object[]{"Henry", "Soto", "Cota", "Sin Filtrar"});
-        modeloTabla.addRow(new Object[]{"Henry", "Soto", "Cota", "Sin Filtrar"});
-        modeloTabla.addRow(new Object[]{"Henry", "Soto", "Cota", "Sin Filtrar"});
-        modeloTabla.addRow(new Object[]{"Henry", "Soto", "Cota", "Sin Filtrar"});
-        modeloTabla.addRow(new Object[]{"Henry", "Soto", "Cota", "Sin Filtrar"});
-        modeloTabla.addRow(new Object[]{"Henry", "Soto", "Cota", "Sin Filtrar"});
-        modeloTabla.addRow(new Object[]{"Henry", "Soto", "Cota", "Sin Filtrar"});
-        modeloTabla.addRow(new Object[]{"Henry", "Soto", "Cota", "Sin Filtrar"});
-        modeloTabla.addRow(new Object[]{"Henry", "Soto", "Cota", "Sin Filtrar"});
-        modeloTabla.addRow(new Object[]{"Henry", "Soto", "Cota", "Sin Filtrar"});
-        modeloTabla.addRow(new Object[]{"Henry", "Soto", "Cota", "Sin Filtrar"});
-
+        
+        // Cargar datos de candidatos desde el singleton
+        cargarDatosCandidatos();
+        
         controlTabla = new ControlTabla(jTable1, modeloTabla);
+    }
+    
 
+    private void cargarDatosCandidatos() {
+        // Obtenemos la instancia del singleton
+        objetosnegocio.CandidatoON candidatoON = objetosnegocio.CandidatoON.getInstance();
+        
+        // Obtenemos la lista de candidatos
+        List<dto.CVDTO> candidatos = candidatoON.obtenerCandidatos();
+        
+        while (modeloTabla.getRowCount() > 0) {
+            modeloTabla.removeRow(0);
+        }
+        
+        // Agregamos cada candidato a la tabla
+        for (dto.CVDTO candidato : candidatos) {
+            String estadoTexto = candidato.isEstado() ? "Filtrado" : "Sin filtrar";
+            
+            modeloTabla.addRow(new Object[]{
+                candidato.getNombre(),
+                candidato.getApellidos(),
+                candidato.getTelefono(),
+                candidato.getCorreo(),
+                candidato.getPuesto(),
+                estadoTexto
+            });
+        }
     }
 
     /**

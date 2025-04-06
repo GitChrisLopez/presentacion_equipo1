@@ -2,13 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package objetos_negocios;
+package objetosnegocio;
 
 /**
  *
  * @author chris
  */
-import dto_negocios.CVDTO;
+import dto.CVDTO;
 import java.util.*;
 
 public class CandidatoON {
@@ -18,10 +18,10 @@ public class CandidatoON {
 
     private CandidatoON() {
 
-        listaCandidatos.add(new CVDTO("Francisco", "Mercado", "(55) 1234-5678", "francisco@hotmail.com", "Contador Senior", true));
-        listaCandidatos.add(new CVDTO("Julian", "Alonso", "(55) 1244-4678", "julian@yop.mail.com", "Abogado Asociado", true));
-        listaCandidatos.add(new CVDTO("Jacqueline", "Thompson", "123-456-7890", "jacqueline@gmail.com", "Desarrollador de Software Junior", true));
-        listaCandidatos.add(new CVDTO("Carlos", "Gómez", "+52 987 654 3210", "carlos.gomez@email.com", "Desarrollador Backend", true));
+        listaCandidatos.add(new CVDTO("Francisco", "Mercado", "(55) 1234-5678", "francisco@hotmail.com", "Contador Senior", false));
+        listaCandidatos.add(new CVDTO("Julian", "Alonso", "(55) 1244-4678", "julian@yop.mail.com", "Abogado Asociado", false));
+        listaCandidatos.add(new CVDTO("Jacqueline", "Thompson", "123-456-7890", "jacqueline@gmail.com", "Desarrollador de Software Junior", false));
+        listaCandidatos.add(new CVDTO("Carlos", "Gómez", "+52 987 654 3210", "carlos.gomez@email.com", "Desarrollador Backend", false));
     }
     
     public static synchronized CandidatoON getInstance() { 
