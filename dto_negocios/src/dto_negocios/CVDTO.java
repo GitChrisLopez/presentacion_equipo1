@@ -11,7 +11,15 @@ package dto_negocios;
 public class CVDTO {
     String nombre, apellidos, telefono, correo,puesto;
     boolean estado;
-
+    /**
+     * 
+     * @param nombre el nombre del candidato
+     * @param apellidos son los apellidos del candidato 
+     * @param telefono el numero de telefono del candidato
+     * @param correo el correo del candidato
+     * @param puesto el puesto de trabajo que tiene o tuvo el candidato
+     * @param estado es el estado de rechazo o aprobación en la empresa
+     */
     public CVDTO(String nombre, String apellidos, String telefono, String correo,String puesto, boolean estado) {
         this.nombre = nombre;
         this.apellidos = apellidos;
