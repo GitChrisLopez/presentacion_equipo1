@@ -30,13 +30,14 @@ public class MenuReclutador extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         revisionCV = new javax.swing.JButton();
         listasCV = new javax.swing.JButton();
-        jButtonRegistarRH = new javax.swing.JButton();
+        registrarC = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jButtonaActualizarRH = new javax.swing.JButton();
-        jButtonEstadoRH = new javax.swing.JButton();
+        actualizarC = new javax.swing.JButton();
+        estadoC = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        cerrarSesion1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -57,25 +58,45 @@ public class MenuReclutador extends javax.swing.JFrame {
             }
         });
 
-        jButtonRegistarRH.setText("Registrar nuevo reclutador");
+        registrarC.setText("Registrar nuevo candidato");
+        registrarC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registrarCActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Reclutamiento");
 
         jLabel4.setText("Alta a reclutadores");
 
-        jButtonaActualizarRH.setText("Actualizar datos del reclutador");
+        actualizarC.setText("Actualizar datos del candidato");
 
-        jButtonEstadoRH.setText("Estado del reclutador");
+        estadoC.setText("Estado del candidato");
+        estadoC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                estadoCActionPerformed(evt);
+            }
+        });
 
+        jLabel5.setBackground(new java.awt.Color(153, 153, 153));
         jLabel5.setText("(activo, pausa,inactivo)");
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/rhfoto2.png"))); // NOI18N
+
+        cerrarSesion1.setBackground(new java.awt.Color(0, 0, 0));
+        cerrarSesion1.setForeground(new java.awt.Color(255, 255, 255));
+        cerrarSesion1.setText("Cerrar Sesion");
+        cerrarSesion1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cerrarSesion1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addGap(46, 46, 46)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
@@ -95,17 +116,23 @@ public class MenuReclutador extends javax.swing.JFrame {
                                     .addComponent(listasCV))
                                 .addGap(164, 164, 164)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButtonaActualizarRH)
-                                    .addComponent(jButtonRegistarRH)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel5)
-                                        .addComponent(jButtonEstadoRH)))))
+                                    .addComponent(actualizarC)
+                                    .addComponent(registrarC)
+                                    .addComponent(estadoC)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(6, 6, 6)
+                                        .addComponent(jLabel5)))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(19, 19, 19))
             .addGroup(layout.createSequentialGroup()
                 .addGap(266, 266, 266)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(56, 56, 56)
+                    .addComponent(cerrarSesion1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(454, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,19 +153,27 @@ public class MenuReclutador extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addComponent(jButtonRegistarRH))
+                        .addComponent(registrarC))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(26, 26, 26)
                         .addComponent(revisionCV)))
-                .addGap(18, 18, 18)
-                .addComponent(jButtonaActualizarRH)
-                .addGap(25, 25, 25)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonEstadoRH)
-                    .addComponent(listasCV))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(actualizarC))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(listasCV)))
+                .addGap(8, 8, 8)
+                .addComponent(estadoC)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(75, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(539, Short.MAX_VALUE)
+                    .addComponent(cerrarSesion1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(10, 10, 10)))
         );
 
         pack();
@@ -156,6 +191,20 @@ public class MenuReclutador extends javax.swing.JFrame {
 //        Rcv.setVisible(true);
 //        this.dispose();
     }//GEN-LAST:event_listasCVActionPerformed
+
+    private void registrarCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarCActionPerformed
+        RegistrarCandidato RC = new RegistrarCandidato();
+        RC.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_registrarCActionPerformed
+
+    private void estadoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estadoCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_estadoCActionPerformed
+
+    private void cerrarSesion1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarSesion1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cerrarSesion1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -194,9 +243,9 @@ public class MenuReclutador extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonEstadoRH;
-    private javax.swing.JButton jButtonRegistarRH;
-    private javax.swing.JButton jButtonaActualizarRH;
+    private javax.swing.JButton actualizarC;
+    private javax.swing.JButton cerrarSesion1;
+    private javax.swing.JButton estadoC;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -204,6 +253,7 @@ public class MenuReclutador extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabelFotoRH;
     private javax.swing.JButton listasCV;
+    private javax.swing.JButton registrarC;
     private javax.swing.JButton revisionCV;
     // End of variables declaration//GEN-END:variables
 }
