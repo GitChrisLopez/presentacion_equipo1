@@ -62,19 +62,19 @@ public class Negocios_FiltroIA {
             cumpleRequisitos = true;
         }
         if (contenidoCV.contains("javascript")) {
-            resultado.append("El candidato conocimiento con JavaScript.\n");
+            resultado.append("El candidato tiene conocimiento con JavaScript.\n");
             cumpleRequisitos = true;
         }
         if (contenidoCV.contains("python")) {
-            resultado.append("El candidato conocimiento con Python.\n");
+            resultado.append("El candidato tiene conocimiento con Python.\n");
             cumpleRequisitos = true;
         }
         if (contenidoCV.contains("react")) {
-            resultado.append("El candidato conocimiento con React.\n");
+            resultado.append("El candidato tiene conocimiento con React.\n");
             cumpleRequisitos = true;
         }
         if (contenidoCV.contains("mysql")) {
-            resultado.append("El candidato conocimiento con MySQL.\n");
+            resultado.append("El candidato tiene conocimiento con MySQL.\n");
             cumpleRequisitos = true;
         }
         if (contenidoCV.contains("frontend")) {
