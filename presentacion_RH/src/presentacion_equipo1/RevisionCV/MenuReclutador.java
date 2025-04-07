@@ -209,8 +209,8 @@ public class MenuReclutador extends javax.swing.JFrame {
     }//GEN-LAST:event_cerrarSesion1ActionPerformed
 
     private void actualizarCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarCActionPerformed
-        RevisiónCV SCV = new RevisiónCV();
-        SCV.setVisible(true);
+        RegistrarCandidato RC = new RegistrarCandidato();
+        RC.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_actualizarCActionPerformed
 
