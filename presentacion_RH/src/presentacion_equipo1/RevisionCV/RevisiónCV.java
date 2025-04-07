@@ -11,6 +11,7 @@ import objetosnegocio.*;
 import dto.*;
 import java.util.List;
 import filtroIA.*;
+import java.io.IOException;
 
 /**
  *
@@ -36,7 +37,6 @@ public class RevisiónCV extends javax.swing.JFrame {
         jTable1.setRowHeight(22);
 
         jTable1.getTableHeader().setReorderingAllowed(false);
-
 
         cargarDatosCandidatos();
 
@@ -185,6 +185,25 @@ public class RevisiónCV extends javax.swing.JFrame {
 
     private void BtnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnFilterActionPerformed
         controlTabla.filtrarSeleccionado();
+
+        int filaSeleccionada = jTable1.getSelectedRow();
+
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Selecciona una fila para filtrar.");
+            return;
+        }
+
+        objetosnegocio.CandidatoON candidatoON = objetosnegocio.CandidatoON.getInstance();
+        dto.CVDTO candidato = candidatoON.obtenerCandidatos().get(filaSeleccionada);
+
+        String ruta = candidato.getRutaPDF();
+        boolean aceptado = filtroIA.filtrarCV(ruta);
+
+        candidato.setEstado(aceptado);
+        modeloTabla.setValueAt(aceptado ? "Filtrado" : "Rechazado", filaSeleccionada, 5);
+
+        String mensaje = filtroIA.obtenerResultados(ruta);
+        JOptionPane.showMessageDialog(this, mensaje, "Resultado del Filtro", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_BtnFilterActionPerformed
 
     /**
