@@ -43,10 +43,20 @@ public class Negocios_FiltroIA {
     public void abrirPDF(String rutaPDF) {
         try {
             File archivo = new File(rutaPDF);
+
+            // verifica si el archivo está en la carpeta 'presentacion_RH' y ajusta la ruta
+            if (archivo.getAbsolutePath().contains("presentacion_RH")) {
+                String nuevoPath = archivo.getAbsolutePath().replace("presentacion_RH", "objetos_negocios/src");
+                archivo = new File(nuevoPath);
+            }
+
+            System.out.println("ruta: " + archivo.getAbsolutePath());
+
             if (!archivo.exists()) {
-                JOptionPane.showMessageDialog(null, "El archivo no existe: " + rutaPDF);
+                JOptionPane.showMessageDialog(null, "El archivo no existe: " + archivo.getAbsolutePath());
                 return;
             }
+
             java.awt.Desktop.getDesktop().open(archivo);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "No se pudo abrir el archivo PDF:\n" + e.getMessage());
@@ -54,4 +64,3 @@ public class Negocios_FiltroIA {
     }
 
 }
-
