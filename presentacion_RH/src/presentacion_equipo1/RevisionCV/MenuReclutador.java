@@ -180,7 +180,7 @@ public class MenuReclutador extends javax.swing.JFrame {
 //        RevisionCV Rcv = new RevisionCV();
 //        Rcv.setVisible(true);
         //llama a la clase de filtroI con las listas 
-        SeleccionCV SCV = new SeleccionCV();
+        RevisiónCV SCV = new RevisiónCV();
         SCV.setVisible(true);
         this.dispose();
 
@@ -209,7 +209,7 @@ public class MenuReclutador extends javax.swing.JFrame {
     }//GEN-LAST:event_cerrarSesion1ActionPerformed
 
     private void actualizarCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarCActionPerformed
-        SeleccionCV SCV = new SeleccionCV();
+        RevisiónCV SCV = new RevisiónCV();
         SCV.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_actualizarCActionPerformed
