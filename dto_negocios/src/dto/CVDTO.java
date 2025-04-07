@@ -11,6 +11,8 @@ package dto;
 public class CVDTO {
     String nombre, apellidos, telefono, correo,puesto;
     boolean estado;
+    private String rutaPDF;
+    
     /**
      * 
      * @param nombre el nombre del candidato
@@ -20,13 +22,14 @@ public class CVDTO {
      * @param puesto el puesto de trabajo que tiene o tuvo el candidato
      * @param estado es el estado de rechazo o aprobación en la empresa
      */
-    public CVDTO(String nombre, String apellidos, String telefono, String correo,String puesto, boolean estado) {
+    public CVDTO(String nombre, String apellidos, String telefono, String correo,String puesto, boolean estado,String rutaPDF) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.telefono = telefono;
         this.correo = correo;
         this.puesto = puesto;
         this.estado = estado;
+        this.rutaPDF = rutaPDF;
     }
 
    public String getNombre() {
@@ -81,6 +84,14 @@ public class CVDTO {
     @Override
     public String toString() {
         return "CVDTO{" + "nombre=" + nombre + ", apellidos=" + apellidos + ", telefono=" + telefono + ", correo=" + correo + ", puesto=" + puesto + ", estado=" + estado + '}';
+    }
+
+    public String getRutaPDF() {
+        return rutaPDF;
+    }
+
+    public void setRutaPDF(String rutaPDF) {
+        this.rutaPDF = rutaPDF;
     }
 
     

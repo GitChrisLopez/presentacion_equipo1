@@ -10,6 +10,7 @@ import filtroIA.ControlTabla;
 import objetosnegocio.*;
 import dto.*;
 import java.util.List;
+import filtroIA.*;
 
 /**
  *
@@ -19,6 +20,7 @@ public class SeleccionCV extends javax.swing.JFrame {
 
     private DefaultTableModel modeloTabla;
     private ControlTabla controlTabla;
+    private Negocios_FiltroIA filtroIA;
 
     /**
      * Creates new form SeleccionCV
@@ -28,42 +30,57 @@ public class SeleccionCV extends javax.swing.JFrame {
 
         setLocationRelativeTo(null);
 
-        // Crear modelo de la tabla
-        modeloTabla = new DefaultTableModel(new Object[]{"Nombre", "Apellido", "Telefono", "Email", "Puesto", "Estado"}, 0);
+        // Crear la tabla
+        modeloTabla = new DefaultTableModel(new Object[]{"Nombre", "Apellido", "Telefono", "Email", "Puesto", "Estado", "Ver PDF"}, 0);
         jTable1.setModel(modeloTabla);
         jTable1.setRowHeight(22);
-        // Evitar que las columnas se puedan mover con el mouse
+
         jTable1.getTableHeader().setReorderingAllowed(false);
-        
-        // Cargar datos de candidatos desde el singleton
+
+
         cargarDatosCandidatos();
-        
+
         controlTabla = new ControlTabla(jTable1, modeloTabla);
+        filtroIA = new Negocios_FiltroIA();
+
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int fila = jTable1.rowAtPoint(evt.getPoint());
+                int columna = jTable1.columnAtPoint(evt.getPoint());
+
+                if (columna == 6) { // Columna "Ver PDF"
+                    CandidatoON candidatoON = CandidatoON.getInstance();
+                    CVDTO candidato = candidatoON.obtenerCandidatos().get(fila);
+                    filtroIA.abrirPDF(candidato.getRutaPDF()); //Esto no funciona del todo aun
+                }
+            }
+        });
+
     }
-    
 
     private void cargarDatosCandidatos() {
         // Obtenemos la instancia del singleton
         objetosnegocio.CandidatoON candidatoON = objetosnegocio.CandidatoON.getInstance();
-        
+
         // Obtenemos la lista de candidatos
         List<dto.CVDTO> candidatos = candidatoON.obtenerCandidatos();
-        
+
         while (modeloTabla.getRowCount() > 0) {
             modeloTabla.removeRow(0);
         }
-        
+
         // Agregamos cada candidato a la tabla
         for (dto.CVDTO candidato : candidatos) {
             String estadoTexto = candidato.isEstado() ? "Filtrado" : "Sin filtrar";
-            
+
             modeloTabla.addRow(new Object[]{
                 candidato.getNombre(),
                 candidato.getApellidos(),
                 candidato.getTelefono(),
                 candidato.getCorreo(),
                 candidato.getPuesto(),
-                estadoTexto
+                estadoTexto,
+                "Ver PDF"
             });
         }
     }
@@ -205,6 +222,7 @@ public class SeleccionCV extends javax.swing.JFrame {
         });
     }
 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnFilter;
     private javax.swing.JButton BtnMenu;
@@ -214,4 +232,5 @@ public class SeleccionCV extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+
 }
