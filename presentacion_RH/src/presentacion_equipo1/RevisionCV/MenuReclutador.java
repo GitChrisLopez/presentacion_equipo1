@@ -177,11 +177,8 @@ public class MenuReclutador extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void revisionCVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_revisionCVActionPerformed
-//        RevisionCV Rcv = new RevisionCV();
-//        Rcv.setVisible(true);
-        //llama a la clase de filtroI con las listas 
-        RevisiónCV SCV = new RevisiónCV();
-        SCV.setVisible(true);
+        FiltrarCV filtro = new FiltrarCV();
+        filtro.setVisible(true);
         this.dispose();
 
     }//GEN-LAST:event_revisionCVActionPerformed

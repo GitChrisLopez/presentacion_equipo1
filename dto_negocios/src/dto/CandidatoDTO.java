@@ -8,21 +8,31 @@ package dto;
  *
  * @author Adrián
  */
-public class CVDTO {
-    String nombre, apellidos, telefono, correo,puesto;
+public class CandidatoDTO {
+
+    private String nombre, apellidos, telefono, correo, puesto, rutaPDF;
     boolean estado;
-    private String rutaPDF;
-    
+
     /**
-     * 
+     * Constructor que recibe solo la ruta del PDF(CV).
+     *
+     * @param rutaPDF
+     */
+    public CandidatoDTO(String rutaPDF) {
+        this.rutaPDF = rutaPDF;
+    }
+
+    /**
+     *
      * @param nombre el nombre del candidato
-     * @param apellidos son los apellidos del candidato 
+     * @param apellidos son los apellidos del candidato
      * @param telefono el numero de telefono del candidato
      * @param correo el correo del candidato
      * @param puesto el puesto de trabajo que tiene o tuvo el candidato
      * @param estado es el estado de rechazo o aprobación en la empresa
+     * @param rutaPDF Ubicación del archivo PDF.
      */
-    public CVDTO(String nombre, String apellidos, String telefono, String correo,String puesto, boolean estado,String rutaPDF) {
+    public CandidatoDTO(String nombre, String apellidos, String telefono, String correo, String puesto, boolean estado, String rutaPDF) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.telefono = telefono;
@@ -32,7 +42,7 @@ public class CVDTO {
         this.rutaPDF = rutaPDF;
     }
 
-   public String getNombre() {
+    public String getNombre() {
         return nombre;
     }
 
@@ -72,18 +82,12 @@ public class CVDTO {
         this.puesto = puesto;
     }
 
-    
     public boolean isEstado() {
         return estado;
     }
 
     public void setEstado(boolean estado) {
         this.estado = estado;
-    }
-
-    @Override
-    public String toString() {
-        return "CVDTO{" + "nombre=" + nombre + ", apellidos=" + apellidos + ", telefono=" + telefono + ", correo=" + correo + ", puesto=" + puesto + ", estado=" + estado + '}';
     }
 
     public String getRutaPDF() {
@@ -94,6 +98,9 @@ public class CVDTO {
         this.rutaPDF = rutaPDF;
     }
 
-    
-    
+    @Override
+    public String toString() {
+        return "CVDTO{" + "nombre=" + nombre + ", apellidos=" + apellidos + ", telefono=" + telefono + ", correo=" + correo + ", puesto=" + puesto + ", rutaPDF=" + rutaPDF + ", estado=" + estado + '}';
+    }
+
 }
