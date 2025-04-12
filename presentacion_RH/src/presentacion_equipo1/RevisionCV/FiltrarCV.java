@@ -32,6 +32,7 @@ import objetosnegocio.CandidatoON;
 public class FiltrarCV extends javax.swing.JFrame {
 
     IFiltroCV subFiltro = new FiltroCV();
+    FiltroCV filtroIA = new FiltroCV();
 
     List<String> keyWords;
     DefaultListModel<String> listModel;
@@ -47,6 +48,8 @@ public class FiltrarCV extends javax.swing.JFrame {
         initComponents();
 
         this.setLocationRelativeTo(null);
+
+        jTableCV.setEnabled(true);
 
         //Codigo para pruebas
         keyWords = new ArrayList<>();//Lista de palabras clave
@@ -121,6 +124,7 @@ public class FiltrarCV extends javax.swing.JFrame {
         jBtnFiltrar = new javax.swing.JButton();
         jLabelRutaCarpetaCV = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        BtnResumen = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -192,6 +196,13 @@ public class FiltrarCV extends javax.swing.JFrame {
             }
         });
 
+        BtnResumen.setText("Resumen");
+        BtnResumen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnResumenActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -221,6 +232,8 @@ public class FiltrarCV extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel3)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(BtnResumen, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(jBtnFiltrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addComponent(jBtnAgregarCV, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -237,8 +250,7 @@ public class FiltrarCV extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabelRutaCarpetaCV)
-                        .addContainerGap())
+                        .addComponent(jLabelRutaCarpetaCV))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -254,14 +266,15 @@ public class FiltrarCV extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel3)
                                     .addComponent(jBtnAgregarCV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jBtnFiltrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jBtnFiltrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(BtnResumen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jBtnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+                            .addComponent(jBtnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
         );
 
         pack();
@@ -352,6 +365,33 @@ public class FiltrarCV extends javax.swing.JFrame {
         jTxtPalabraClave.setText(null);
     }//GEN-LAST:event_botonBorrarClave
 
+    private void BtnResumenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnResumenActionPerformed
+        int filaSeleccionada = jTableCV.getSelectedRow();
+
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this,
+                    "Por favor, seleccione un candidato de la tabla.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Selecciona una fila para filtrar.");
+            return;
+        }
+
+        objetosnegocio.CandidatoON candidatoON = objetosnegocio.CandidatoON.getInstance();
+        dto.CandidatoDTO candidato = candidatoON.obtenerCandidatos().get(filaSeleccionada);
+
+        String ruta = candidato.getRutaPDF();
+        boolean aceptado = filtroIA.filtrarCV(ruta);
+
+        candidato.setEstado(aceptado);
+
+        String mensaje = filtroIA.obtenerResultados(ruta);
+        JOptionPane.showMessageDialog(this, mensaje, "Resultado del Filtro", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_BtnResumenActionPerformed
+
     private void actualizarTabla(List<CandidatoDTO> lista) {
         DefaultTableModel modelo = (DefaultTableModel) jTableCV.getModel();
         modelo.setRowCount(0);  // Limpiar tabla antes de agregar los datos
@@ -422,6 +462,7 @@ public class FiltrarCV extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BtnResumen;
     private javax.swing.JButton jBtnAgregarCV;
     private javax.swing.JButton jBtnFiltrar;
     private javax.swing.JButton jBtnVolver;
