@@ -38,6 +38,7 @@ public class MenuReclutador extends javax.swing.JFrame {
         estadoC = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         cerrarSesion1 = new javax.swing.JButton();
+        botonEliminar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -94,6 +95,13 @@ public class MenuReclutador extends javax.swing.JFrame {
             }
         });
 
+        botonEliminar.setText("Eliminar candidato");
+        botonEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonEliminarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -120,7 +128,8 @@ public class MenuReclutador extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(actualizarC)
                                     .addComponent(registrarC)
-                                    .addComponent(estadoC))))
+                                    .addComponent(estadoC)
+                                    .addComponent(botonEliminar))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(19, 19, 19))
             .addGroup(layout.createSequentialGroup()
@@ -165,7 +174,9 @@ public class MenuReclutador extends javax.swing.JFrame {
                         .addComponent(listasCV)))
                 .addGap(8, 8, 8)
                 .addComponent(estadoC)
-                .addContainerGap(103, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(botonEliminar)
+                .addContainerGap(62, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(539, Short.MAX_VALUE)
@@ -211,6 +222,10 @@ public class MenuReclutador extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_actualizarCActionPerformed
 
+    private void botonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botonEliminarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -249,6 +264,7 @@ public class MenuReclutador extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton actualizarC;
+    private javax.swing.JButton botonEliminar;
     private javax.swing.JButton cerrarSesion1;
     private javax.swing.JButton estadoC;
     private javax.swing.JLabel jLabel1;
