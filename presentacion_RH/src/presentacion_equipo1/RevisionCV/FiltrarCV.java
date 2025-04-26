@@ -21,6 +21,8 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import objetosnegocio.CandidatoON;
@@ -367,7 +369,6 @@ public class FiltrarCV extends javax.swing.JFrame {
 
     private void BtnResumenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnResumenActionPerformed
         int filaSeleccionada = jTableCV.getSelectedRow();
-
         if (filaSeleccionada == -1) {
             JOptionPane.showMessageDialog(this,
                     "Por favor, seleccione un candidato de la tabla.",
@@ -375,21 +376,39 @@ public class FiltrarCV extends javax.swing.JFrame {
             return;
         }
 
-        if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(this, "Selecciona una fila para filtrar.");
-            return;
-        }
-
         objetosnegocio.CandidatoON candidatoON = objetosnegocio.CandidatoON.getInstance();
         dto.CandidatoDTO candidato = candidatoON.obtenerCandidatos().get(filaSeleccionada);
-
         String ruta = candidato.getRutaPDF();
-        boolean aceptado = filtroIA.filtrarCV(ruta);
 
-        candidato.setEstado(aceptado);
+        try {
+            //analisis del CV con IA
+            String resultadoAnalisis = filtroIA.obtenerResultados(ruta);
 
-        String mensaje = filtroIA.obtenerResultados(ruta);
-        JOptionPane.showMessageDialog(this, mensaje, "Resultado del Filtro", JOptionPane.INFORMATION_MESSAGE);
+            //actualizar el estado del candidato basado en el analisis/resumen
+            boolean aceptado = resultadoAnalisis.toLowerCase().contains("cumple con los requisitos");
+            candidato.setEstado(aceptado);
+
+            //tuve que crear un JTextArea para mostrar el resultado ya que las respuestas eran muy largas
+            JTextArea textArea = new JTextArea(20, 50); //tamano del area del texto
+            textArea.setText(resultadoAnalisis);
+            textArea.setWrapStyleWord(true); //ajustes
+            textArea.setLineWrap(true);
+            textArea.setCaretPosition(0); //posicion del cursor al principio
+            textArea.setEditable(false); //evitamos que sea editable
+
+            //jscrollpane para que sea deslizable y legible
+            JScrollPane scrollPane = new JScrollPane(textArea);
+
+            //mostrar el resultado en un JOptionPane con un JScrollPane
+            JOptionPane.showMessageDialog(this,
+                    scrollPane, // Mostrar el JScrollPane en lugar del texto directo
+                    "Resultado del Filtro",
+                    JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al procesar el CV: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_BtnResumenActionPerformed
 
     private void actualizarTabla(List<CandidatoDTO> lista) {
