@@ -19,7 +19,6 @@ import org.json.JSONArray;
 
 public class FiltroCV implements IFiltroCV {
 
-    //mock de IA
     @Override
     public List<CandidatoDTO> filtrarPorPalabrasClave(List<CandidatoDTO> candidatos, List<String> palabrasClave) {
         List<CandidatoDTO> filtrados = new ArrayList<>();
@@ -55,8 +54,7 @@ public class FiltroCV implements IFiltroCV {
     public static String evaluarCVConIA(String contenidoCV) throws Exception {
         String apiKey = "hugging token"; //token de Hugging Face
 
-        String prompt = String.format("Eres un experto en RRHH. Evalua el siguiente CV y genera un resumen corto de las habilidades tecnicas, experiencia y si cumple con los requisitos para un puesto de desarrollador Fullstack (Java, JavaScript, GitHub, Inglés):\n\n%s", contenidoCV);
-        
+        String prompt = String.format("Eres un empleado de RRHH. En el idioma español: Lee y evalua el siguiente CV, dicta si cumple con los requisitos para un puesto de desarrollador Fullstack (Java, JavaScript, GitHub, Inglés) y genera un resumen corto del candidato :\n\n%s", contenidoCV);
 
         String requestBody = "{\"inputs\": " + escapeJsonString(prompt) + "}";
 
@@ -140,9 +138,17 @@ public class FiltroCV implements IFiltroCV {
         }
     }
 
-    public static String obtenerResultados(String rutaPDF) {
+    public static String obtenerResultados(CandidatoDTO candidato) {
         try {
-            File archivo = corregirRutaPDF(rutaPDF);
+            //usamos la ruta del PDF del candidato seleccionado correcto
+            String rutaCompleta = System.getProperty("user.dir") + "/../objetos_negocios/src/" + candidato.getRutaPDF();
+            File archivo = new File(rutaCompleta);
+
+            if (!archivo.exists()) {
+                System.err.println("El archivo no existe: " + archivo.getAbsolutePath());
+                return "No se encontró el archivo PDF del candidato.";
+            }
+
             String contenido = extraerTextoPDF(archivo);
             return evaluarCVConIA(contenido);
 
@@ -182,17 +188,5 @@ public class FiltroCV implements IFiltroCV {
             );
             return "No se pudo procesar con IA.";
         }
-    }
-
-    private static File corregirRutaPDF(String rutaOriginal) {
-        File archivo = new File(rutaOriginal);
-
-        if (archivo.getAbsolutePath().contains("presentacion_RH")) {
-            String nuevoPath = archivo.getAbsolutePath().replace("presentacion_RH", "objetos_negocios/src");
-            archivo = new File(nuevoPath);
-        }
-
-        System.out.println("Ruta final del archivo PDF: " + archivo.getAbsolutePath());
-        return archivo;
     }
 }
