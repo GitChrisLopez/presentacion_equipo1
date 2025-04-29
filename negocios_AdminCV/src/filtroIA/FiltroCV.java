@@ -51,10 +51,33 @@ public class FiltroCV implements IFiltroCV {
         return filtrados;
     }
 
-    public static String evaluarCVConIA(String contenidoCV) throws Exception {
+    public static String evaluarCVConIA(String contenidoCV, List<String> palabrasClave) throws Exception {
         String apiKey = "hugging token"; //token de Hugging Face
 
-        String prompt = String.format("Eres un empleado de RRHH. En el idioma español: Lee y evalua el siguiente CV, dicta si cumple con los requisitos para un puesto de desarrollador Fullstack (Java, JavaScript, GitHub, Inglés) y genera un resumen corto del candidato :\n\n%s", contenidoCV);
+        //hacer una lista de requisitos a partir de las palabras clave que ponga el reclutadoor
+        StringBuilder requisitos = new StringBuilder();
+        if (palabrasClave != null && !palabrasClave.isEmpty()) {
+            requisitos.append("los siguientes requisitos: ");
+            for (int i = 0; i < palabrasClave.size(); i++) {
+                requisitos.append(palabrasClave.get(i));
+                if (i < palabrasClave.size() - 1) {
+                    requisitos.append(", ");
+                }
+            }
+        } else {
+            requisitos.append("los requisitos generales del puesto");
+        }
+
+        String prompt = String.format("""
+                                      Eres un empleado de RRHH. INSTRUCCIONES IMPORTANTES:
+                                      1. Lee el CV del candidato y evalua si cumple con %s.
+                                      2. NO repitas informacion del CV original.
+                                      3. Responde SOLO con un analisis breve y conciso (maximo 120 palabras).
+                                      4. Enfocate en mencionar solo las habilidades relevantes para el puesto.
+                                      5. Concluye claramente si el candidato es apto o no para el puesto.
+                                      
+                                      %s""", 
+                requisitos.toString(), contenidoCV);
 
         String requestBody = "{\"inputs\": " + escapeJsonString(prompt) + "}";
 
@@ -79,7 +102,6 @@ public class FiltroCV implements IFiltroCV {
         //si todo está bien, se procesan los resultados
         JSONArray arr = new JSONArray(response.body());
         return arr.getJSONObject(0).getString("generated_text");
-
     }
 
     private static String escapeJsonString(String input) {
@@ -138,7 +160,7 @@ public class FiltroCV implements IFiltroCV {
         }
     }
 
-    public static String obtenerResultados(CandidatoDTO candidato) {
+    public static String obtenerResultados(CandidatoDTO candidato, List<String> palabrasClave) {
         try {
             //usamos la ruta del PDF del candidato seleccionado correcto
             String rutaCompleta = System.getProperty("user.dir") + "/../objetos_negocios/src/" + candidato.getRutaPDF();
@@ -150,7 +172,7 @@ public class FiltroCV implements IFiltroCV {
             }
 
             String contenido = extraerTextoPDF(archivo);
-            return evaluarCVConIA(contenido);
+            return evaluarCVConIA(contenido, palabrasClave);
 
         } catch (IOException e) {
             //imprimir el error completo en consola

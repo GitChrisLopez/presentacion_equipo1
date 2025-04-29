@@ -383,7 +383,8 @@ public class FiltrarCV extends javax.swing.JFrame {
         CandidatoDTO candidato = candidatosMostrados.get(filaSeleccionada);
 
         try {
-            String resultadoAnalisis = filtroIA.obtenerResultados(candidato);
+            //pasamos la lista de palabras clave del relcutador al metodo obtenerResultados
+            String resultadoAnalisis = filtroIA.obtenerResultados(candidato, keyWords);
 
             boolean aceptado = resultadoAnalisis.toLowerCase().contains("cumple con los requisitos");
             candidato.setEstado(aceptado);
