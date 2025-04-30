@@ -52,7 +52,7 @@ public class FiltroCV implements IFiltroCV {
     }
 
     public static String evaluarCVConIA(String contenidoCV, List<String> palabrasClave) throws Exception {
-        String apiKey = "hugging token"; //token de Hugging Face
+        String apiKey = "HUGGING TOKEN AQUI"; //token de Hugging Face
 
         //hacer una lista de requisitos a partir de las palabras clave que ponga el reclutadoor
         StringBuilder requisitos = new StringBuilder();
@@ -72,9 +72,8 @@ public class FiltroCV implements IFiltroCV {
                                       Eres un empleado de RRHH. INSTRUCCIONES IMPORTANTES:
                                       1. Lee el CV del candidato y evalua si cumple con %s.
                                       2. NO repitas informacion del CV original.
-                                      3. Responde SOLO con un analisis breve y conciso (maximo 120 palabras).
-                                      4. Enfocate en mencionar solo las habilidades relevantes para el puesto.
-                                      5. Concluye claramente si el candidato es apto o no para el puesto.
+                                      3. Responde SOLO con un analisis breve en ESPAÑOL del candidato de maximo 120 palabras.
+                                      4. Concluye con 'APTO' o 'NO APTO'.
                                       
                                       %s""", 
                 requisitos.toString(), contenidoCV);
