@@ -356,11 +356,11 @@ public class CRUDCandidato extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios",
                 "Error de validación", JOptionPane.ERROR_MESSAGE);
             return;
-//        }
-        }else{
-            String apellidos = apellidoP.getText().trim()+ " " apellidoM.getText().trim();
-            CandidatoDTO NC = new CandidatoDTO(nombre.getText().trim(), apellidos, telefono.getText().trim()getText().trim(), correo.getText().trim(), puesto.getText().trim(),jComboBox1.actionPerformed(evt););
         }
+//        }else{
+//            String apellidos = apellidoP.getText().trim()+ " " apellidoM.getText().trim();
+//            CandidatoDTO NC = new CandidatoDTO(nombre.getText().trim(), apellidos, telefono.getText().trim()getText().trim(), correo.getText().trim(), puesto.getText().trim(),jComboBox1.actionPerformed(evt););
+//        }
     }//GEN-LAST:event_guardarActionPerformed
 
     private void telefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_telefonoActionPerformed
