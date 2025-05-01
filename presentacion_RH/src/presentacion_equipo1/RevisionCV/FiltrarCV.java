@@ -21,6 +21,8 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import objetosnegocio.CandidatoON;
@@ -41,12 +43,15 @@ public class FiltrarCV extends javax.swing.JFrame {
     List<CandidatoDTO> listaCandidatos = new ArrayList<>();
     CandidatoON candidatoON;
 
+    private List<CandidatoDTO> candidatosMostrados;
+
     /**
      * Creates new form FiltroCV
      */
     public FiltrarCV() {
         initComponents();
 
+        candidatosMostrados = new ArrayList<>();
         this.setLocationRelativeTo(null);
 
         jTableCV.setEnabled(true);
@@ -94,8 +99,10 @@ public class FiltrarCV extends javax.swing.JFrame {
 
                 // Si la columna es la del archivo PDF (ajusta según el índice)
                 if (column == 6 && e.getClickCount() == 2) {
-                    String nombreArchivo = jTableCV.getValueAt(row, column).toString();
-                    abrirPDFenSistema(nombreArchivo);
+                    if (row >= 0 && row < candidatosMostrados.size()) {
+                        CandidatoDTO candidato = candidatosMostrados.get(row);
+                        abrirPDFenSistema(candidato.getRutaPDF());
+                    }
                 }
             }
         });
@@ -334,26 +341,24 @@ public class FiltrarCV extends javax.swing.JFrame {
     }//GEN-LAST:event_jBtnAgregarCVActionPerformed
 
     private void jBtnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnFiltrarActionPerformed
-
         if (keyWords.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Selecciona al menos una palabra clave.");
             return;
         }
 
         List<CandidatoDTO> todos = candidatoON.getInstance().obtenerCandidatos();
-
         List<CandidatoDTO> filtrados = subFiltro.filtrarPorPalabrasClave(todos, keyWords);
 
+        // Actualizar los candidatos mostrados y la tabla
         actualizarTabla(filtrados);
     }//GEN-LAST:event_jBtnFiltrarActionPerformed
 
     private void jTxtPalabraClaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtPalabraClaveActionPerformed
-        keyWords.add(jTxtPalabraClave.getText());
+        String palabraClave = jTxtPalabraClave.getText().trim();
 
-        for (String palabraClave : keyWords) {
-            if (!listModel.contains(palabraClave) && !palabraClave.equals("")) {
-                listModel.addElement(palabraClave);
-            }
+        if (!palabraClave.isEmpty() && !keyWords.contains(palabraClave)) {
+            keyWords.add(palabraClave);
+            listModel.addElement(palabraClave);
         }
 
         jTxtPalabraClave.setText(null);
@@ -367,7 +372,6 @@ public class FiltrarCV extends javax.swing.JFrame {
 
     private void BtnResumenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnResumenActionPerformed
         int filaSeleccionada = jTableCV.getSelectedRow();
-
         if (filaSeleccionada == -1) {
             JOptionPane.showMessageDialog(this,
                     "Por favor, seleccione un candidato de la tabla.",
@@ -375,36 +379,53 @@ public class FiltrarCV extends javax.swing.JFrame {
             return;
         }
 
-        if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(this, "Selecciona una fila para filtrar.");
-            return;
+        //usamos el candidato de la lista filtrada en lugar de la lista original para evitar seleccionar el pdf erroneo
+        CandidatoDTO candidato = candidatosMostrados.get(filaSeleccionada);
+
+        try {
+            //pasamos la lista de palabras clave del reclutador al metodo obtenerResultados
+            String resultadoAnalisis = filtroIA.obtenerResultados(candidato, keyWords);
+
+            boolean aceptado = resultadoAnalisis.toLowerCase().contains("apto")|| 
+                  resultadoAnalisis.toLowerCase().contains("cumple con los requisitos");
+            candidato.setEstado(aceptado);
+
+            JTextArea textArea = new JTextArea(20, 50);
+            textArea.setText(resultadoAnalisis);
+            textArea.setWrapStyleWord(true);
+            textArea.setLineWrap(true);
+            textArea.setCaretPosition(0);
+            textArea.setEditable(false);
+
+            JScrollPane scrollPane = new JScrollPane(textArea);
+
+            JOptionPane.showMessageDialog(this,
+                    scrollPane,
+                    "Resultado del Filtro",
+                    JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al procesar el CV: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
-
-        objetosnegocio.CandidatoON candidatoON = objetosnegocio.CandidatoON.getInstance();
-        dto.CandidatoDTO candidato = candidatoON.obtenerCandidatos().get(filaSeleccionada);
-
-        String ruta = candidato.getRutaPDF();
-        boolean aceptado = filtroIA.filtrarCV(ruta);
-
-        candidato.setEstado(aceptado);
-
-        String mensaje = filtroIA.obtenerResultados(ruta);
-        JOptionPane.showMessageDialog(this, mensaje, "Resultado del Filtro", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_BtnResumenActionPerformed
 
     private void actualizarTabla(List<CandidatoDTO> lista) {
-        DefaultTableModel modelo = (DefaultTableModel) jTableCV.getModel();
-        modelo.setRowCount(0);  // Limpiar tabla antes de agregar los datos
+        DefaultTableModel model = (DefaultTableModel) jTableCV.getModel();
+        model.setRowCount(0); // limpiar tabla
+
+        //se almacena la nueva lista de candidatos mostrados
+        this.candidatosMostrados = new ArrayList<>(lista);
 
         for (CandidatoDTO c : lista) {
-            modelo.addRow(new Object[]{
+            model.addRow(new Object[]{
                 c.getNombre(),
                 c.getApellidos(),
                 c.getTelefono(),
                 c.getCorreo(),
                 c.getPuesto(),
-                c.isEstado(),
-                new File(c.getRutaPDF()).getName() // Mostrar solo el nombre del archivo PDF
+                c.isEstado() ? "Aprobado" : "Rechazado",
+                c.getRutaPDF()
             });
         }
     }
@@ -413,16 +434,25 @@ public class FiltrarCV extends javax.swing.JFrame {
      *
      * @param nombreArchivoCV
      */
-    private void abrirPDFenSistema(String nombreArchivoCV) {
+    private void abrirPDFenSistema(String rutaPDF) {
         // Construir la ruta completa desde la relativa
-        String rutaBase = System.getProperty("user.dir");
-        File archivoPDF = new File(rutaBase, "../objetos_negocios/src/CVs/" + nombreArchivoCV);
-
         try {
-            Desktop.getDesktop().open(archivoPDF);
+            File archivo = new File(System.getProperty("user.dir") + "/../objetos_negocios/src/" + rutaPDF);
+
+            if (archivo.exists()) {
+                Desktop.getDesktop().open(archivo);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "No se pudo encontrar el archivo PDF: " + archivo.getAbsolutePath(),
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "No se pudo abrir el archivo: " + e.getMessage());
+            JOptionPane.showMessageDialog(this,
+                    "Error al abrir el PDF: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
+
     }
 
     /**

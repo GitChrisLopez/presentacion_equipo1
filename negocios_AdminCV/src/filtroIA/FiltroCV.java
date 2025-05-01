@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package filtroIA;
 
 import dto.CandidatoDTO;
@@ -14,11 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import org.apache.pdfbox.Loader;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+import org.json.JSONArray;
 
-/**
- *
- * @author chris
- */
 public class FiltroCV implements IFiltroCV {
 
     @Override
@@ -31,18 +29,17 @@ public class FiltroCV implements IFiltroCV {
 
             if (!archivo.exists()) {
                 System.err.println("El archivo no existe: " + archivo.getAbsolutePath());
-                continue;  // Salta este candidato si el archivo no existe
+                continue;
             }
 
             try (PDDocument documento = Loader.loadPDF(archivo)) {
                 PDFTextStripper stripper = new PDFTextStripper();
                 String texto = stripper.getText(documento).toLowerCase();
 
-                // Verificar si alguna palabra clave está en el texto
                 for (String palabra : palabrasClave) {
                     if (texto.contains(palabra.toLowerCase())) {
                         filtrados.add(candidato);
-                        break; // Ya encontramos una coincidencia, no necesitamos seguir buscando
+                        break;
                     }
                 }
             } catch (IOException e) {
@@ -54,7 +51,101 @@ public class FiltroCV implements IFiltroCV {
         return filtrados;
     }
 
-    //Tuve que utilizar esto ya que si en el CV cierts palabras llevan tilde, no se detectan normalmente :P
+    public static String evaluarCVConIA(String contenidoCV, List<String> palabrasClave) throws Exception {
+        String apiKey = "HUGGING TOKEN AQUI"; //token de Hugging Face
+
+        //hacer una lista de requisitos a partir de las palabras clave que ponga el reclutadoor
+        StringBuilder requisitos = new StringBuilder();
+        if (palabrasClave != null && !palabrasClave.isEmpty()) {
+            requisitos.append("los siguientes requisitos: ");
+            for (int i = 0; i < palabrasClave.size(); i++) {
+                requisitos.append(palabrasClave.get(i));
+                if (i < palabrasClave.size() - 1) {
+                    requisitos.append(", ");
+                }
+            }
+        } else {
+            requisitos.append("los requisitos generales del puesto");
+        }
+
+        String prompt = String.format("""
+                                      Eres un empleado de RRHH. INSTRUCCIONES IMPORTANTES:
+                                      1. Lee el CV del candidato y evalua si cumple con %s.
+                                      2. NO repitas informacion del CV original.
+                                      3. Responde SOLO con un analisis breve en ESPAÑOL del candidato de maximo 120 palabras.
+                                      4. Concluye con 'APTO' o 'NO APTO'.
+                                      
+                                      %s""", 
+                requisitos.toString(), contenidoCV);
+
+        String requestBody = "{\"inputs\": " + escapeJsonString(prompt) + "}";
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://api-inference.huggingface.co/models/mistralai/Mistral-Nemo-Instruct-2407"))
+                .header("Authorization", "Bearer " + apiKey)
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody, StandardCharsets.UTF_8))
+                .build();
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        //imprimimos completo en consola y solo 200 caracteres en el msj del usuario
+        if (response.statusCode() != 200) {
+            String body = response.body();
+            System.err.println("API error " + response.statusCode() + ": " + body);
+            String snippet = body.length() > 200 ? body.substring(0, 200) + "..." : body;
+            throw new IOException("API error " + response.statusCode() + ": " + snippet);
+        }
+
+        //si todo está bien, se procesan los resultados
+        JSONArray arr = new JSONArray(response.body());
+        return arr.getJSONObject(0).getString("generated_text");
+    }
+
+    private static String escapeJsonString(String input) {
+        if (input == null) {
+            return "null";
+        }
+
+        StringBuilder output = new StringBuilder("\"");
+        for (int i = 0; i < input.length(); i++) {
+            char ch = input.charAt(i);
+            switch (ch) {
+                case '"':
+                    output.append("\\\"");
+                    break;
+                case '\\':
+                    output.append("\\\\");
+                    break;
+                case '\b':
+                    output.append("\\b");
+                    break;
+                case '\f':
+                    output.append("\\f");
+                    break;
+                case '\n':
+                    output.append("\\n");
+                    break;
+                case '\r':
+                    output.append("\\r");
+                    break;
+                case '\t':
+                    output.append("\\t");
+                    break;
+                default:
+                    if (ch < ' ') {
+                        output.append(String.format("\\u%04x", (int) ch));
+                    } else {
+                        output.append(ch);
+                    }
+                    break;
+            }
+        }
+        output.append("\"");
+        return output.toString();
+    }
+
     public static String normalizar(String texto) {
         texto = texto.toLowerCase();
         texto = Normalizer.normalize(texto, Normalizer.Form.NFD);
@@ -68,117 +159,55 @@ public class FiltroCV implements IFiltroCV {
         }
     }
 
-    public static boolean aceptarCV(String contenidoCV) {
-        contenidoCV = normalizar(contenidoCV);
-        return contenidoCV.contains("java") || contenidoCV.contains("javascript")
-                && contenidoCV.contains("github")
-                && contenidoCV.contains("ingles");
-    }
-
-    public static String resultadosFiltro(String contenidoCV) {
-        StringBuilder resultado = new StringBuilder();
-        contenidoCV = normalizar(contenidoCV);
-        contenidoCV = contenidoCV.toLowerCase();
-        boolean cumpleRequisitos = false;
-
-        if (contenidoCV.contains("java")) {
-            resultado.append("El candidato tiene conocimiento con JAVA.\n");
-            cumpleRequisitos = true;
-        }
-        if (contenidoCV.contains("php")) {
-            resultado.append("El candidato tiene conocimiento con PHP.\n");
-            cumpleRequisitos = true;
-        }
-        if (contenidoCV.contains("c++")) {
-            resultado.append("El candidato tiene conocimiento con C++.\n");
-            cumpleRequisitos = true;
-        }
-        if (contenidoCV.contains("html")) {
-            resultado.append("El candidato tiene conocimiento con HTML.\n");
-            cumpleRequisitos = true;
-        }
-        if (contenidoCV.contains("javascript")) {
-            resultado.append("El candidato tiene conocimiento con JavaScript.\n");
-            cumpleRequisitos = true;
-        }
-        if (contenidoCV.contains("python")) {
-            resultado.append("El candidato tiene conocimiento con Python.\n");
-            cumpleRequisitos = true;
-        }
-        if (contenidoCV.contains("react")) {
-            resultado.append("El candidato tiene conocimiento con React.\n");
-            cumpleRequisitos = true;
-        }
-        if (contenidoCV.contains("mysql")) {
-            resultado.append("El candidato tiene conocimiento con MySQL.\n");
-            cumpleRequisitos = true;
-        }
-        if (contenidoCV.contains("frontend")) {
-            resultado.append("El candidato esta especializado en la programacion de Frontend.\n");
-            cumpleRequisitos = true;
-        }
-        if (contenidoCV.contains("backend")) {
-            resultado.append("El candidato esta especializado en la programacion de Backend.\n");
-            cumpleRequisitos = true;
-        }
-        if (contenidoCV.contains("experiencia laboral")) {
-            resultado.append("El candidato ha tenido experiencia laboral.\n");
-            cumpleRequisitos = true;
-        }
-
-        if (!cumpleRequisitos) {
-            resultado.append("El candidato no cuenta con ninguno de los requisitos que necesitados para el puesto.");
-        }
-
-        return resultado.toString();
-    }
-
-    public static boolean filtrarCV(String rutaPDF) {
+    public static String obtenerResultados(CandidatoDTO candidato, List<String> palabrasClave) {
         try {
-            File archivo = corregirRutaPDF(rutaPDF);
-            String contenido = extraerTextoPDF(archivo);
-            return aceptarCV(contenido);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error al leer el CV:\n" + e.getMessage());
-            return false;
-        }
-    }
-
-    public static String obtenerResultados(String rutaPDF) {
-        try {
-            File archivo = corregirRutaPDF(rutaPDF);
-            String contenido = extraerTextoPDF(archivo);
-            return resultadosFiltro(contenido);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error al leer el CV:\n" + e.getMessage());
-            return "No se pudo procesar el archivo.";
-        }
-    }
-
-    public void abrirPDF(String rutaPDF) {
-        try {
-            File archivo = corregirRutaPDF(rutaPDF);
+            //usamos la ruta del PDF del candidato seleccionado correcto
+            String rutaCompleta = System.getProperty("user.dir") + "/../objetos_negocios/src/" + candidato.getRutaPDF();
+            File archivo = new File(rutaCompleta);
 
             if (!archivo.exists()) {
-                JOptionPane.showMessageDialog(null, "El archivo no existe: " + archivo.getAbsolutePath());
-                return;
+                System.err.println("El archivo no existe: " + archivo.getAbsolutePath());
+                return "No se encontró el archivo PDF del candidato.";
             }
 
-            java.awt.Desktop.getDesktop().open(archivo);
+            String contenido = extraerTextoPDF(archivo);
+            return evaluarCVConIA(contenido, palabrasClave);
+
+        } catch (IOException e) {
+            //imprimir el error completo en consola
+            System.err.println("Error al leer o procesar el CV: " + e.getMessage());
+            e.printStackTrace();
+
+            //mostrar solo un mensaje conciso en el JOptionPane
+            String msg = e.getMessage();
+            if (msg != null && msg.length() > 200) {
+                msg = msg.substring(0, 200) + "...";
+            }
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Error al leer o procesar el CV:\n" + msg,
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return "No se pudo procesar el archivo.";
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "No se pudo abrir el archivo PDF:\n" + e.getMessage());
+            //imprimir el error completo en consola
+            System.err.println("Error con la IA: " + e.getMessage());
+            e.printStackTrace();  // Esto imprime todo el stacktrace
+
+            //mostrar solo un mensaje conciso en el JOptionPane
+            String msg = e.getMessage();
+            if (msg != null && msg.length() > 200) {
+                msg = msg.substring(0, 200) + "...";
+            }
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Error con la IA:\n" + msg,
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return "No se pudo procesar con IA.";
         }
-    }
-
-    private static File corregirRutaPDF(String rutaOriginal) {
-        File archivo = new File(rutaOriginal);
-
-        if (archivo.getAbsolutePath().contains("presentacion_RH")) {
-            String nuevoPath = archivo.getAbsolutePath().replace("presentacion_RH", "objetos_negocios/src");
-            archivo = new File(nuevoPath);
-        }
-
-        System.out.println("Ruta final del archivo PDF: " + archivo.getAbsolutePath());
-        return archivo;
     }
 }
