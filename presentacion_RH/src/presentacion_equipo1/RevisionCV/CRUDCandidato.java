@@ -10,17 +10,23 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import objetosnegocio.CandidatoON;
-
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 /**
  *
  * @author Adrián
  */
 public class CRUDCandidato extends javax.swing.JFrame {
+    private List<CandidatoDTO> candidatosMostrados;
 
     /**
      * Creates new form CRUDCandidato
      */
-    boolean activo = false;
+    boolean estado = false;
     List<CandidatoDTO> listaCandidatos = new ArrayList<>();
     CandidatoON candidatoON;
     public CRUDCandidato() {
@@ -57,7 +63,7 @@ public class CRUDCandidato extends javax.swing.JFrame {
         apellidoP = new javax.swing.JTextField();
         apellidoM = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        actividad = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
         telefono = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
@@ -193,10 +199,10 @@ public class CRUDCandidato extends javax.swing.JFrame {
 
         jLabel7.setText("Estado del candidato");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        actividad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
+        actividad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                actividadActionPerformed(evt);
             }
         });
 
@@ -258,8 +264,7 @@ public class CRUDCandidato extends javax.swing.JFrame {
                         .addComponent(nombre)
                         .addComponent(jLabel5)
                         .addComponent(jLabel6)
-                        .addComponent(apellidoP)
-                        .addComponent(volverButton))
+                        .addComponent(apellidoP))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jLabel8)
                         .addComponent(jLabel9)
@@ -267,16 +272,17 @@ public class CRUDCandidato extends javax.swing.JFrame {
                         .addComponent(correo)
                         .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(puesto))
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
-                .addGap(18, 18, 18)
+                    .addComponent(actividad, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7)
+                    .addComponent(volverButton))
+                .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(77, 77, 77)
                         .addComponent(actualizarBoton, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
                         .addComponent(Consultar)
                         .addGap(88, 88, 88)
                         .addComponent(EliminarBoton)))
@@ -287,16 +293,6 @@ public class CRUDCandidato extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(volverButton)
-                            .addComponent(Consultar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(EliminarBoton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(actualizarBoton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addComponent(jLabel4)
@@ -325,8 +321,19 @@ public class CRUDCandidato extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(18, Short.MAX_VALUE))
+                        .addComponent(actividad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                        .addComponent(volverButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Consultar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(EliminarBoton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(actualizarBoton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
         );
 
         pack();
@@ -352,15 +359,60 @@ public class CRUDCandidato extends javax.swing.JFrame {
 
     private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
         if (nombre.getText().trim().isEmpty() || apellidoP.getText().trim().isEmpty()|| apellidoM.getText().trim().isEmpty()
-            || telefono.getText().trim().isEmpty() || correo.getText().trim().isEmpty()) {
+            || telefono.getText().trim().isEmpty() || correo.getText().trim().isEmpty() || puesto.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios",
                 "Error de validación", JOptionPane.ERROR_MESSAGE);
             return;
+        //}
+        }else{
+            //Se extraen los strings de los text field
+            String apellidos = apellidoP.getText().trim().concat(apellidoM.getText().trim()).trim();
+            String nom = nombre.getText().trim();
+            String tel = telefono.getText().trim();
+            String cor = correo.getText().trim();
+            String pue = puesto.getText().trim();
+            
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos PDF", "pdf"));
+
+            int resultado = fileChooser.showOpenDialog(this);
+            if (resultado == JFileChooser.APPROVE_OPTION) {
+                File archivoSeleccionado = fileChooser.getSelectedFile();
+                String nombreArchivo = archivoSeleccionado.getName();
+
+                // Ruta base dinámica
+                String rutaBase = System.getProperty("user.dir");
+                File carpetaCVs = new File(rutaBase, "../objetos_negocios/src/CVs");
+                if (!carpetaCVs.exists()) {
+                    carpetaCVs.mkdirs();
+                }
+
+                // Guardar el archivo con la ruta relativa en el DTO
+                    File destino = new File(carpetaCVs, nombreArchivo);
+                        try {
+                    Files.copy(archivoSeleccionado.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+                // Guardar solo la ruta relativa al archivo en el DTO
+                    String rutaRelativa = "CVs/" + nombreArchivo;  // Guardamos solo la ruta relativa
+
+                    CandidatoDTO candidato = new CandidatoDTO(
+                        nom,
+                        apellidos,
+                        tel,
+                        cor,
+                        pue,
+                        estado,
+                        rutaRelativa // Usamos la ruta relativa aquí
+                );
+
+                candidatoON.getInstance().agregarCandidato(candidato);
+                actualizarTabla(candidatoON.getInstance().obtenerCandidatos());
+
+            } catch (IOException e) {
+              JOptionPane.showMessageDialog(this, "Error al copiar archivo: " + e.getMessage());
+                }
+          }
         }
-//        }else{
-//            String apellidos = apellidoP.getText().trim()+ " " apellidoM.getText().trim();
-//            CandidatoDTO NC = new CandidatoDTO(nombre.getText().trim(), apellidos, telefono.getText().trim()getText().trim(), correo.getText().trim(), puesto.getText().trim(),jComboBox1.actionPerformed(evt););
-//        }
     }//GEN-LAST:event_guardarActionPerformed
 
     private void telefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_telefonoActionPerformed
@@ -371,9 +423,17 @@ public class CRUDCandidato extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_puestoActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    private void actividadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actividadActionPerformed
+        //Se compara la seleccion del combo box   
+        if(evt.getSource() == actividad){
+                //se equivale la seleccion al estado seleccionado
+               String seleccion = (String)actividad.getSelectedItem();
+               //Si Seleccion es igual a "Activo", el estado se vuelve activo
+               if(seleccion.equals("Activo")){
+                   estado = true;
+               }
+           }
+    }//GEN-LAST:event_actividadActionPerformed
 
     /**
      * @param args the command line arguments
@@ -410,17 +470,36 @@ public class CRUDCandidato extends javax.swing.JFrame {
             }
         });
     }
+        private void actualizarTabla(List<CandidatoDTO> lista) {
+        DefaultTableModel model = (DefaultTableModel) tablaCandidato.getModel();
+        model.setRowCount(0); // limpiar tabla
+
+        //se almacena la nueva lista de candidatos mostrados
+        this.candidatosMostrados = new ArrayList<>(lista);
+
+        for (CandidatoDTO c : lista) {
+            model.addRow(new Object[]{
+                c.getNombre(),
+                c.getApellidos(),
+                c.getTelefono(),
+                c.getCorreo(),
+                c.getPuesto(),
+                c.isEstado() ? "Activo" : "Inactivo",
+                c.getRutaPDF()
+            });
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Consultar;
     private javax.swing.JButton EliminarBoton;
+    private javax.swing.JComboBox<String> actividad;
     private javax.swing.JButton actualizarBoton;
     private javax.swing.JTextField apellidoM;
     private javax.swing.JTextField apellidoP;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JTextField correo;
     private javax.swing.JButton guardar;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
