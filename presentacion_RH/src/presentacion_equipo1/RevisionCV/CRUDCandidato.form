@@ -178,7 +178,6 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="guardar" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
-                          <Component id="volverButton" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="Consultar" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
                           <Component id="EliminarBoton" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
                           <Component id="actualizarBoton" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
@@ -215,7 +214,9 @@
                       <Component id="jComboBox1" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="18" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="volverButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="21" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
