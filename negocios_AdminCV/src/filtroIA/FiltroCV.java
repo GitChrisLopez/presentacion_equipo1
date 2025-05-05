@@ -52,9 +52,9 @@ public class FiltroCV implements IFiltroCV {
     }
 
     public static String evaluarCVConIA(String contenidoCV, List<String> palabrasClave) throws Exception {
-        String apiKey = "HUGGING TOKEN AQUI"; //token de Hugging Face
+        String apiKey = "HUGGING TOKEN"; //token de Hugging Face
 
-        //hacer una lista de requisitos a partir de las palabras clave que ponga el reclutadoor
+        //hacer una lista de requisitos a partir de las palabras clave que ponga el reclutador
         StringBuilder requisitos = new StringBuilder();
         if (palabrasClave != null && !palabrasClave.isEmpty()) {
             requisitos.append("los siguientes requisitos: ");
@@ -68,15 +68,18 @@ public class FiltroCV implements IFiltroCV {
             requisitos.append("los requisitos generales del puesto");
         }
 
-        String prompt = String.format("""
-                                      Eres un empleado de RRHH. INSTRUCCIONES IMPORTANTES:
-                                      1. Lee el CV del candidato y evalua si cumple con %s.
-                                      2. NO repitas informacion del CV original.
-                                      3. Responde SOLO con un analisis breve en ESPAÑOL del candidato de maximo 120 palabras.
-                                      4. Concluye con 'APTO' o 'NO APTO'.
-                                      
-                                      %s""", 
-                requisitos.toString(), contenidoCV);
+        //usamos una palabara y signos especificos en el prompt poder eliminarlo
+        String promptIdentifier = "###INSTRUCCIONES###";
+        String promptContent = String.format("""
+                          Eres un empleado de RRHH. INSTRUCCIONES IMPORTANTES:
+                          1. Lee el CV del candidato y evalua si cumple con %s.
+                          2. NO repitas información del CV original bajo ninguna circunstancia.
+                          3. Tu respuesta debe comenzar DIRECTAMENTE con "ANÁLISIS:" seguido de tu evaluación.
+                          4. Proporciona un análisis breve en ESPAÑOL del candidato de máximo 120 palabras.
+                          5. Concluye con la palabra 'APTO' o 'NO APTO' en mayúsculas.
+                          """, requisitos.toString());
+
+        String prompt = promptIdentifier + "\n" + promptContent + "\n\n" + contenidoCV;
 
         String requestBody = "{\"inputs\": " + escapeJsonString(prompt) + "}";
 
@@ -100,7 +103,104 @@ public class FiltroCV implements IFiltroCV {
 
         //si todo está bien, se procesan los resultados
         JSONArray arr = new JSONArray(response.body());
-        return arr.getJSONObject(0).getString("generated_text");
+        String respuestaCompleta = arr.getJSONObject(0).getString("generated_text");
+
+        //filtrar para eliminar el prompt y cualquier contenido previo al análisis
+        return filtrarRespuestaIA(respuestaCompleta, promptIdentifier, promptContent, contenidoCV);
+    }
+
+    private static String filtrarRespuestaIA(String respuestaCompleta, String promptIdentifier,
+            String promptContent, String contenidoCV) {
+        String respuestaLower = respuestaCompleta.toLowerCase();
+
+        //eliminar el prompt de la respuesta
+        int posIdentifier = respuestaLower.indexOf(promptIdentifier.toLowerCase());
+        if (posIdentifier != -1) {
+            //si encontramos el identificador, eliminamos desde ahi hasta el final
+            respuestaCompleta = respuestaCompleta.substring(posIdentifier + promptIdentifier.length());
+            respuestaLower = respuestaLower.substring(posIdentifier + promptIdentifier.length());
+        }
+
+        //buscamos fragmentosdel prompt que podrían estar en la respuesta
+        String[] fragmentosPrompt = {
+            "eres un empleado de rrhh",
+            "instrucciones importantes",
+            "lee el cv del candidato",
+            "no repitas información",
+            "tu respuesta debe comenzar",
+            "proporciona un análisis breve",
+            "concluye con la palabra"
+        };
+
+        for (String fragmento : fragmentosPrompt) {
+            int posFragmento = respuestaLower.indexOf(fragmento);
+            if (posFragmento != -1) {
+                int finInstruccion = respuestaLower.indexOf("\n", posFragmento);
+                if (finInstruccion != -1) {
+                    //si hay un fin de línea después de este fragmento, continuamos buscando hasta que tengamos todo eliminado
+                    respuestaLower = respuestaLower.substring(finInstruccion + 1);
+                    respuestaCompleta = respuestaCompleta.substring(finInstruccion + 1);
+                }
+            }
+        }
+
+        //intentamos eliminar cualquier contenido del CV que haya sido repetido
+        //esto es complejo pero se intenta con tomar las primeras líneas del CV para detectar si se repite
+        String[] lineasCV = contenidoCV.split("\n", 5); //primeras 5 lineas como muestra
+        for (String linea : lineasCV) {
+            if (linea.trim().length() > 15) { //solo consideramos líneas con contenido sustancial
+                int posLinea = respuestaLower.indexOf(linea.toLowerCase());
+                if (posLinea != -1) {
+                    //si encontramos una linea del CV, eliminamos todo hasta el final de esa línea
+                    int finLinea = respuestaLower.indexOf("\n", posLinea);
+                    if (finLinea != -1) {
+                        respuestaLower = respuestaLower.substring(finLinea + 1);
+                        respuestaCompleta = respuestaCompleta.substring(finLinea + 1);
+                    }
+                }
+            }
+        }
+
+        //buscamos las palabras clave que indican el inicio del analisis real
+        int posAnalisisPuntos = respuestaLower.indexOf("análisis:");
+        int posAnalisisPuntosSinTilde = respuestaLower.indexOf("analisis:");
+        int posResumen = respuestaLower.indexOf("resumen");
+        int posAnalisis = respuestaLower.indexOf("análisis");
+        int posAnalisisSinTilde = respuestaLower.indexOf("analisis");
+
+        //encontramos la primera ocurrencia de cualquiera de estas palabras
+        int posInicio = -1;
+
+        //priorizamos las palabras con ":" que indican el formato que pedimos
+        if (posAnalisisPuntos != -1) {
+            posInicio = posAnalisisPuntos;
+        }
+
+        if (posAnalisisPuntosSinTilde != -1 && (posInicio == -1 || posAnalisisPuntosSinTilde < posInicio)) {
+            posInicio = posAnalisisPuntosSinTilde;
+        }
+
+        if (posResumen != -1 && (posInicio == -1 || posResumen < posInicio)) {
+            posInicio = posResumen;
+        }
+
+        if (posAnalisis != -1 && (posInicio == -1 || posAnalisis < posInicio)) {
+            posInicio = posAnalisis;
+        }
+
+        if (posAnalisisSinTilde != -1 && (posInicio == -1 || posAnalisisSinTilde < posInicio)) {
+            posInicio = posAnalisisSinTilde;
+        }
+
+        //si se encuentra alguna de las palabras se corta el texto
+        if (posInicio != -1) {
+            respuestaCompleta = respuestaCompleta.substring(posInicio);
+        }
+
+        //limpiamos
+        respuestaCompleta = respuestaCompleta.trim();
+
+        return respuestaCompleta;
     }
 
     private static String escapeJsonString(String input) {
@@ -171,7 +271,11 @@ public class FiltroCV implements IFiltroCV {
             }
 
             String contenido = extraerTextoPDF(archivo);
-            return evaluarCVConIA(contenido, palabrasClave);
+            //por si acaso aplicamos filtrado aquí también xd
+            String respuestaIA = evaluarCVConIA(contenido, palabrasClave);
+
+            //filtramos la respuesta nuevamente, devolvemos la respuesta que ya viene filtrada de evaluarCVConIA
+            return respuestaIA;
 
         } catch (IOException e) {
             //imprimir el error completo en consola

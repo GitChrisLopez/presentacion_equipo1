@@ -32,13 +32,12 @@ public class MenuReclutador extends javax.swing.JFrame {
         revisionCV = new javax.swing.JButton();
         listasCV = new javax.swing.JButton();
         registrarC = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        actualizarC = new javax.swing.JButton();
         estadoC = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         cerrarSesion1 = new javax.swing.JButton();
         botonEliminar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -59,21 +58,10 @@ public class MenuReclutador extends javax.swing.JFrame {
             }
         });
 
-        registrarC.setText("Registrar nuevo candidato");
+        registrarC.setText("CRUD  Candidato");
         registrarC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 registrarCActionPerformed(evt);
-            }
-        });
-
-        jLabel3.setText("Reclutamiento");
-
-        jLabel4.setText("Alta a candidatos");
-
-        actualizarC.setText("Actualizar datos del candidato");
-        actualizarC.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                actualizarCActionPerformed(evt);
             }
         });
 
@@ -102,6 +90,15 @@ public class MenuReclutador extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Mensajeria");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Creacion de Reportes");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -115,22 +112,17 @@ public class MenuReclutador extends javax.swing.JFrame {
                         .addComponent(jLabelFotoRH))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(209, 209, 209)
-                                .addComponent(jLabel4))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(revisionCV)
-                                    .addComponent(listasCV))
-                                .addGap(164, 164, 164)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(actualizarC)
-                                    .addComponent(registrarC)
-                                    .addComponent(estadoC)
-                                    .addComponent(botonEliminar))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(revisionCV, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(listasCV, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(164, 164, 164)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(estadoC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(botonEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(registrarC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 87, Short.MAX_VALUE)))
                 .addGap(19, 19, 19))
             .addGroup(layout.createSequentialGroup()
                 .addGap(266, 266, 266)
@@ -154,32 +146,27 @@ public class MenuReclutador extends javax.swing.JFrame {
                         .addComponent(jLabel1)))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
-                .addGap(39, 39, 39)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
+                        .addGap(53, 53, 53)
                         .addComponent(registrarC))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
+                        .addGap(59, 59, 59)
                         .addComponent(revisionCV)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(actualizarC))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addComponent(listasCV)))
-                .addGap(8, 8, 8)
-                .addComponent(estadoC)
-                .addGap(18, 18, 18)
-                .addComponent(botonEliminar)
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(listasCV)
+                    .addComponent(estadoC))
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botonEliminar)
+                    .addComponent(jButton2))
+                .addGap(28, 28, 28)
+                .addComponent(jButton1)
+                .addContainerGap(94, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(539, Short.MAX_VALUE)
+                    .addContainerGap(573, Short.MAX_VALUE)
                     .addComponent(cerrarSesion1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(10, 10, 10)))
         );
@@ -201,8 +188,8 @@ public class MenuReclutador extends javax.swing.JFrame {
     }//GEN-LAST:event_listasCVActionPerformed
 
     private void registrarCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarCActionPerformed
-        RegistrarCandidato RC = new RegistrarCandidato();
-        RC.setVisible(true);
+        CRUDCandidato CC = new CRUDCandidato();
+        CC.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_registrarCActionPerformed
 
@@ -216,15 +203,13 @@ public class MenuReclutador extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_cerrarSesion1ActionPerformed
 
-    private void actualizarCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarCActionPerformed
-        RegistrarCandidato RC = new RegistrarCandidato();
-        RC.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_actualizarCActionPerformed
-
     private void botonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_botonEliminarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -263,14 +248,13 @@ public class MenuReclutador extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton actualizarC;
     private javax.swing.JButton botonEliminar;
     private javax.swing.JButton cerrarSesion1;
     private javax.swing.JButton estadoC;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabelFotoRH;
     private javax.swing.JButton listasCV;
     private javax.swing.JButton registrarC;
