@@ -1,9 +1,5 @@
 El proyecto fue realizado con Java NeatBeans 23.
-Carmen Dayanna Beltrán Flores
-Chris Fitch López 
-Henry Soto 
-Paula García
-Oscar Adrián Castán López 
+Chris Fitch López, Paula García, Oscar Adrián Castán López 
 
 Por cuestiones de seguridad, el aparta de Token de Hugging Face queda en blanco (esta en FiltroIA en el paquete de negocios_AdminCV). Para hacer uso del programa sigan los siguientes pasos:
 Dirijanse a la pagina de Hugging Face:
