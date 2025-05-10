@@ -239,6 +239,7 @@ public class RegistroRH extends javax.swing.JFrame {
 
     private void jButtonConfirmacionRegistroRHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConfirmacionRegistroRHActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_jButtonConfirmacionRegistroRHActionPerformed
 
     /**
@@ -270,10 +271,8 @@ public class RegistroRH extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new RegistroRH().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new RegistroRH().setVisible(true);
         });
     }
 

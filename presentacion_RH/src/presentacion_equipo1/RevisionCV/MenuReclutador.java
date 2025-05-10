@@ -38,7 +38,7 @@ public class MenuReclutador extends javax.swing.JFrame {
         botonEliminar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButtonCRUDRH = new javax.swing.JButton();
+        jButtonAdminRH = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -100,10 +100,10 @@ public class MenuReclutador extends javax.swing.JFrame {
 
         jButton2.setText("Creacion de Reportes");
 
-        jButtonCRUDRH.setText("Administración RH");
-        jButtonCRUDRH.addActionListener(new java.awt.event.ActionListener() {
+        jButtonAdminRH.setText("Administración RH");
+        jButtonAdminRH.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCRUDRHActionPerformed(evt);
+                jButtonAdminRHActionPerformed(evt);
             }
         });
 
@@ -124,7 +124,7 @@ public class MenuReclutador extends javax.swing.JFrame {
                             .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(revisionCV, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(listasCV, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButtonCRUDRH, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jButtonAdminRH, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(164, 164, 164)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(estadoC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -173,7 +173,7 @@ public class MenuReclutador extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jButtonCRUDRH))
+                    .addComponent(jButtonAdminRH))
                 .addContainerGap(94, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -222,13 +222,11 @@ public class MenuReclutador extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButtonCRUDRHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCRUDRHActionPerformed
-        // TODO add your handling code here:
-        RegistroRH RH = new RegistroRH();
-        RH.setVisible(true);
-        this.dispose();
-                
-    }//GEN-LAST:event_jButtonCRUDRHActionPerformed
+    private void jButtonAdminRHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdminRHActionPerformed
+        // TODO add your handling code here:   
+        CrudRH crudrh = new CrudRH();
+        crudrh.setVisible(true);
+    }//GEN-LAST:event_jButtonAdminRHActionPerformed
 
     /**
      * @param args the command line arguments
@@ -272,7 +270,7 @@ public class MenuReclutador extends javax.swing.JFrame {
     private javax.swing.JButton estadoC;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButtonCRUDRH;
+    private javax.swing.JButton jButtonAdminRH;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabelFotoRH;
