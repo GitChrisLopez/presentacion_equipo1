@@ -31,11 +31,10 @@ public class MenuReclutador extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         revisionCV = new javax.swing.JButton();
         listasCV = new javax.swing.JButton();
-        registrarC = new javax.swing.JButton();
-        estadoC = new javax.swing.JButton();
+        registrarCrudCandidatos = new javax.swing.JButton();
+        ButtonAdminNominaRH = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         cerrarSesion1 = new javax.swing.JButton();
-        botonEliminar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButtonAdminRH = new javax.swing.JButton();
@@ -59,17 +58,17 @@ public class MenuReclutador extends javax.swing.JFrame {
             }
         });
 
-        registrarC.setText("CRUD  Candidato");
-        registrarC.addActionListener(new java.awt.event.ActionListener() {
+        registrarCrudCandidatos.setText("Administración Candidatos");
+        registrarCrudCandidatos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                registrarCActionPerformed(evt);
+                registrarCrudCandidatosActionPerformed(evt);
             }
         });
 
-        estadoC.setText("Estado del candidato");
-        estadoC.addActionListener(new java.awt.event.ActionListener() {
+        ButtonAdminNominaRH.setText("Administración Nomina RH");
+        ButtonAdminNominaRH.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                estadoCActionPerformed(evt);
+                ButtonAdminNominaRHActionPerformed(evt);
             }
         });
 
@@ -81,13 +80,6 @@ public class MenuReclutador extends javax.swing.JFrame {
         cerrarSesion1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cerrarSesion1ActionPerformed(evt);
-            }
-        });
-
-        botonEliminar.setText("Eliminar candidato");
-        botonEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonEliminarActionPerformed(evt);
             }
         });
 
@@ -113,35 +105,34 @@ public class MenuReclutador extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(46, 46, 46)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                        .addComponent(jLabelFotoRH))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jLabelFotoRH)
+                        .addGap(19, 19, 19))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(revisionCV, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(listasCV, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButtonAdminRH, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(164, 164, 164)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(estadoC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(botonEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(registrarC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 87, Short.MAX_VALUE)))
-                .addGap(19, 19, 19))
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(revisionCV, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(listasCV, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(164, 164, 164)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(ButtonAdminNominaRH, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButtonAdminRH, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(registrarCrudCandidatos, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(266, 266, 266)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(56, 56, 56)
-                    .addComponent(cerrarSesion1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(454, Short.MAX_VALUE)))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cerrarSesion1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,31 +146,23 @@ public class MenuReclutador extends javax.swing.JFrame {
                         .addComponent(jLabel1)))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(53, 53, 53)
-                        .addComponent(registrarC))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(59, 59, 59)
-                        .addComponent(revisionCV)))
-                .addGap(27, 27, 27)
+                .addGap(59, 59, 59)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(revisionCV)
+                    .addComponent(jButtonAdminRH))
+                .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(listasCV)
-                    .addComponent(estadoC))
-                .addGap(30, 30, 30)
+                    .addComponent(ButtonAdminNominaRH))
+                .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botonEliminar)
-                    .addComponent(jButton2))
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButtonAdminRH))
-                .addContainerGap(94, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(573, Short.MAX_VALUE)
-                    .addComponent(cerrarSesion1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(10, 10, 10)))
+                    .addComponent(jButton2)
+                    .addComponent(registrarCrudCandidatos))
+                .addGap(27, 27, 27)
+                .addComponent(jButton1)
+                .addGap(18, 18, 18)
+                .addComponent(cerrarSesion1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
@@ -198,25 +181,21 @@ public class MenuReclutador extends javax.swing.JFrame {
 //        this.dispose();
     }//GEN-LAST:event_listasCVActionPerformed
 
-    private void registrarCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarCActionPerformed
+    private void registrarCrudCandidatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarCrudCandidatosActionPerformed
         CRUDCandidato CC = new CRUDCandidato();
         CC.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_registrarCActionPerformed
+    }//GEN-LAST:event_registrarCrudCandidatosActionPerformed
 
-    private void estadoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estadoCActionPerformed
+    private void ButtonAdminNominaRHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonAdminNominaRHActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_estadoCActionPerformed
+    }//GEN-LAST:event_ButtonAdminNominaRHActionPerformed
 
     private void cerrarSesion1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarSesion1ActionPerformed
         IniciarSesionRH ISRH = new IniciarSesionRH();
         ISRH.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_cerrarSesion1ActionPerformed
-
-    private void botonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_botonEliminarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
@@ -265,9 +244,8 @@ public class MenuReclutador extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton botonEliminar;
+    private javax.swing.JButton ButtonAdminNominaRH;
     private javax.swing.JButton cerrarSesion1;
-    private javax.swing.JButton estadoC;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButtonAdminRH;
@@ -275,7 +253,7 @@ public class MenuReclutador extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabelFotoRH;
     private javax.swing.JButton listasCV;
-    private javax.swing.JButton registrarC;
+    private javax.swing.JButton registrarCrudCandidatos;
     private javax.swing.JButton revisionCV;
     // End of variables declaration//GEN-END:variables
 }
