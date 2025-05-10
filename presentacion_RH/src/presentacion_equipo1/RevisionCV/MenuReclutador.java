@@ -224,7 +224,7 @@ public class MenuReclutador extends javax.swing.JFrame {
 
     private void jButtonCRUDRHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCRUDRHActionPerformed
         // TODO add your handling code here:
-        CRUDRH RH = new CRUDRH();
+        RegistroRH RH = new RegistroRH();
         RH.setVisible(true);
         this.dispose();
                 
