@@ -83,6 +83,11 @@ public class CrudRH extends javax.swing.JFrame {
         });
 
         jButtonEliminarRecluta.setText("Eliminar");
+        jButtonEliminarRecluta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEliminarReclutaActionPerformed(evt);
+            }
+        });
 
         jButtonCerrarVentana.setBackground(new java.awt.Color(236, 51, 51));
         jButtonCerrarVentana.setText("Cerrar");
@@ -166,6 +171,10 @@ public class CrudRH extends javax.swing.JFrame {
     private void jButtonActualizarReclutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActualizarReclutaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonActualizarReclutaActionPerformed
+
+    private void jButtonEliminarReclutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarReclutaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonEliminarReclutaActionPerformed
 
     /**
      * @param args the command line arguments

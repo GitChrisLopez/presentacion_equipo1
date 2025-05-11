@@ -4,14 +4,18 @@
  */
 package dto;
 
-import java.io.File;
 
 /**
  *
- * @author chris
+ * @author chris,paula
  */
 
 public class ReclutadorDTO {
+    //nombre, apellido p, apellido m, puesto, usuario y contraseña
+    private String nombreCompleto;
+    private String apellidoPaterno;
+    private String apellidoMaterno;
+    private String puesto;
     private String usuario;
     private String contrasena;
 
@@ -20,6 +24,39 @@ public class ReclutadorDTO {
         this.contrasena = contrasena;
     }
 
+    public String getNombreCompleto() {
+        return nombreCompleto;
+    }
+
+    public void setNombreCompleto(String nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
+    }
+
+    public String getApellidoPaterno() {
+        return apellidoPaterno;
+    }
+
+    public void setApellidoPaterno(String apellidoPaterno) {
+        this.apellidoPaterno = apellidoPaterno;
+    }
+
+    public String getApellidoMaterno() {
+        return apellidoMaterno;
+    }
+
+    public void setApellidoMaterno(String apellidoMaterno) {
+        this.apellidoMaterno = apellidoMaterno;
+    }
+
+    public String getPuesto() {
+        return puesto;
+    }
+
+    public void setPuesto(String puesto) {
+        this.puesto = puesto;
+    }
+    
+    
     public String getUsuario() {
         return usuario;
     }
@@ -35,7 +72,6 @@ public class ReclutadorDTO {
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
     }
-    
-    
+
     
 }

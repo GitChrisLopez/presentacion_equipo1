@@ -4,6 +4,8 @@
  */
 package presentacion_equipo1.RevisionCV;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author paula
@@ -215,6 +217,7 @@ public class RegistroRH extends javax.swing.JFrame {
 
     private void jTextFieldNombreCompletoRHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNombreCompletoRHActionPerformed
         // TODO add your handling code here:
+
     }//GEN-LAST:event_jTextFieldNombreCompletoRHActionPerformed
 
     private void jTextFieldApellidoPaternoRHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldApellidoPaternoRHActionPerformed
@@ -239,7 +242,26 @@ public class RegistroRH extends javax.swing.JFrame {
 
     private void jButtonConfirmacionRegistroRHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConfirmacionRegistroRHActionPerformed
         // TODO add your handling code here:
+        //NOMBRE COMPLETO RH
+        String nombreRH = jTextFieldNombreCompletoRH.getText();
+        String apellidoPaternoRH = jTextFieldApellidoPaternoRH.getText();
+        String apellidoMaternoRH = jTextFieldApellidoMaternoRH.getText();
+        String puestorh = jTextFieldPuestoRH.getText();
+        String usuarioRH = jTextFieldUsuarioRH.getText();
+        String contraseñaRH = new String(jPasswordFieldContraseñaRH.getPassword()); // cuidado: getPassword() retorna un char
+        String texto = "valor vacio";
         
+        if (nombreRH.trim().isEmpty() || apellidoPaternoRH.trim().isEmpty()|| apellidoMaternoRH.trim().isEmpty() 
+                || puestorh.trim().isEmpty() || usuarioRH.trim().isEmpty() || contraseñaRH.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios",
+                "Error de validación", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else{
+            System.out.println("funciona");
+        }
+
+
     }//GEN-LAST:event_jButtonConfirmacionRegistroRHActionPerformed
 
     /**
