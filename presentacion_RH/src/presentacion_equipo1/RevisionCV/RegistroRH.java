@@ -249,7 +249,6 @@ public class RegistroRH extends javax.swing.JFrame {
         String puestorh = jTextFieldPuestoRH.getText();
         String usuarioRH = jTextFieldUsuarioRH.getText();
         String contraseñaRH = new String(jPasswordFieldContraseñaRH.getPassword()); // cuidado: getPassword() retorna un char
-        String texto = "valor vacio";
         
         if (nombreRH.trim().isEmpty() || apellidoPaternoRH.trim().isEmpty()|| apellidoMaternoRH.trim().isEmpty() 
                 || puestorh.trim().isEmpty() || usuarioRH.trim().isEmpty() || contraseñaRH.trim().isEmpty()) {
