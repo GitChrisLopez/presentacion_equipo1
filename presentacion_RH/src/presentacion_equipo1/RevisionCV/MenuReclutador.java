@@ -4,6 +4,8 @@
  */
 package presentacion_equipo1.RevisionCV;
 
+import mensajeria.MenuEmisor;
+import negocios_reportes.MenuRH;
 /**
  *
  * @author chris
@@ -35,8 +37,8 @@ public class MenuReclutador extends javax.swing.JFrame {
         ButtonAdminNominaRH = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         cerrarSesion1 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        Mensajeria = new javax.swing.JButton();
+        Reportes = new javax.swing.JButton();
         jButtonAdminRH = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -83,14 +85,19 @@ public class MenuReclutador extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Mensajeria");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        Mensajeria.setText("Mensajeria");
+        Mensajeria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                MensajeriaActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Creacion de Reportes");
+        Reportes.setText("Creacion de Reportes");
+        Reportes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ReportesActionPerformed(evt);
+            }
+        });
 
         jButtonAdminRH.setText("Administración RH");
         jButtonAdminRH.addActionListener(new java.awt.event.ActionListener() {
@@ -114,8 +121,8 @@ public class MenuReclutador extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Mensajeria, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Reportes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(revisionCV, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(listasCV, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(164, 164, 164)
@@ -154,12 +161,15 @@ public class MenuReclutador extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(listasCV)
                     .addComponent(ButtonAdminNominaRH))
-                .addGap(43, 43, 43)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(registrarCrudCandidatos))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addComponent(registrarCrudCandidatos))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(Reportes)))
                 .addGap(27, 27, 27)
-                .addComponent(jButton1)
+                .addComponent(Mensajeria)
                 .addGap(18, 18, 18)
                 .addComponent(cerrarSesion1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(21, Short.MAX_VALUE))
@@ -197,15 +207,21 @@ public class MenuReclutador extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_cerrarSesion1ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void MensajeriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MensajeriaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        new MenuEmisor().setVisible(true);
+    }//GEN-LAST:event_MensajeriaActionPerformed
 
     private void jButtonAdminRHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdminRHActionPerformed
         // TODO add your handling code here:   
         CrudRH crudrh = new CrudRH();
         crudrh.setVisible(true);
     }//GEN-LAST:event_jButtonAdminRHActionPerformed
+
+    private void ReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReportesActionPerformed
+        // TODO add your handling code here:
+        new MenuRH().setVisible(true);
+    }//GEN-LAST:event_ReportesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -245,9 +261,9 @@ public class MenuReclutador extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ButtonAdminNominaRH;
+    private javax.swing.JButton Mensajeria;
+    private javax.swing.JButton Reportes;
     private javax.swing.JButton cerrarSesion1;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButtonAdminRH;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
