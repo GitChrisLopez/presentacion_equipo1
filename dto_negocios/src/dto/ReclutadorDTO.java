@@ -18,6 +18,7 @@ public class ReclutadorDTO {
     private String puesto;
     private String usuario;
     private String contrasena;
+    private boolean estado;
 
     public ReclutadorDTO(String usuario, String contrasena) {
         this.usuario = usuario;
@@ -71,6 +72,14 @@ public class ReclutadorDTO {
 
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
+    }
+
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
     }
 
     
