@@ -12,6 +12,7 @@ package dto;
 
 public class ReclutadorDTO {
     //nombre, apellido p, apellido m, puesto, usuario y contraseña
+    
     private String nombreCompleto;
     private String apellidoPaterno;
     private String apellidoMaterno;
@@ -19,11 +20,21 @@ public class ReclutadorDTO {
     private String usuario;
     private String contrasena;
     private boolean estado;
+    
+     public ReclutadorDTO() {
+    }
 
-    public ReclutadorDTO(String usuario, String contrasena) {
+    public ReclutadorDTO(String nombreCompleto, String apellidoPaterno, String apellidoMaterno, String puesto, String usuario, String contrasena, boolean estado) {
+        this.nombreCompleto = nombreCompleto;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.puesto = puesto;
         this.usuario = usuario;
         this.contrasena = contrasena;
+        this.estado = estado;
     }
+
+    
 
     public String getNombreCompleto() {
         return nombreCompleto;
@@ -81,6 +92,8 @@ public class ReclutadorDTO {
     public void setEstado(boolean estado) {
         this.estado = estado;
     }
+    
+    
 
     
 }

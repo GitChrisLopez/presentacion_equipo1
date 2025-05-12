@@ -11,5 +11,6 @@ package objetosnegocio;
 public class ReclutadorON {
      private static CandidatoON instancia;
      
+     
     
 }
