@@ -23,6 +23,10 @@ public class ReclutadorDTO {
     
      public ReclutadorDTO() {
     }
+     
+    public ReclutadorDTO(String usuario, String contrasena){
+        
+    }
 
     public ReclutadorDTO(String nombreCompleto, String apellidoPaterno, String apellidoMaterno, String puesto, String usuario, String contrasena, boolean estado) {
         this.nombreCompleto = nombreCompleto;

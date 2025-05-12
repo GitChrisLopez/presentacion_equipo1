@@ -4,7 +4,10 @@
  */
 package presentacion_equipo1.RevisionCV;
 
+import dto.ReclutadorDTO;
+import entidades.Reclutador;
 import javax.swing.JOptionPane;
+import objetosnegocio.ReclutadorON;
 
 /**
  *
@@ -12,11 +15,26 @@ import javax.swing.JOptionPane;
  */
 public class RegistroRH extends javax.swing.JFrame {
 
+    ReclutadorON reclutadorON;
+    private Reclutador r;
+    private boolean actualizar = false;
+
     /**
      * Creates new form CRUDRH
      */
     public RegistroRH() {
         initComponents();
+    }
+
+    public RegistroRH(Reclutador r, boolean actualizar) {
+        initComponents();
+        this.r = r;
+        jTextFieldNombreCompletoRH.setText(r.getNombreCompleto());
+        jTextFieldApellidoPaternoRH.setText(r.getApellidoPaterno());
+        jTextFieldApellidoMaternoRH.setText(r.getApellidoMaterno());
+        jTextFieldPuestoRH.setText(r.getPuesto());
+        jTextFieldUsuarioRH.setText(r.getUsuario());
+        this.actualizar = actualizar;
     }
 
     /**
@@ -242,24 +260,56 @@ public class RegistroRH extends javax.swing.JFrame {
 
     private void jButtonConfirmacionRegistroRHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConfirmacionRegistroRHActionPerformed
         // TODO add your handling code here:
-        //NOMBRE COMPLETO RH
         String nombreRH = jTextFieldNombreCompletoRH.getText();
         String apellidoPaternoRH = jTextFieldApellidoPaternoRH.getText();
         String apellidoMaternoRH = jTextFieldApellidoMaternoRH.getText();
         String puestorh = jTextFieldPuestoRH.getText();
         String usuarioRH = jTextFieldUsuarioRH.getText();
         String contraseñaRH = new String(jPasswordFieldContraseñaRH.getPassword()); // cuidado: getPassword() retorna un char
-        
-        if (nombreRH.trim().isEmpty() || apellidoPaternoRH.trim().isEmpty()|| apellidoMaternoRH.trim().isEmpty() 
-                || puestorh.trim().isEmpty() || usuarioRH.trim().isEmpty() || contraseñaRH.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios",
-                "Error de validación", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        else{
-            System.out.println("funciona");
-        }
+        if (actualizar == true) {
+            if (nombreRH.trim().isEmpty() || apellidoPaternoRH.trim().isEmpty() || apellidoMaternoRH.trim().isEmpty()
+                    || puestorh.trim().isEmpty() || usuarioRH.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios, excepto 'contraseña'",
+                        "Error de validación", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            else{
+                Reclutador reclutador = new Reclutador(r.getId(), nombreRH, apellidoPaternoRH, apellidoMaternoRH, puestorh, usuarioRH, contraseñaRH, true);
+                try {
+                    reclutadorON.getInstance().actualizarReclutador(reclutador);
+                    JOptionPane.showMessageDialog(null, "¡Reclutador actualizado con exito!",
+                            "Actualización exitosa", JOptionPane.INFORMATION_MESSAGE);
+                    this.dispose();
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Usuario existente, intenta con otro.",
+                            "Error de actualización", JOptionPane.ERROR_MESSAGE);
+                }
+            }
 
+        } else {
+            //NOMBRE COMPLETO RH
+            if (nombreRH.trim().isEmpty() || apellidoPaternoRH.trim().isEmpty() || apellidoMaternoRH.trim().isEmpty()
+                    || puestorh.trim().isEmpty() || usuarioRH.trim().isEmpty() || contraseñaRH.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios",
+                        "Error de validación", JOptionPane.ERROR_MESSAGE);
+                return;
+            } else {
+                System.out.println("funciona");
+                ReclutadorDTO r = new ReclutadorDTO(nombreRH, apellidoPaternoRH, apellidoMaternoRH, puestorh, usuarioRH, contraseñaRH, true);
+                Reclutador d = new Reclutador(0, nombreRH, apellidoPaternoRH, apellidoMaternoRH, puestorh, usuarioRH, contraseñaRH, true);
+                try {
+                    reclutadorON.getInstance().insertarReclutador(d);
+                    JOptionPane.showMessageDialog(null, "¡Reclutador registrado con exito!",
+                            "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
+                    this.dispose();
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Usuario existente, intenta con otro.",
+                            "Error de validación", JOptionPane.ERROR_MESSAGE);
+                }
+
+            }
+
+        }
 
     }//GEN-LAST:event_jButtonConfirmacionRegistroRHActionPerformed
 

@@ -32,6 +32,16 @@ public class Reclutador {
         this.estado = estado;
         this.id = id;
     }
+    
+    public Reclutador(int id,String nombreCompleto, String apellidoPaterno, String apellidoMaterno, String puesto, String usuario, boolean estado) {
+        this.nombreCompleto = nombreCompleto;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.puesto = puesto;
+        this.usuario = usuario;
+        this.estado = estado;
+        this.id = id;
+    }
 
     public String getNombreCompleto() {
         return nombreCompleto;

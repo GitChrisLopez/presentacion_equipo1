@@ -4,17 +4,50 @@
  */
 package presentacion_equipo1.RevisionCV;
 
+import entidades.Reclutador;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import objetosnegocio.ReclutadorON;
+
 /**
  *
  * @author paula
  */
 public class CrudRH extends javax.swing.JFrame {
 
+    ReclutadorON reclutadorON;
+
     /**
      * Creates new form CrudRH
      */
     public CrudRH() {
         initComponents();
+        cargarReclutadoresEnTabla();
+    }
+
+    public void cargarReclutadoresEnTabla() {
+        // Columnas que se mostrarán
+        String[] columnas = {"ID", "Usuario", "Nombre", "Apellido Paterno", "Apellido Materno", "Puesto", "Estado"};
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0); // 0 filas iniciales
+
+        ReclutadorON controlador = ReclutadorON.getInstance();
+        List<Reclutador> lista = controlador.obtenerTodos();
+
+        for (Reclutador r : lista) {
+            Object[] fila = new Object[]{
+                r.getId(),
+                r.getUsuario(),
+                r.getNombreCompleto(),
+                r.getApellidoPaterno(),
+                r.getApellidoMaterno(),
+                r.getPuesto(),
+                r.isEstado() ? "Activo" : "Inactivo"
+            };
+            modelo.addRow(fila);
+        }
+        jTablaReclutadores.setModel(modelo);
+
     }
 
     /**
@@ -31,7 +64,7 @@ public class CrudRH extends javax.swing.JFrame {
         jLabelFotoRH = new javax.swing.JLabel();
         jLabel1CRUDRH = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTablaReclutadores = new javax.swing.JTable();
         jButtonActualizarRecluta = new javax.swing.JButton();
         jButtonAgregarRecluta = new javax.swing.JButton();
         jButtonEliminarRecluta = new javax.swing.JButton();
@@ -50,23 +83,33 @@ public class CrudRH extends javax.swing.JFrame {
         jLabel1CRUDRH.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1CRUDRH.setText("Administrador de reclutas");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTablaReclutadores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Usuario", "Nombre ", "Apellido Paterno", "Apellido Materno", "Puesto", "Estado "
+                "ID", "Usuario", "Nombre ", "Apellido Paterno", "Apellido Materno", "Puesto", "Estado"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.Integer.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jTablaReclutadores);
+        if (jTablaReclutadores.getColumnModel().getColumnCount() > 0) {
+            jTablaReclutadores.getColumnModel().getColumn(0).setResizable(false);
+        }
 
         jButtonActualizarRecluta.setText("Actualizar");
         jButtonActualizarRecluta.addActionListener(new java.awt.event.ActionListener() {
@@ -161,7 +204,13 @@ public class CrudRH extends javax.swing.JFrame {
         // TODO add your handling code here:
         RegistroRH agregar = new RegistroRH();
         agregar.setVisible(true);
-        
+        agregar.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                cargarReclutadoresEnTabla(); // Método que recarga la JTable
+            }
+        });
+
     }//GEN-LAST:event_jButtonAgregarReclutaActionPerformed
 
     private void jButtonCerrarVentanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCerrarVentanaActionPerformed
@@ -170,10 +219,81 @@ public class CrudRH extends javax.swing.JFrame {
 
     private void jButtonActualizarReclutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActualizarReclutaActionPerformed
         // TODO add your handling code here:
+        int filaSeleccionada = jTablaReclutadores.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            int confirmacion = JOptionPane.showConfirmDialog(
+                    null, //centra en pantalla
+                    "¿Seguro que quieres actualizar a este reclutador?", //el mensaje que se muestra
+                    "confirmar de actualizar", //titulo
+                    JOptionPane.YES_NO_OPTION, //tipo de ventana
+                    JOptionPane.WARNING_MESSAGE // icono
+            );
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                int id = Integer.parseInt(jTablaReclutadores.getValueAt(filaSeleccionada, 0).toString());
+                String usuario = jTablaReclutadores.getValueAt(filaSeleccionada, 1).toString();
+                String nombreCompleto = jTablaReclutadores.getValueAt(filaSeleccionada, 2).toString();
+                String apellidoPaterno = jTablaReclutadores.getValueAt(filaSeleccionada, 3).toString();
+                String apellidoMaterno = jTablaReclutadores.getValueAt(filaSeleccionada, 4).toString();
+                String puesto = jTablaReclutadores.getValueAt(filaSeleccionada, 5).toString();
+                boolean estado = Boolean.parseBoolean(jTablaReclutadores.getValueAt(filaSeleccionada, 6).toString());
+
+                Reclutador r = new Reclutador(id, nombreCompleto, apellidoPaterno, apellidoMaterno, puesto, usuario, estado);
+                boolean actualizar = true;
+                RegistroRH agregar = new RegistroRH(r, actualizar);
+                agregar.setVisible(true);
+                agregar.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosed(java.awt.event.WindowEvent e) {
+                        cargarReclutadoresEnTabla(); // Método que recarga la JTable
+                    }
+                });
+
+//                reclutadorON.getInstance().actualizarReclutador(r);
+//                cargarReclutadoresEnTabla();
+//                JOptionPane.showMessageDialog(null, "Reclutador actualizado con exito.",
+//                        "actualización exitosa", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Operación cancelada",
+                        "operacion cancelada", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        } else {
+            System.out.println("error");
+            JOptionPane.showMessageDialog(null, "Selecciona un reclutador para eliminar correctamente.",
+                    "Error de eliminar", JOptionPane.ERROR_MESSAGE);
+        }
+
+
     }//GEN-LAST:event_jButtonActualizarReclutaActionPerformed
 
     private void jButtonEliminarReclutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarReclutaActionPerformed
         // TODO add your handling code here:
+        int filaSeleccionada = jTablaReclutadores.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            int confirmacion = JOptionPane.showConfirmDialog(
+                    null, //centra en pantalla
+                    "¿Seguro que quieres eliminar a este reclutador?", //el mensaje que se muestra
+                    "confirmar eliminación", //titulo
+                    JOptionPane.YES_NO_OPTION, //tipo de ventana
+                    JOptionPane.WARNING_MESSAGE // icono
+            );
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                Object id = jTablaReclutadores.getValueAt(filaSeleccionada, 0);
+                reclutadorON.getInstance().eliminarReclutador((int) id);
+                cargarReclutadoresEnTabla();
+                JOptionPane.showMessageDialog(null, "Reclutador eliminado con exito.",
+                        "eliminación exitosa", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Operación cancelada",
+                        "operacion cancelada", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        } else {
+            System.out.println("error");
+            JOptionPane.showMessageDialog(null, "Selecciona un reclutador para eliminar correctamente.",
+                    "Error de eliminar", JOptionPane.ERROR_MESSAGE);
+        }
+
     }//GEN-LAST:event_jButtonEliminarReclutaActionPerformed
 
     /**
@@ -221,6 +341,6 @@ public class CrudRH extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelFotoRH;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTablaReclutadores;
     // End of variables declaration//GEN-END:variables
 }
