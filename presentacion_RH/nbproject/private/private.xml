@@ -3,12 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/chris/OneDrive/Documents/Universidad/Diseno%20Software/presentacion_equipo1/presentacion_RH/src/presentacion_equipo1/RevisionCV/FiltrarCV.java</file>
-            <file>file:/C:/Users/chris/OneDrive/Documents/Universidad/Diseno%20Software/presentacion_equipo1/presentacion_RH/src/presentacion_equipo1/RevisionCV/CRUDCandidato.java</file>
-            <file>file:/C:/Users/chris/OneDrive/Documents/Universidad/Diseno%20Software/presentacion_equipo1/presentacion_RH/src/presentacion_equipo1/RevisionCV/IniciarSesionRH.java</file>
-            <file>file:/C:/Users/chris/OneDrive/Documents/Universidad/Diseno%20Software/presentacion_equipo1/presentacion_RH/src/imagenes/rhfoto2.png</file>
-            <file>file:/C:/Users/chris/OneDrive/Documents/Universidad/Diseno%20Software/presentacion_equipo1/presentacion_RH/src/presentacion_equipo1/RevisionCV/MenuReclutador.java</file>
-            <file>file:/C:/Users/chris/OneDrive/Documents/Universidad/Diseno%20Software/presentacion_equipo1/presentacion_RH/src/presentacion_equipo1/RevisionCV/RegistrarCandidato.java</file>
+            <file>file:/C:/Users/paula/Documents/clonDiseño1/presentacion_equipo1/presentacion_RH/src/presentacion_equipo1/RevisionCV/RegistroRH.java</file>
+            <file>file:/C:/Users/paula/Documents/clonDiseño1/presentacion_equipo1/presentacion_RH/src/presentacion_equipo1/RevisionCV/CrudRH.java</file>
+            <file>file:/C:/Users/paula/Documents/clonDiseño1/presentacion_equipo1/presentacion_RH/src/presentacion_equipo1/RevisionCV/FiltrarCV.java</file>
         </group>
     </open-files>
 </project-private>

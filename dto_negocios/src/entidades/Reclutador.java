@@ -2,17 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package dto;
-
+package entidades;
 
 /**
  *
- * @author chris,paula
+ * @author paula
  */
-
-public class ReclutadorDTO {
-    //nombre, apellido p, apellido m, puesto, usuario y contraseña
-    
+public class Reclutador {
+    private int id;
     private String nombreCompleto;
     private String apellidoPaterno;
     private String apellidoMaterno;
@@ -21,14 +18,11 @@ public class ReclutadorDTO {
     private String contrasena;
     private boolean estado;
     
-     public ReclutadorDTO() {
+    public Reclutador() {
     }
-     
-    public ReclutadorDTO(String usuario, String contrasena){
-        
-    }
+    
 
-    public ReclutadorDTO(String nombreCompleto, String apellidoPaterno, String apellidoMaterno, String puesto, String usuario, String contrasena, boolean estado) {
+    public Reclutador(int id,String nombreCompleto, String apellidoPaterno, String apellidoMaterno, String puesto, String usuario, String contrasena, boolean estado) {
         this.nombreCompleto = nombreCompleto;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
@@ -36,9 +30,18 @@ public class ReclutadorDTO {
         this.usuario = usuario;
         this.contrasena = contrasena;
         this.estado = estado;
+        this.id = id;
     }
-
     
+    public Reclutador(int id,String nombreCompleto, String apellidoPaterno, String apellidoMaterno, String puesto, String usuario, boolean estado) {
+        this.nombreCompleto = nombreCompleto;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.puesto = puesto;
+        this.usuario = usuario;
+        this.estado = estado;
+        this.id = id;
+    }
 
     public String getNombreCompleto() {
         return nombreCompleto;
@@ -71,8 +74,7 @@ public class ReclutadorDTO {
     public void setPuesto(String puesto) {
         this.puesto = puesto;
     }
-    
-    
+
     public String getUsuario() {
         return usuario;
     }
@@ -96,8 +98,15 @@ public class ReclutadorDTO {
     public void setEstado(boolean estado) {
         this.estado = estado;
     }
-    
-    
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    
     
 }
