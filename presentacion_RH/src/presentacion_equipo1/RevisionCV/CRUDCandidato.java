@@ -396,8 +396,8 @@ public class CRUDCandidato extends javax.swing.JFrame {
 
                     CandidatoDTO candidato = new CandidatoDTO(
                         nom,
-                        apellidoP,
-                        apellidoM,
+                        apellidoP.getText(),
+                        apellidoM.getText(),
                         tel,
                         cor,
                         pue,
@@ -480,7 +480,8 @@ public class CRUDCandidato extends javax.swing.JFrame {
         for (CandidatoDTO c : lista) {
             model.addRow(new Object[]{
                 c.getNombre(),
-                c.getApellidos(),
+                c.getApellidoPaterno(),
+                c.getApellidoMaterno(),
                 c.getTelefono(),
                 c.getCorreo(),
                 c.getPuesto(),

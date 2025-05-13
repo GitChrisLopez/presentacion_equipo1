@@ -322,6 +322,7 @@ public class FiltrarCV extends javax.swing.JFrame {
                 CandidatoDTO candidato = new CandidatoDTO(
                         "NombreDemo",
                         "ApellidoDemo",
+                        "ApellidoDemo2",
                         "1234567890",
                         "correo@demo.com",
                         "Puesto Demo",
@@ -420,7 +421,8 @@ public class FiltrarCV extends javax.swing.JFrame {
         for (CandidatoDTO c : lista) {
             model.addRow(new Object[]{
                 c.getNombre(),
-                c.getApellidos(),
+                c.getApellidoPaterno(),
+                c.getApellidoMaterno(),
                 c.getTelefono(),
                 c.getCorreo(),
                 c.getPuesto(),

@@ -18,10 +18,10 @@ public class CandidatoON {
 
     private CandidatoON() {
 
-        listaCandidatos.add(new CandidatoDTO("Francisco", "Mercado", "(55) 1234-5678", "francisco@hotmail.com", "Contador Senior", false, "CVs/Francisco.pdf"));
-        listaCandidatos.add(new CandidatoDTO("Julian", "Alonso", "(55) 1244-4678", "julian@yop.mail.com", "Abogado Asociado", false, "CVs/Julian.pdf"));
-        listaCandidatos.add(new CandidatoDTO("Jacqueline", "Thompson", "123-456-7890", "jacqueline@gmail.com", "Desarrollador de Software Junior", false, "CVs/Jacqueline.pdf"));
-        listaCandidatos.add(new CandidatoDTO("Carlos", "Gómez", "+52 987 654 3210", "carlos.gomez@email.com", "Desarrollador Backend", false, "CVs/Carlos.pdf"));
+        listaCandidatos.add(new CandidatoDTO("Francisco", "Mercado", "Mendivil", "(55) 1234-5678", "francisco@hotmail.com", "Contador Senior", false, "CVs/Francisco.pdf"));
+        listaCandidatos.add(new CandidatoDTO("Julian", "Alonso", "Meneses" , "(55) 1244-4678", "julian@yop.mail.com", "Abogado Asociado", false, "CVs/Julian.pdf"));
+        listaCandidatos.add(new CandidatoDTO("Jacqueline", "Thompson", "", "123-456-7890", "jacqueline@gmail.com", "Desarrollador de Software Junior", false, "CVs/Jacqueline.pdf"));
+        listaCandidatos.add(new CandidatoDTO("Carlos", "Gómez","Gomez", "+52 987 654 3210", "carlos.gomez@email.com", "Desarrollador Backend", false, "CVs/Carlos.pdf"));
     }
 
     public static synchronized CandidatoON getInstance() {
