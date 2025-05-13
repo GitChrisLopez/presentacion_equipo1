@@ -10,7 +10,7 @@ package dto;
  */
 public class CandidatoDTO {
 
-    private String nombre, apellidos, telefono, correo, puesto, rutaPDF;
+    private String nombre, apellidoPaterno, apellidoMaterno, telefono, correo, puesto, rutaPDF;
     boolean estado;
 
     /**
@@ -32,9 +32,10 @@ public class CandidatoDTO {
      * @param estado es el estado de rechazo o aprobación en la empresa
      * @param rutaPDF Ubicación del archivo PDF.
      */
-    public CandidatoDTO(String nombre, String apellidos, String telefono, String correo, String puesto, boolean estado, String rutaPDF) {
+    public CandidatoDTO(String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String correo, String puesto, boolean estado, String rutaPDF) {
         this.nombre = nombre;
-        this.apellidos = apellidos;
+        this.apellidoPaterno= apellidoPaterno;
+        this.apellidoMaterno=apellidoMaterno;
         this.telefono = telefono;
         this.correo = correo;
         this.puesto = puesto;
@@ -50,13 +51,22 @@ public class CandidatoDTO {
         this.nombre = nombre;
     }
 
-    public String getApellidos() {
-        return apellidos;
+    public String getApellidoPaterno() {
+        return apellidoPaterno;
     }
 
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
+    public void setApellidoPaterno(String apellidoPaterno) {
+        this.apellidoPaterno = apellidoPaterno;
     }
+
+    public String getApellidoMaterno() {
+        return apellidoMaterno;
+    }
+
+    public void setApellidoMaterno(String apellidoMaterno) {
+        this.apellidoMaterno = apellidoMaterno;
+    }
+
 
     public String getTelefono() {
         return telefono;
@@ -100,7 +110,9 @@ public class CandidatoDTO {
 
     @Override
     public String toString() {
-        return "CVDTO{" + "nombre=" + nombre + ", apellidos=" + apellidos + ", telefono=" + telefono + ", correo=" + correo + ", puesto=" + puesto + ", rutaPDF=" + rutaPDF + ", estado=" + estado + '}';
+        return "CandidatoDTO{" + "nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", telefono=" + telefono + ", correo=" + correo + ", puesto=" + puesto + ", rutaPDF=" + rutaPDF + ", estado=" + estado + '}';
     }
+
+
 
 }
