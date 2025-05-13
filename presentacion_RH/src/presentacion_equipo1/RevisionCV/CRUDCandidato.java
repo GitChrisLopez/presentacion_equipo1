@@ -366,7 +366,6 @@ public class CRUDCandidato extends javax.swing.JFrame {
         //}
         }else{
             //Se extraen los strings de los text field
-            String apellidos = apellidoP.getText().trim().concat(apellidoM.getText().trim()).trim();
             String nom = nombre.getText().trim();
             String tel = telefono.getText().trim();
             String cor = correo.getText().trim();
@@ -397,7 +396,8 @@ public class CRUDCandidato extends javax.swing.JFrame {
 
                     CandidatoDTO candidato = new CandidatoDTO(
                         nom,
-                        apellidos,
+                        apellidoP,
+                        apellidoM,
                         tel,
                         cor,
                         pue,
