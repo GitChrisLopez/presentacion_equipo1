@@ -5,6 +5,8 @@
 package presentacion_equipo1.RevisionCV;
 
 import dto.CandidatoDTO;
+import objetosnegocio.CandidatoON;
+import entidades.Candidato;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -14,6 +16,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 /**
@@ -31,12 +36,32 @@ public class CRUDCandidato extends javax.swing.JFrame {
     CandidatoON candidatoON;
     public CRUDCandidato() {
         initComponents();
+        cargarCandidatosEnTabla();
+    }
+    
+    
+        public void cargarCandidatosEnTabla() {
+        // Columnas que se mostrarán
+        DefaultTableModel modelo = new DefaultTableModel(new String[]{"ID","Nombre", "Apellido", "Teléfono", "Email", "Puesto", "Estado", "Archivo CV"}, 0);
         
-        // Modelo de la tabla
-        DefaultTableModel modelo = new DefaultTableModel(new String[]{"Nombre", "Apellido", "Teléfono", "Email", "Puesto", "Estado", "Archivo CV"}, 0);
+        CandidatoON controlador= CandidatoON.getInstance();
+        List<Candidato> lista = controlador.obtenerTodos();
+
+        for (Candidato c : lista) {
+            Object[] fila = new Object[]{
+                c.getId(),
+                c.getNombre(),
+                c.getApellidoPaterno(),
+                c.getApellidoMaterno(),
+                c.getPuesto(),
+                c.isEstado() ? "Activo" : "Inactivo",
+                c.getRutaPDF()
+            };
+            modelo.addRow(fila);
+        }
+        tablaCandidato.setModel(modelo);
 
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -74,6 +99,8 @@ public class CRUDCandidato extends javax.swing.JFrame {
         Consultar = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
         puesto = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        idCampo = new javax.swing.JTextField();
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -227,13 +254,13 @@ public class CRUDCandidato extends javax.swing.JFrame {
 
         tablaCandidato.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Nombre", "Apellido", "Telefono", "Email", "Puesto", "Estado"
+                "ID", "Nombre", "Apellido", "Telefono", "Email", "Puesto", "Estado"
             }
         ));
         jScrollPane1.setViewportView(tablaCandidato);
@@ -250,6 +277,8 @@ public class CRUDCandidato extends javax.swing.JFrame {
             }
         });
 
+        jLabel11.setText("ID");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -257,44 +286,50 @@ public class CRUDCandidato extends javax.swing.JFrame {
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(apellidoM, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
-                        .addComponent(jLabel4)
-                        .addComponent(nombre)
-                        .addComponent(jLabel5)
-                        .addComponent(jLabel6)
-                        .addComponent(apellidoP))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel8)
-                        .addComponent(jLabel9)
-                        .addComponent(telefono, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
-                        .addComponent(correo)
-                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(puesto))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(apellidoM, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                    .addComponent(jLabel4)
+                    .addComponent(nombre)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6)
+                    .addComponent(apellidoP)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel9)
+                    .addComponent(telefono, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                    .addComponent(correo)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(puesto)
                     .addComponent(actividad, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
-                    .addComponent(volverButton))
-                .addGap(34, 34, 34)
+                    .addComponent(volverButton)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(idCampo))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(34, 34, 34)
                         .addComponent(guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(77, 77, 77)
                         .addComponent(actualizarBoton, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 166, Short.MAX_VALUE)
                         .addComponent(Consultar)
                         .addGap(88, 88, 88)
-                        .addComponent(EliminarBoton)))
+                        .addComponent(EliminarBoton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(idCampo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel4)
                         .addGap(5, 5, 5)
                         .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -325,7 +360,6 @@ public class CRUDCandidato extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                         .addComponent(volverButton))
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -346,11 +380,77 @@ public class CRUDCandidato extends javax.swing.JFrame {
     }//GEN-LAST:event_volverButtonActionPerformed
 
     private void actualizarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarBotonActionPerformed
-        // TODO add your handling code here:
+//        int filaSeleccionada = tablaCandidato.getSelectedRow();
+//        if (filaSeleccionada != -1) {
+//            int confirmacion = JOptionPane.showConfirmDialog(
+//                    null, //centra en pantalla
+//                    "¿Seguro que quieres actualizar a este reclutador?", //el mensaje que se muestra
+//                    "confirmar de actualizar", //titulo
+//                    JOptionPane.YES_NO_OPTION, //tipo de ventana
+//                    JOptionPane.WARNING_MESSAGE // icono
+//            );
+//            if (confirmacion == JOptionPane.YES_OPTION) {
+//                int id = Integer.parseInt(tablaCandidato.getValueAt(filaSeleccionada, 0).toString());
+//                String nombre = tablaCandidato.getValueAt(filaSeleccionada, 1).toString();
+//                String apellidoPaterno = tablaCandidato.getValueAt(filaSeleccionada, 2).toString();
+//                String apellidoMaterno = tablaCandidato.getValueAt(filaSeleccionada, 3).toString();
+//                String telefono = tablaCandidato.getValueAt(filaSeleccionada, 4).toString();
+//                String correo = tablaCandidato.getValueAt(filaSeleccionada, 5).toString();
+//                boolean estado = Boolean.parseBoolean(tablaCandidato.getValueAt(filaSeleccionada, 6).toString());
+//                String Rutapdf = tablaCandidato.getValueAt(filaSeleccionada, 7).toString();
+//
+//                Candidato c = new Candidato(id, nombre, apellidoPaterno, apellidoMaterno, telefono, correo, correo, estado, Rutapdf);
+//                boolean actualizar = true;
+//                
+//                RegistroRH agregar = new RegistroRH(c, actualizar);
+//                agregar.setVisible(true);
+//                agregar.addWindowListener(new java.awt.event.WindowAdapter() {
+//                    @Override
+//                    public void windowClosed(java.awt.event.WindowEvent e) {
+//                        cargarCandidatosEnTabla(); // Método que recarga la JTable
+//                    }
+//                });
+
+//                reclutadorON.getInstance().actualizarReclutador(r);
+//                cargarReclutadoresEnTabla();
+//                JOptionPane.showMessageDialog(null, "Reclutador actualizado con exito.",
+//                        "actualización exitosa", JOptionPane.INFORMATION_MESSAGE);
+//            } else {
+//                JOptionPane.showMessageDialog(null, "Operación cancelada",
+//                        "operacion cancelada", JOptionPane.INFORMATION_MESSAGE);
+//            }
+//
+//        } else {
+//            System.out.println("error");
+//            JOptionPane.showMessageDialog(null, "Selecciona un reclutador para eliminar correctamente.",
+//                    "Error de eliminar", JOptionPane.ERROR_MESSAGE);
+//        }
     }//GEN-LAST:event_actualizarBotonActionPerformed
 
     private void EliminarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarBotonActionPerformed
-         
+         if (nombre.getText().trim().isEmpty() || apellidoP.getText().trim().isEmpty()|| apellidoM.getText().trim().isEmpty()
+            || telefono.getText().trim().isEmpty() || correo.getText().trim().isEmpty() || puesto.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios",
+                "Error de validación", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+//        }else{
+//            //Se extraen los strings de los text field
+//               try {
+//                   
+//                    );
+//
+//                candidatoON.getInstance().eliminarCandidato(candidato);
+//                actualizarTabla(candidatoON.getInstance().obtenerCandidatos());
+//
+//            } catch (IOException e) {
+//              JOptionPane.showMessageDialog(this, "Error al copiar archivo: " + e.getMessage());
+//                }
+//               
+         //}
+
+          
+        
     }//GEN-LAST:event_EliminarBotonActionPerformed
 
     private void nombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombreActionPerformed
@@ -403,13 +503,27 @@ public class CRUDCandidato extends javax.swing.JFrame {
                         pue,
                         estado,
                         rutaRelativa // Usamos la ruta relativa aquí
+                            
                 );
+                    
+//                    Candidato cand = new Candidato(
+//                        nom,
+//                        apellidoP.getText(),
+//                        apellidoM.getText(),
+//                        tel,
+//                        cor,
+//                        pue,
+//                        estado,
+//                        rutaRelativa
+//                    );
 
                 candidatoON.getInstance().agregarCandidato(candidato);
                 actualizarTabla(candidatoON.getInstance().obtenerCandidatos());
-
+                cargarCandidatosEnTabla();
             } catch (IOException e) {
               JOptionPane.showMessageDialog(this, "Error al copiar archivo: " + e.getMessage());
+                } catch (SQLException ex) {
+                    Logger.getLogger(CRUDCandidato.class.getName()).log(Level.SEVERE, null, ex);
                 }
           }
         }
@@ -501,8 +615,10 @@ public class CRUDCandidato extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JTextField correo;
     private javax.swing.JButton guardar;
+    private javax.swing.JTextField idCampo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

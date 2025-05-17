@@ -16,8 +16,11 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -335,6 +338,8 @@ public class FiltrarCV extends javax.swing.JFrame {
 
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(this, "Error al copiar archivo: " + e.getMessage());
+            } catch (SQLException ex) {
+                Logger.getLogger(FiltrarCV.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
