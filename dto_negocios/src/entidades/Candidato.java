@@ -11,6 +11,7 @@ package entidades;
 public class Candidato {
     private int id;
     private String nombre, apellidoPaterno, apellidoMaterno, telefono, correo, puesto, rutaPDF;
+    private float nomina;
     boolean estado;
 
     /**
@@ -66,6 +67,15 @@ public class Candidato {
         this.estado = estado;
         this.rutaPDF = rutaPDF;
         this.id=id;
+    }
+    
+    public Candidato(int id,String nombre, String apellidoPaterno, String apellidoMaterno, String puesto, float nomina) {
+        this.nombre = nombre;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.puesto = puesto;
+        this.nomina = nomina;
+        this.id = id;
     }
 
 
@@ -140,6 +150,14 @@ public class Candidato {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public float getNomina() {
+        return nomina;
+    }
+
+    public void setNomina(float nomina) {
+        this.nomina = nomina;
     }
 
     @Override

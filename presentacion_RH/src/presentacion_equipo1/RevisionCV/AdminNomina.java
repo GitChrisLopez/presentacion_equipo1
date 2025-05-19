@@ -4,10 +4,12 @@
  */
 package presentacion_equipo1.RevisionCV;
 
+import entidades.Candidato;
 import entidades.Reclutador;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import objetosnegocio.CandidatoON;
 import objetosnegocio.ReclutadorDAO;
 
 /**
@@ -29,10 +31,12 @@ public class AdminNomina extends javax.swing.JFrame {
         String[] columnas = {"ID", "Nombre", "Apellido Paterno", "Apellido Materno", "Puesto", "Nomina"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0); // 0 filas iniciales
 
-        ReclutadorDAO controlador = ReclutadorDAO.getInstance();
-        List<Reclutador> lista = controlador.obtenerTodos();
+        ReclutadorDAO controladorReclutador = ReclutadorDAO.getInstance();
+        CandidatoON controladorCandidatos = CandidatoON.getInstance();
+        List<Reclutador> listaReclutadores = controladorReclutador.obtenerTodos();
+        List<Candidato> listaCandidato = controladorCandidatos.obtenerTodos();
 
-        for (Reclutador r : lista) {
+        for (Reclutador r : listaReclutadores) {
             Object[] fila = new Object[]{
                 r.getId(),
                 r.getNombreCompleto(),
@@ -40,6 +44,18 @@ public class AdminNomina extends javax.swing.JFrame {
                 r.getApellidoMaterno(),
                 r.getPuesto(),
                 r.getNomina()
+            };
+            modelo.addRow(fila);
+        }
+        
+        for (Candidato c : listaCandidato) {
+            Object[] fila = new Object[]{
+                c.getId(),
+                c.getNombre(),
+                c.getApellidoPaterno(),
+                c.getApellidoMaterno(),
+                c.getPuesto(),
+                c.getNomina()
             };
             modelo.addRow(fila);
         }
@@ -241,6 +257,9 @@ public class AdminNomina extends javax.swing.JFrame {
 
     private void jButtonCerrarVentanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCerrarVentanaActionPerformed
         // TODO add your handling code here:
+        MenuReclutador Menu = new MenuReclutador();
+        Menu.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButtonCerrarVentanaActionPerformed
 
     /**

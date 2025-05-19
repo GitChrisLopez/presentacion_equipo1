@@ -18,5 +18,5 @@ String apiKey = "hugging token"; //token de Hugging Face
 
 Deberan hacer un Clean and Build de negocios_AdminCV, copiar el nuevo JAR que se creara en la carpeta "dist" de este proyecto y pegar el nuevo JAR en la carpeta lib de Presentacion_equipo1, reemplazando el anterior. Ya despues pueden hacer un Clean and Build por si acaso de Presentacion_equipo1 y correr el programa sin problema. Si les salta algun error su token no se copio bien o el servicio de la IA esta caido (que es algo fuera de nuestro alcance), solo esperen y vuelvan a intentarlo.
 
-Tabla para el CRUD de Reclutadores con MySQL
+Tabla del SCRIPT MySQL
 https://docs.google.com/document/d/1JpvQoiHsi-pDcO483QUWnYpVOVgnbNjGNRJ2_TBvbsE/edit?usp=sharing 
