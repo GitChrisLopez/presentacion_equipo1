@@ -215,6 +215,9 @@ public class CrudRH extends javax.swing.JFrame {
 
     private void jButtonCerrarVentanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCerrarVentanaActionPerformed
         // TODO add your handling code here:
+        MenuReclutador Menu = new MenuReclutador();
+        Menu.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButtonCerrarVentanaActionPerformed
 
     private void jButtonActualizarReclutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActualizarReclutaActionPerformed
