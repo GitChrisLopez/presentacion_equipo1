@@ -6,6 +6,7 @@ package presentacion_equipo1.RevisionCV;
 
 import CustomControls.RendererConBtn;
 import dto.CandidatoDTO;
+import entidades.Candidato;
 import filtroIA.FiltroCV;
 import filtroIA.IFiltroCV;
 import java.awt.Desktop;
@@ -322,15 +323,15 @@ public class FiltrarCV extends javax.swing.JFrame {
                 // Guardar solo la ruta relativa al archivo en el DTO
                 String rutaRelativa = "CVs/" + nombreArchivo;  // Guardamos solo la ruta relativa
 
-                CandidatoDTO candidato = new CandidatoDTO(
+                Candidato candidato = new Candidato(
                         "NombreDemo",
                         "ApellidoDemo",
                         "ApellidoDemo2",
                         "1234567890",
                         "correo@demo.com",
                         "Puesto Demo",
-                        false,
-                        rutaRelativa // Usamos la ruta relativa aquí
+                        rutaRelativa,
+                        false// Usamos la ruta relativa aquí
                 );
 
                 candidatoON.getInstance().agregarCandidato(candidato);

@@ -405,7 +405,7 @@ public class CRUDCandidato extends javax.swing.JFrame {
 
                 boolean actualizar = true;                
                 try {
-                    candidatoON.getInstance().actualizarCandidato(ca);
+                    candidatoON.getInstance().actualizarCandidato(c);
                 } catch (SQLException ex) {
                     Logger.getLogger(CRUDCandidato.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -523,7 +523,7 @@ public class CRUDCandidato extends javax.swing.JFrame {
                         rutaRelativa
                     );
 
-                candidatoON.getInstance().agregarCandidato(candidato);
+                candidatoON.getInstance().agregarCandidato(cand);
                 actualizarTabla(candidatoON.getInstance().obtenerCandidatos());
                 cargarCandidatosEnTabla();
             } catch (IOException e) {

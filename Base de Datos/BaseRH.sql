@@ -17,6 +17,8 @@ CREATE TABLE candidatos(
     nombre VARCHAR(100),
     apellidoPaterno VARCHAR(50),
     apellidoMaterno VARCHAR(50),
+    telefono varchar(10),
+    correo varchar(50),
     puesto VARCHAR(50),
     estado boolean,
 	rutapdf text,

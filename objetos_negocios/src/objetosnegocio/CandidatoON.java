@@ -36,8 +36,8 @@ public class CandidatoON {
         return instancia;
     }
 
-    public void agregarCandidato(CandidatoDTO c) throws SQLException {
-        String sql = "INSERT INTO candidatos (nombre, apellidoPaterno, apellidoMaterno, puesto, estado, rutapdf) VALUES (?, ?, ?, ?, ?, ?)";
+    public void agregarCandidato(Candidato c) throws SQLException {
+        String sql = "INSERT INTO candidatos (nombre, apellidoPaterno, apellidoMaterno, telefono, correo,puesto, estado, rutapdf) VALUES (?, ?, ?, ?, ?, ?)";
 
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -48,15 +48,16 @@ public class CandidatoON {
             stmt.setString(1, c.getNombre());
             stmt.setString(2, c.getApellidoPaterno());
             stmt.setString(3, c.getApellidoMaterno());
-            stmt.setString(4, c.getPuesto());
-            stmt.setBoolean(5, c.isEstado());
-            stmt.setString(6, c.getRutaPDF());
+            stmt.setString(4, c.getTelefono());
+            stmt.setString(5, c.getCorreo());
+            stmt.setString(6, c.getPuesto());
+            stmt.setBoolean(7, c.isEstado());
+            stmt.setString(8, c.getRutaPDF());
 
             int filas = stmt.executeUpdate(); // ← ejecuta inserción
 
             if (filas > 0) {
                 System.out.println("Candidato insertado correctamente.");
-                listaCandidatos.add(c);
             } else {
                 System.out.println("No se insertó el candidato.");
             }
@@ -80,7 +81,7 @@ public class CandidatoON {
 
     }
 
-    public void actualizarCandidato(CandidatoDTO c) throws SQLException {
+    public void actualizarCandidato(Candidato c) throws SQLException {
         String sql = "UPDATE INTO candidatos (nombre, apellidoPaterno, apellidoMaterno, puesto, estado, rutapdf) VALUES (?, ?, ?, ?, ?, ?)";
           listaCandidatos.remove(c);
         try (Connection conn = conexion.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -91,7 +92,6 @@ public class CandidatoON {
             stmt.setString(4, c.getPuesto());
             stmt.setBoolean(5, c.isEstado());
             stmt.setString(6, c.getRutaPDF());
-            listaCandidatos.add(c);
             int filas = stmt.executeUpdate(); // En este paso se actualiza
 
             if (filas > 0) {
