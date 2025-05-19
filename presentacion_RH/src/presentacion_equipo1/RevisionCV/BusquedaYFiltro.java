@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import objetosnegocio.BusquedaON;
 import objetosnegocio.CandidatoON;
-import objetosnegocio.ReclutadorON;
+import objetosnegocio.ReclutadorDAO;
 
 /**
  *
@@ -36,7 +36,7 @@ public class BusquedaYFiltro extends javax.swing.JFrame {
     CandidatoON candidatoON;
 
     List<Reclutador> listaReclutador = new ArrayList<>();
-    ReclutadorON reclutadorON;
+    ReclutadorDAO reclutadorON;
 
     private List<Candidato> candidatosMostrados;
     private List<Reclutador> reclutadoresMostrados;
@@ -196,7 +196,7 @@ public class BusquedaYFiltro extends javax.swing.JFrame {
         keyWords.add(barraBusqueda.getText());
         List<Candidato> todosC = candidatoON.getInstance().obtenerTodos();
         List<Reclutador> todosR= reclutadorON.getInstance().obtenerTodos();
-        busqueda.BusquedaCandidatoNombre(barraBusqueda.getText());
+        busqueda.BuscarPorNombre(barraBusqueda.getText());
         // Actualizar los candidatos y Reclutadores mostrados y la tabla
         
     }//GEN-LAST:event_jBtnFiltrarActionPerformed

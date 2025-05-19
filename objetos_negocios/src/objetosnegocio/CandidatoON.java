@@ -37,24 +37,23 @@ public class CandidatoON {
     }
 
     public void agregarCandidato(Candidato c) throws SQLException {
-        String sql = "INSERT INTO candidatos (nombre, apellidoPaterno, apellidoMaterno, telefono, correo,puesto, estado, rutapdf) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO candidatos (nombre, apellidoPaterno, apellidoMaterno, puesto, estado, rutapdf, nomina) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         Connection conn = null;
         PreparedStatement stmt = null;
         try {
-            conn = (Connection) conexion.getConnection(); // ← obtiene conexión
-            stmt = conn.prepareStatement(sql); // ← prepara consulta
+            conn = conexion.getConnection();
+            stmt = conn.prepareStatement(sql);
 
             stmt.setString(1, c.getNombre());
             stmt.setString(2, c.getApellidoPaterno());
             stmt.setString(3, c.getApellidoMaterno());
-            stmt.setString(4, c.getTelefono());
-            stmt.setString(5, c.getCorreo());
-            stmt.setString(6, c.getPuesto());
-            stmt.setBoolean(7, c.isEstado());
-            stmt.setString(8, c.getRutaPDF());
-            
-            int filas = stmt.executeUpdate(); // ← ejecuta inserción
+            stmt.setString(4, c.getPuesto());
+            stmt.setBoolean(5, c.isEstado());
+            stmt.setString(6, c.getRutaPDF());
+            stmt.setFloat(7, c.getNomina());
+
+            int filas = stmt.executeUpdate();
 
             if (filas > 0) {
                 System.out.println("Candidato insertado correctamente.");
@@ -62,55 +61,47 @@ public class CandidatoON {
                 System.out.println("No se insertó el candidato.");
             }
         } catch (SQLException e) {
-            System.out.println("Error al insertar reclutador: " + e.getMessage());
-//            e.printStackTrace(); // ← muestra el error completo en consola
             throw new SQLException("Error al insertar el candidato", e);
-
         } finally {
             try {
-                if (stmt != null) {
-                    stmt.close();
-                }
-                if (conn != null) {
-                    conexion.closeConnection(conn); // usa tu método personalizado
-                }
+                if (stmt != null) stmt.close();
+                if (conn != null) conexion.closeConnection(conn);
             } catch (SQLException e) {
                 System.out.println("Error al cerrar la conexión: " + e.getMessage());
             }
         }
-
     }
 
     public void actualizarCandidato(Candidato c) throws SQLException {
-        String sql = "UPDATE INTO candidatos (nombre, apellidoPaterno, apellidoMaterno, puesto, estado, rutapdf) VALUES (?, ?, ?, ?, ?, ?)";
-          listaCandidatos.remove(c);
+        String sql = "UPDATE candidatos SET nombre = ?, apellidoPaterno = ?, apellidoMaterno = ?, puesto = ?, estado = ?, rutapdf = ?, nomina = ? WHERE id = ?";
+
+        listaCandidatos.remove(c);
+
         try (Connection conn = conexion.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
             stmt.setString(1, c.getNombre());
             stmt.setString(2, c.getApellidoPaterno());
             stmt.setString(3, c.getApellidoMaterno());
             stmt.setString(4, c.getPuesto());
             stmt.setBoolean(5, c.isEstado());
             stmt.setString(6, c.getRutaPDF());
-            int filas = stmt.executeUpdate(); // En este paso se actualiza
+            stmt.setFloat(7, c.getNomina());
+            stmt.setInt(8, c.getId());
+
+            int filas = stmt.executeUpdate();
 
             if (filas > 0) {
                 System.out.println("Candidato actualizado correctamente.");
             } else {
-                System.out.println("No se actualizo el candidato.");
+                System.out.println("No se actualizó el candidato.");
             }
         } catch (SQLException e) {
-            System.out.println("Error en la operacion: " + e.getMessage());
-//            e.printStackTrace(); // ← muestra el error completo en consola
             throw new SQLException("Error al realizar la operación:", e);
-
         }
     }
 
     public void eliminarCandidato(int id) {
         String sql = "DELETE FROM candidatos WHERE id = ?";
         try (Connection conn = conexion.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-
             stmt.setInt(1, id);
             int rows = stmt.executeUpdate();
             if (rows > 0) {
@@ -118,15 +109,13 @@ public class CandidatoON {
             } else {
                 System.out.println("No se logró encontrar al candidato.");
             }
-
         } catch (SQLException e) {
             System.out.println("Error al realizar la operación: " + e.getMessage());
         }
-        listaCandidatos.remove(id);
-
+        listaCandidatos.removeIf(c -> c.hashCode() == id); // ajusta si usas hashCode como id
     }
-    
-     public List<Candidato> obtenerTodos() {
+
+    public List<Candidato> obtenerTodos() {
         List<Candidato> lista = new ArrayList<>();
         String sql = "SELECT * FROM candidatos;";
         Connection conn = null;
@@ -141,28 +130,23 @@ public class CandidatoON {
             while (rs.next()) {
                 Candidato c = new Candidato();
                 c.setId(rs.getInt("id"));
-                c.setNombre(rs.getString("nombre")); // <- debe coincidir con columna real
+                c.setNombre(rs.getString("nombre"));
                 c.setApellidoPaterno(rs.getString("apellidoPaterno"));
                 c.setApellidoMaterno(rs.getString("apellidoMaterno"));
                 c.setPuesto(rs.getString("puesto"));
                 c.setEstado(rs.getBoolean("estado"));
+                c.setRutaPDF(rs.getString("rutapdf"));
+                c.setNomina(rs.getFloat("nomina"));
                 lista.add(c);
             }
 
         } catch (SQLException e) {
-            System.out.println("Error al obtener reclutadores: " + e.getMessage());
-            e.printStackTrace();
+            System.out.println("Error al obtener candidatos: " + e.getMessage());
         } finally {
             try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-                if (conn != null) {
-                    conexion.closeConnection(conn);
-                }
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (conn != null) conexion.closeConnection(conn);
             } catch (SQLException e) {
                 System.out.println("Error al cerrar recursos: " + e.getMessage());
             }
@@ -170,9 +154,8 @@ public class CandidatoON {
 
         return lista;
     }
-     
+
     public synchronized List<CandidatoDTO> obtenerCandidatos() {
         return listaCandidatos;
     }
-
 }
