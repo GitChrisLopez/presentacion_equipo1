@@ -19,7 +19,8 @@ CREATE TABLE candidatos(
     apellidoMaterno VARCHAR(50),
     puesto VARCHAR(50),
     estado boolean,
-	rutapdf text
+	rutapdf text,
+    nomina float default(0)
 );
 
 
