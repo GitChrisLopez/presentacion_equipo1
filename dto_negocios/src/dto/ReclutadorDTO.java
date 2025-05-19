@@ -19,6 +19,7 @@ public class ReclutadorDTO {
     private String puesto;
     private String usuario;
     private String contrasena;
+    private float nomina;
     private boolean estado;
     
      public ReclutadorDTO() {
@@ -28,7 +29,7 @@ public class ReclutadorDTO {
         
     }
 
-    public ReclutadorDTO(String nombreCompleto, String apellidoPaterno, String apellidoMaterno, String puesto, String usuario, String contrasena, boolean estado) {
+    public ReclutadorDTO(String nombreCompleto, String apellidoPaterno, String apellidoMaterno, String puesto, String usuario, String contrasena, boolean estado, float nomina) {
         this.nombreCompleto = nombreCompleto;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
@@ -36,6 +37,7 @@ public class ReclutadorDTO {
         this.usuario = usuario;
         this.contrasena = contrasena;
         this.estado = estado;
+        this.nomina = nomina;
     }
 
     
@@ -97,7 +99,11 @@ public class ReclutadorDTO {
         this.estado = estado;
     }
     
-    
+    public Float getNomina() {
+        return nomina;
+    }
 
-    
+    public void setNomina(float nomina) {
+        this.nomina = nomina;
+    }
 }

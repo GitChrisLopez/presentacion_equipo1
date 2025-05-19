@@ -16,6 +16,7 @@ public class Reclutador {
     private String puesto;
     private String usuario;
     private String contrasena;
+    private float nomina;
     private boolean estado;
     
     public Reclutador() {
@@ -33,6 +34,18 @@ public class Reclutador {
         this.id = id;
     }
     
+     public Reclutador(int id,String nombreCompleto, String apellidoPaterno, String apellidoMaterno, String puesto, String usuario, String contrasena, boolean estado, float nomina) {
+        this.nombreCompleto = nombreCompleto;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.puesto = puesto;
+        this.usuario = usuario;
+        this.contrasena = contrasena;
+        this.estado = estado;
+        this.id = id;
+        this.nomina = nomina;
+    }
+    
     public Reclutador(int id,String nombreCompleto, String apellidoPaterno, String apellidoMaterno, String puesto, String usuario, boolean estado) {
         this.nombreCompleto = nombreCompleto;
         this.apellidoPaterno = apellidoPaterno;
@@ -40,6 +53,16 @@ public class Reclutador {
         this.puesto = puesto;
         this.usuario = usuario;
         this.estado = estado;
+        this.id = id;
+    }
+    
+    // nominas
+    public Reclutador(int id,String nombreCompleto, String apellidoPaterno, String apellidoMaterno, String puesto, float nomina) {
+        this.nombreCompleto = nombreCompleto;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.puesto = puesto;
+        this.nomina = nomina;
         this.id = id;
     }
 
@@ -106,7 +129,13 @@ public class Reclutador {
     public void setId(int id) {
         this.id = id;
     }
-    
-    
-    
+
+    public float getNomina() {
+        return nomina;
+    }
+
+    public void setNomina(float nomina) {
+        this.nomina = nomina;
+    }
+
 }

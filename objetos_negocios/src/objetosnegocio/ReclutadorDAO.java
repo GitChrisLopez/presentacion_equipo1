@@ -19,19 +19,19 @@ import java.sql.ResultSet;
  *
  * @author paula
  */
-public class ReclutadorON {
+public class ReclutadorDAO {
 
-    private static ReclutadorON instancia;
+    private static ReclutadorDAO instancia;
     private IConnection conexion;
     List<ReclutadorDTO> listaReclutadores = new ArrayList<>();
 
-    private ReclutadorON() {
+    private ReclutadorDAO() {
         conexion = MySQLConnection.getInstance();
     }
 
-    public static ReclutadorON getInstance() {
+    public static ReclutadorDAO getInstance() {
         if (instancia == null) {
-            instancia = new ReclutadorON();
+            instancia = new ReclutadorDAO();
         }
         return instancia; // lml .-. lml rock
 
@@ -105,6 +105,7 @@ public class ReclutadorON {
                 r.setUsuario(rs.getString("usuario"));
                 r.setContrasena(rs.getString("contrasena"));
                 r.setEstado(rs.getBoolean("estado"));
+                r.setNomina(rs.getFloat("nomina"));
                 lista.add(r);
             }
 
@@ -176,6 +177,28 @@ public class ReclutadorON {
             System.out.println("Error al actualizar reclutador: " + e.getMessage());
         }
     }
+    
+    public void actualizarNomina(Reclutador r) {
+        String sql = "UPDATE reclutadores SET nomina = ? WHERE id = ?";
+
+        try (Connection conn = conexion.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, Float.toString(r.getNomina()));
+            stmt.setInt(2, r.getId());
+
+            int rows = stmt.executeUpdate();
+            if (rows > 0) {
+                System.out.println("Reclutador actualizado.");
+            } else {
+                System.out.println("No se encontró el reclutador.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al actualizar reclutador: " + e.getMessage());
+        }
+    }
+    
 
 
 }

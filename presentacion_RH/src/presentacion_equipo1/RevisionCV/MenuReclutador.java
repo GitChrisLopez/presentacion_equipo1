@@ -199,6 +199,8 @@ public class MenuReclutador extends javax.swing.JFrame {
 
     private void ButtonAdminNominaRHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonAdminNominaRHActionPerformed
         // TODO add your handling code here:
+        AdminNomina adminNomina = new AdminNomina();
+        adminNomina.setVisible(true);
     }//GEN-LAST:event_ButtonAdminNominaRHActionPerformed
 
     private void cerrarSesion1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarSesion1ActionPerformed
