@@ -4,14 +4,20 @@
  */
 package presentacion_equipo1.RevisionCV;
 
+import CustomControls.RendererConBtn;
 import dto.CandidatoDTO;
 import dto.ReclutadorDTO;
+import entidades.Candidato;
+import entidades.Reclutador;
 import filtroIA.FiltroCV;
 import filtroIA.IFiltroCV;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import objetosnegocio.BusquedaON;
 import objetosnegocio.CandidatoON;
 import objetosnegocio.ReclutadorON;
 
@@ -20,29 +26,56 @@ import objetosnegocio.ReclutadorON;
  * @author Adrián
  */
 public class BusquedaYFiltro extends javax.swing.JFrame {
-    
-    
-    IFiltroCV subFiltro = new FiltroCV();
-    FiltroCV filtroIA = new FiltroCV();
 
     List<String> keyWords;
     DefaultListModel<String> listModel;
+    BusquedaON busqueda;
 
     //Codigo para pruebas
-    List<CandidatoDTO> listaCandidatos = new ArrayList<>();
+    List<Candidato> listaCandidatos = new ArrayList<>();
     CandidatoON candidatoON;
-    
-    List<ReclutadorDTO> listaReclutador = new ArrayList<>();
+
+    List<Reclutador> listaReclutador = new ArrayList<>();
     ReclutadorON reclutadorON;
 
-    private List<CandidatoDTO> candidatosMostrados;
+    private List<Candidato> candidatosMostrados;
+    private List<Reclutador> reclutadoresMostrados;
 
     /**
      * Creates new form BusquedaYFiltro
      */
     public BusquedaYFiltro() {
         initComponents();
-    }
+        candidatosMostrados = new ArrayList<>();
+        reclutadoresMostrados = new ArrayList<>();
+        this.setLocationRelativeTo(null);
+
+        tablaCendidatosyReclutadores.setEnabled(true);
+
+        //Codigo para pruebas
+        keyWords = new ArrayList<>();//Lista de palabras clave
+
+        listModel = new DefaultListModel<>();
+        jListPalabrasClave.setModel(listModel);
+        jListPalabrasClave.setCellRenderer(new RendererConBtn());
+           jListPalabrasClave.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int index = jListPalabrasClave.locationToIndex(evt.getPoint());
+                Rectangle bounds = jListPalabrasClave.getCellBounds(index, index);
+                if (bounds != null && index >= 0) {
+                    int xRelativo = evt.getX() - bounds.x;
+                    int ancho = bounds.width;
+
+                    // Detectar si se clicó cerca del lado derecho (simula la "X")
+                    if (xRelativo >= ancho - 20) {
+                        keyWords.remove(listModel.get(index));
+                        listModel.remove(index);
+                    }
+                }
+            }
+    });
+                   }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -54,25 +87,31 @@ public class BusquedaYFiltro extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel4 = new javax.swing.JLabel();
-        barraBisqueda = new javax.swing.JTextField();
+        barraBusqueda = new javax.swing.JTextField();
         Volver = new javax.swing.JButton();
         jBtnFiltrar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jListPalabrasClave = new javax.swing.JList<>();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tablaCendidatosyReclutadores = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/rhfoto2.png"))); // NOI18N
 
-        barraBisqueda.setText("Inserte contenido a buscar");
-        barraBisqueda.addActionListener(new java.awt.event.ActionListener() {
+        barraBusqueda.setText("Inserte contenido a buscar");
+        barraBusqueda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                barraBisquedaActionPerformed(evt);
+                barraBusquedaActionPerformed(evt);
             }
         });
 
         Volver.setText("Volver");
+        Volver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                VolverActionPerformed(evt);
+            }
+        });
 
         jBtnFiltrar.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
         jBtnFiltrar.setText("Filtrar");
@@ -87,75 +126,86 @@ public class BusquedaYFiltro extends javax.swing.JFrame {
         jListPalabrasClave.setOpaque(false);
         jScrollPane2.setViewportView(jListPalabrasClave);
 
+        tablaCendidatosyReclutadores.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"Henry", "Soto", null, "Ing. Software", "Filtrado"}
+            },
+            new String [] {
+                "Nombre", "Apellido Paterno", "Apellido Materno", "Puesto", "Estado"
+            }
+        ));
+        tablaCendidatosyReclutadores.setEnabled(false);
+        jScrollPane4.setViewportView(tablaCendidatosyReclutadores);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(190, 190, 190)
-                            .addComponent(jLabel4))
-                        .addGroup(layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(Volver)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jScrollPane2)))
-                    .addComponent(barraBisqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 506, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(Volver)
+                        .addGap(45, 45, 45)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane4)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jBtnFiltrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(82, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(barraBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 506, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jBtnFiltrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(17, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jLabel4)
+                .addGap(34, 34, 34)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(barraBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jBtnFiltrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(barraBisqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jBtnFiltrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(Volver)
-                                .addGap(20, 20, 20))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(28, Short.MAX_VALUE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(117, 117, 117))))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(Volver)
+                        .addGap(0, 28, Short.MAX_VALUE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void barraBisquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barraBisquedaActionPerformed
+    private void barraBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barraBusquedaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_barraBisquedaActionPerformed
+    }//GEN-LAST:event_barraBusquedaActionPerformed
 
     private void jBtnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnFiltrarActionPerformed
+        String palabraClave = barraBusqueda.getText().trim();
         if (keyWords.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Selecciona al menos una palabra clave.");
             return;
         }
-
-        List<CandidatoDTO> todos = candidatoON.getInstance().obtenerCandidatos();
-        List<CandidatoDTO> filtrados = subFiltro.filtrarPorPalabrasClave(todos, keyWords);
-
-        // Actualizar los candidatos mostrados y la tabla
-        actualizarTabla(filtrados);
+        keyWords.add(barraBusqueda.getText());
+        List<Candidato> todosC = candidatoON.getInstance().obtenerTodos();
+        List<Reclutador> todosR= reclutadorON.getInstance().obtenerTodos();
+        busqueda.BusquedaCandidatoNombre(barraBusqueda.getText());
+        // Actualizar los candidatos y Reclutadores mostrados y la tabla
+        
     }//GEN-LAST:event_jBtnFiltrarActionPerformed
+
+    private void VolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VolverActionPerformed
+        MenuReclutador Menu = new MenuReclutador();
+        Menu.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_VolverActionPerformed
 
     /**
      * @param args the command line arguments
@@ -191,14 +241,45 @@ public class BusquedaYFiltro extends javax.swing.JFrame {
             }
         });
     }
+        private void actualizarTabla(List<Candidato> listaC, List<Reclutador> listaR) {
+        DefaultTableModel model = (DefaultTableModel) tablaCendidatosyReclutadores.getModel();
+        model.setRowCount(0); // limpiar tabla
+
+        //se almacena la nueva lista de candidatos mostrados
+        this.candidatosMostrados = new ArrayList<>(listaC);
+        this.reclutadoresMostrados = new ArrayList<>(listaR);
+        for (Candidato c : listaC) {
+            model.addRow(new Object[]{
+                c.getNombre(),
+                c.getApellidoPaterno(),
+                c.getApellidoMaterno(),
+                c.getTelefono(),
+                c.getCorreo(),
+                c.getPuesto(),
+                c.isEstado() ? "Aprobado" : "Rechazado",
+                c.getRutaPDF()
+            });
+        }
+        for (Reclutador r : listaR) {
+            model.addRow(new Object[]{
+                r.getNombreCompleto(),
+                r.getApellidoPaterno(),
+                r.getApellidoMaterno(),
+                r.getPuesto(),
+                r.isEstado() ? "Aprobado" : "Rechazado"
+            });
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Volver;
-    private javax.swing.JTextField barraBisqueda;
+    private javax.swing.JTextField barraBusqueda;
     private javax.swing.JButton jBtnFiltrar;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JList<String> jListPalabrasClave;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTable tablaCendidatosyReclutadores;
     // End of variables declaration//GEN-END:variables
 }
