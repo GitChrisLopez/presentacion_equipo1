@@ -128,7 +128,7 @@ public class CandidatoON {
     
      public List<Candidato> obtenerTodos() {
         List<Candidato> lista = new ArrayList<>();
-        String sql = "SELECT * FROM reclutadores;";
+        String sql = "SELECT * FROM candidatos;";
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
