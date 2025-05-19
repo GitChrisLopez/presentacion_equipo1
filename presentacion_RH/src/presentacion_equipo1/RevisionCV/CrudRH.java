@@ -8,7 +8,7 @@ import entidades.Reclutador;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import objetosnegocio.ReclutadorON;
+import objetosnegocio.ReclutadorDAO;
 
 /**
  *
@@ -16,7 +16,7 @@ import objetosnegocio.ReclutadorON;
  */
 public class CrudRH extends javax.swing.JFrame {
 
-    ReclutadorON reclutadorON;
+    ReclutadorDAO reclutadorON;
 
     /**
      * Creates new form CrudRH
@@ -31,7 +31,7 @@ public class CrudRH extends javax.swing.JFrame {
         String[] columnas = {"ID", "Usuario", "Nombre", "Apellido Paterno", "Apellido Materno", "Puesto", "Estado"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0); // 0 filas iniciales
 
-        ReclutadorON controlador = ReclutadorON.getInstance();
+        ReclutadorDAO controlador = ReclutadorDAO.getInstance();
         List<Reclutador> lista = controlador.obtenerTodos();
 
         for (Reclutador r : lista) {
@@ -259,7 +259,7 @@ public class CrudRH extends javax.swing.JFrame {
 
         } else {
             System.out.println("error");
-            JOptionPane.showMessageDialog(null, "Selecciona un reclutador para eliminar correctamente.",
+            JOptionPane.showMessageDialog(null, "Selecciona un reclutador para actualizar correctamente.",
                     "Error de eliminar", JOptionPane.ERROR_MESSAGE);
         }
 

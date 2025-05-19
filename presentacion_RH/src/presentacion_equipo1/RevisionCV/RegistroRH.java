@@ -7,7 +7,7 @@ package presentacion_equipo1.RevisionCV;
 import dto.ReclutadorDTO;
 import entidades.Reclutador;
 import javax.swing.JOptionPane;
-import objetosnegocio.ReclutadorON;
+import objetosnegocio.ReclutadorDAO;
 
 /**
  *
@@ -15,7 +15,7 @@ import objetosnegocio.ReclutadorON;
  */
 public class RegistroRH extends javax.swing.JFrame {
 
-    ReclutadorON reclutadorON;
+    ReclutadorDAO reclutadorON;
     private Reclutador r;
     private boolean actualizar = false;
 
@@ -295,7 +295,7 @@ public class RegistroRH extends javax.swing.JFrame {
                 return;
             } else {
                 System.out.println("funciona");
-                ReclutadorDTO r = new ReclutadorDTO(nombreRH, apellidoPaternoRH, apellidoMaternoRH, puestorh, usuarioRH, contraseñaRH, true);
+                ReclutadorDTO r = new ReclutadorDTO(nombreRH, apellidoPaternoRH, apellidoMaternoRH, puestorh, usuarioRH, contraseñaRH, true, 0);
                 Reclutador d = new Reclutador(0, nombreRH, apellidoPaternoRH, apellidoMaternoRH, puestorh, usuarioRH, contraseñaRH, true);
                 try {
                     reclutadorON.getInstance().insertarReclutador(d);
