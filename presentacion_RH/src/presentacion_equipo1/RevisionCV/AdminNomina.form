@@ -66,7 +66,7 @@
                           <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Component id="jButtonAgregarRecluta" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jButtonAgregarNomina" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
                                   <Component id="jButtonCerrarVentana" min="-2" max="-2" attributes="0"/>
                               </Group>
@@ -89,7 +89,7 @@
                   <Component id="jScrollPane1" min="-2" pref="317" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jButtonAgregarRecluta" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
+                      <Component id="jButtonAgregarNomina" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
                       <Component id="jButtonCerrarVentana" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="13" max="32767" attributes="0"/>
@@ -174,12 +174,12 @@
             <Property name="text" type="java.lang.String" value="Administrador de n&#xf3;mina"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="jButtonAgregarRecluta">
+        <Component class="javax.swing.JButton" name="jButtonAgregarNomina">
           <Properties>
             <Property name="text" type="java.lang.String" value="Agregar/Actualizar"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAgregarReclutaActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAgregarNominaActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButtonCerrarVentana">

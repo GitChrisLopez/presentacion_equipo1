@@ -78,7 +78,7 @@ public class AdminNomina extends javax.swing.JFrame {
         jTablaRegistros = new javax.swing.JTable();
         jLabelFotoRH = new javax.swing.JLabel();
         jLabel1CRUDRH = new javax.swing.JLabel();
-        jButtonAgregarRecluta = new javax.swing.JButton();
+        jButtonAgregarNomina = new javax.swing.JButton();
         jButtonCerrarVentana = new javax.swing.JButton();
 
         jLabel1.setText("jLabel1");
@@ -116,10 +116,10 @@ public class AdminNomina extends javax.swing.JFrame {
         jLabel1CRUDRH.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1CRUDRH.setText("Administrador de nómina");
 
-        jButtonAgregarRecluta.setText("Agregar/Actualizar");
-        jButtonAgregarRecluta.addActionListener(new java.awt.event.ActionListener() {
+        jButtonAgregarNomina.setText("Agregar/Actualizar");
+        jButtonAgregarNomina.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonAgregarReclutaActionPerformed(evt);
+                jButtonAgregarNominaActionPerformed(evt);
             }
         });
 
@@ -147,7 +147,7 @@ public class AdminNomina extends javax.swing.JFrame {
                         .addGap(17, 17, 17)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButtonAgregarRecluta)
+                                .addComponent(jButtonAgregarNomina)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButtonCerrarVentana))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 716, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -164,7 +164,7 @@ public class AdminNomina extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonAgregarRecluta, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonAgregarNomina, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonCerrarVentana, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
@@ -188,7 +188,7 @@ public class AdminNomina extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonAgregarReclutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarReclutaActionPerformed
+    private void jButtonAgregarNominaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarNominaActionPerformed
         // TODO add your handling code here:
 //        RegistroRH agregar = new RegistroRH();
 //        agregar.setVisible(true);
@@ -253,7 +253,7 @@ public class AdminNomina extends javax.swing.JFrame {
         
         
         
-    }//GEN-LAST:event_jButtonAgregarReclutaActionPerformed
+    }//GEN-LAST:event_jButtonAgregarNominaActionPerformed
 
     private void jButtonCerrarVentanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCerrarVentanaActionPerformed
         // TODO add your handling code here:
@@ -299,7 +299,7 @@ public class AdminNomina extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonAgregarRecluta;
+    private javax.swing.JButton jButtonAgregarNomina;
     private javax.swing.JButton jButtonCerrarVentana;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel1CRUDRH;
