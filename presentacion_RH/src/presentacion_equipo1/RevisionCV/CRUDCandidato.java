@@ -42,7 +42,7 @@ public class CRUDCandidato extends javax.swing.JFrame {
     
         public void cargarCandidatosEnTabla() {
         // Columnas que se mostrarán
-        DefaultTableModel modelo = new DefaultTableModel(new String[]{"ID","Nombre", "Apellido", "Teléfono", "Email", "Puesto", "Estado", "Archivo CV"}, 0);
+        DefaultTableModel modelo = new DefaultTableModel(new String[]{"ID","Nombre", "Apellido Paterno","Apellido Materno", "Teléfono", "Email", "Puesto", "Estado", "Archivo CV"}, 0);
         
         CandidatoON controlador= CandidatoON.getInstance();
         List<Candidato> lista = controlador.obtenerTodos();
@@ -254,13 +254,13 @@ public class CRUDCandidato extends javax.swing.JFrame {
 
         tablaCandidato.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Nombre", "Apellido", "Telefono", "Email", "Puesto", "Estado"
+                "ID", "Nombre", "Apellido Paterno", "Apellido Materno", "Telefono", "Email", "Puesto", "Estado", "PDF"
             }
         ));
         jScrollPane1.setViewportView(tablaCandidato);
@@ -310,7 +310,7 @@ public class CRUDCandidato extends javax.swing.JFrame {
                         .addComponent(guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(77, 77, 77)
                         .addComponent(actualizarBoton, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 166, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 423, Short.MAX_VALUE)
                         .addComponent(Consultar)
                         .addGap(88, 88, 88)
                         .addComponent(EliminarBoton))
@@ -380,51 +380,49 @@ public class CRUDCandidato extends javax.swing.JFrame {
     }//GEN-LAST:event_volverButtonActionPerformed
 
     private void actualizarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarBotonActionPerformed
-//        int filaSeleccionada = tablaCandidato.getSelectedRow();
-//        if (filaSeleccionada != -1) {
-//            int confirmacion = JOptionPane.showConfirmDialog(
-//                    null, //centra en pantalla
-//                    "¿Seguro que quieres actualizar a este reclutador?", //el mensaje que se muestra
-//                    "confirmar de actualizar", //titulo
-//                    JOptionPane.YES_NO_OPTION, //tipo de ventana
-//                    JOptionPane.WARNING_MESSAGE // icono
-//            );
-//            if (confirmacion == JOptionPane.YES_OPTION) {
-//                int id = Integer.parseInt(tablaCandidato.getValueAt(filaSeleccionada, 0).toString());
-//                String nombre = tablaCandidato.getValueAt(filaSeleccionada, 1).toString();
-//                String apellidoPaterno = tablaCandidato.getValueAt(filaSeleccionada, 2).toString();
-//                String apellidoMaterno = tablaCandidato.getValueAt(filaSeleccionada, 3).toString();
-//                String telefono = tablaCandidato.getValueAt(filaSeleccionada, 4).toString();
-//                String correo = tablaCandidato.getValueAt(filaSeleccionada, 5).toString();
-//                boolean estado = Boolean.parseBoolean(tablaCandidato.getValueAt(filaSeleccionada, 6).toString());
-//                String Rutapdf = tablaCandidato.getValueAt(filaSeleccionada, 7).toString();
-//
-//                Candidato c = new Candidato(id, nombre, apellidoPaterno, apellidoMaterno, telefono, correo, correo, estado, Rutapdf);
-//                boolean actualizar = true;
-//                
-//                RegistroRH agregar = new RegistroRH(c, actualizar);
-//                agregar.setVisible(true);
-//                agregar.addWindowListener(new java.awt.event.WindowAdapter() {
-//                    @Override
-//                    public void windowClosed(java.awt.event.WindowEvent e) {
-//                        cargarCandidatosEnTabla(); // Método que recarga la JTable
-//                    }
-//                });
+        int filaSeleccionada = tablaCandidato.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            int confirmacion = JOptionPane.showConfirmDialog(
+                    null, //centra en pantalla
+                    "¿Seguro que quieres actualizar a este reclutador?", //el mensaje que se muestra
+                    "confirmar de actualizar", //titulo
+                    JOptionPane.YES_NO_OPTION, //tipo de ventana
+                    JOptionPane.WARNING_MESSAGE // icono
+            );
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                int id = Integer.parseInt(tablaCandidato.getValueAt(filaSeleccionada, 0).toString());
+                String nombre = tablaCandidato.getValueAt(filaSeleccionada, 1).toString();
+                String apellidoPaterno = tablaCandidato.getValueAt(filaSeleccionada, 2).toString();
+                String apellidoMaterno = tablaCandidato.getValueAt(filaSeleccionada, 3).toString();
+                String telefono = tablaCandidato.getValueAt(filaSeleccionada, 4).toString();
+                String correo = tablaCandidato.getValueAt(filaSeleccionada, 5).toString();
+                String puesto = tablaCandidato.getValueAt(filaSeleccionada, 6).toString();
+                boolean estado = Boolean.parseBoolean(tablaCandidato.getValueAt(filaSeleccionada, 6).toString());
+                String Rutapdf = tablaCandidato.getValueAt(filaSeleccionada, 7).toString();
 
-//                reclutadorON.getInstance().actualizarReclutador(r);
-//                cargarReclutadoresEnTabla();
-//                JOptionPane.showMessageDialog(null, "Reclutador actualizado con exito.",
-//                        "actualización exitosa", JOptionPane.INFORMATION_MESSAGE);
-//            } else {
-//                JOptionPane.showMessageDialog(null, "Operación cancelada",
-//                        "operacion cancelada", JOptionPane.INFORMATION_MESSAGE);
-//            }
-//
-//        } else {
-//            System.out.println("error");
-//            JOptionPane.showMessageDialog(null, "Selecciona un reclutador para eliminar correctamente.",
-//                    "Error de eliminar", JOptionPane.ERROR_MESSAGE);
-//        }
+                Candidato c = new Candidato(id, nombre, apellidoPaterno, apellidoMaterno, telefono, correo, correo, estado, Rutapdf);
+                CandidatoDTO ca = new CandidatoDTO(nombre, apellidoPaterno, apellidoMaterno, telefono, correo, correo, estado, Rutapdf);
+
+                boolean actualizar = true;                
+                try {
+                    candidatoON.getInstance().actualizarCandidato(ca);
+                } catch (SQLException ex) {
+                    Logger.getLogger(CRUDCandidato.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                cargarCandidatosEnTabla();
+                actualizarTabla(candidatoON.getInstance().obtenerCandidatos());
+                JOptionPane.showMessageDialog(null, "Candidato actualizado con exito.",
+                        "actualización exitosa", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Operación cancelada",
+                        "operacion cancelada", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        } else {
+            System.out.println("error");
+            JOptionPane.showMessageDialog(null, "Selecciona un Candidato  para eliminar correctamente.",
+                    "Error de eliminar", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_actualizarBotonActionPerformed
 
     private void EliminarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarBotonActionPerformed
@@ -433,21 +431,28 @@ public class CRUDCandidato extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios",
                 "Error de validación", JOptionPane.ERROR_MESSAGE);
             return;
-        }
-//        }else{
-//            //Se extraen los strings de los text field
-//               try {
-//                   
-//                    );
-//
-//                candidatoON.getInstance().eliminarCandidato(candidato);
-//                actualizarTabla(candidatoON.getInstance().obtenerCandidatos());
-//
-//            } catch (IOException e) {
-//              JOptionPane.showMessageDialog(this, "Error al copiar archivo: " + e.getMessage());
-//                }
-//               
-         //}
+         }
+        int filaSeleccionada = tablaCandidato.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            int confirmacion = JOptionPane.showConfirmDialog(
+                    null, //centra en pantalla
+                    "¿Seguro que quieres eliminar a este candidato?", //el mensaje que se muestra
+                    "confirmar eliminación", //titulo
+                    JOptionPane.YES_NO_OPTION, //tipo de ventana
+                    JOptionPane.WARNING_MESSAGE // icono
+            );
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                Object id = tablaCandidato.getValueAt(filaSeleccionada, 0);
+                candidatoON.getInstance().eliminarCandidato((int) id);
+                cargarCandidatosEnTabla();
+                JOptionPane.showMessageDialog(null, "Candidato eliminado con exito.",
+                        "la eliminación fue exitosa", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Operación cancelada",
+                        "operacion cancelada", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+         }
 
           
         
@@ -506,16 +511,17 @@ public class CRUDCandidato extends javax.swing.JFrame {
                             
                 );
                     
-//                    Candidato cand = new Candidato(
-//                        nom,
-//                        apellidoP.getText(),
-//                        apellidoM.getText(),
-//                        tel,
-//                        cor,
-//                        pue,
-//                        estado,
-//                        rutaRelativa
-//                    );
+                    Candidato cand = new Candidato(
+                        0,
+                        nom,
+                        apellidoP.getText(),
+                        apellidoM.getText(),
+                        tel,
+                        cor,
+                        pue,
+                        estado,
+                        rutaRelativa
+                    );
 
                 candidatoON.getInstance().agregarCandidato(candidato);
                 actualizarTabla(candidatoON.getInstance().obtenerCandidatos());
