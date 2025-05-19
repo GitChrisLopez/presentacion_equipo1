@@ -53,7 +53,7 @@ public class CandidatoON {
             stmt.setString(6, c.getPuesto());
             stmt.setBoolean(7, c.isEstado());
             stmt.setString(8, c.getRutaPDF());
-
+            
             int filas = stmt.executeUpdate(); // ← ejecuta inserción
 
             if (filas > 0) {
