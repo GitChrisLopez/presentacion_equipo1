@@ -11,6 +11,7 @@ package dto;
 public class CandidatoDTO {
 
     private String nombre, apellidoPaterno, apellidoMaterno, telefono, correo, puesto, rutaPDF;
+    float nomina;
     boolean estado;
 
     /**
@@ -32,7 +33,7 @@ public class CandidatoDTO {
      * @param estado es el estado de rechazo o aprobación en la empresa
      * @param rutaPDF Ubicación del archivo PDF.
      */
-    public CandidatoDTO(String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String correo, String puesto, boolean estado, String rutaPDF) {
+    public CandidatoDTO(String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String correo, String puesto, boolean estado, String rutaPDF, float nomina) {
         this.nombre = nombre;
         this.apellidoPaterno= apellidoPaterno;
         this.apellidoMaterno=apellidoMaterno;
@@ -41,6 +42,7 @@ public class CandidatoDTO {
         this.puesto = puesto;
         this.estado = estado;
         this.rutaPDF = rutaPDF;
+        this.nomina = nomina;
     }
 
     public String getNombre() {
@@ -107,6 +109,16 @@ public class CandidatoDTO {
     public void setRutaPDF(String rutaPDF) {
         this.rutaPDF = rutaPDF;
     }
+
+    public float getNomina() {
+        return nomina;
+    }
+
+    public void setNomina(float nomina) {
+        this.nomina = nomina;
+    }
+    
+    
 
     @Override
     public String toString() {

@@ -401,7 +401,6 @@ public class CRUDCandidato extends javax.swing.JFrame {
                 String Rutapdf = tablaCandidato.getValueAt(filaSeleccionada, 7).toString();
 
                 Candidato c = new Candidato(id, nombre, apellidoPaterno, apellidoMaterno, telefono, correo, correo, estado, Rutapdf);
-                CandidatoDTO ca = new CandidatoDTO(nombre, apellidoPaterno, apellidoMaterno, telefono, correo, correo, estado, Rutapdf);
 
                 boolean actualizar = true;                
                 try {
@@ -498,18 +497,6 @@ public class CRUDCandidato extends javax.swing.JFrame {
 
                 // Guardar solo la ruta relativa al archivo en el DTO
                     String rutaRelativa = "CVs/" + nombreArchivo;  // Guardamos solo la ruta relativa
-
-                    CandidatoDTO candidato = new CandidatoDTO(
-                        nom,
-                        apellidoP.getText(),
-                        apellidoM.getText(),
-                        tel,
-                        cor,
-                        pue,
-                        estado,
-                        rutaRelativa // Usamos la ruta relativa aquí
-                            
-                );
                     
                     Candidato cand = new Candidato(
                         0,

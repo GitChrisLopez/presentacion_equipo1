@@ -40,6 +40,7 @@ public class MenuReclutador extends javax.swing.JFrame {
         Mensajeria = new javax.swing.JButton();
         Reportes = new javax.swing.JButton();
         jButtonAdminRH = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -106,6 +107,13 @@ public class MenuReclutador extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Buscador y filtro");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -130,7 +138,8 @@ public class MenuReclutador extends javax.swing.JFrame {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(ButtonAdminNominaRH, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButtonAdminRH, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(registrarCrudCandidatos, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(registrarCrudCandidatos, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1))
                         .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(266, 266, 266)
@@ -157,22 +166,30 @@ public class MenuReclutador extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(revisionCV)
                     .addComponent(jButtonAdminRH))
-                .addGap(36, 36, 36)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(listasCV)
-                    .addComponent(ButtonAdminNominaRH))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(registrarCrudCandidatos))
+                        .addGap(36, 36, 36)
+                        .addComponent(listasCV))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(ButtonAdminNominaRH)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(35, 35, 35)
-                        .addComponent(Reportes)))
-                .addGap(27, 27, 27)
-                .addComponent(Mensajeria)
-                .addGap(18, 18, 18)
+                        .addComponent(Reportes))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(registrarCrudCandidatos)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(Mensajeria))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jButton1)))
+                .addGap(64, 64, 64)
                 .addComponent(cerrarSesion1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -226,6 +243,12 @@ public class MenuReclutador extends javax.swing.JFrame {
         new MenuRH().setVisible(true);
     }//GEN-LAST:event_ReportesActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        BusquedaYFiltro BYF = new BusquedaYFiltro();
+        BYF.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -267,6 +290,7 @@ public class MenuReclutador extends javax.swing.JFrame {
     private javax.swing.JButton Mensajeria;
     private javax.swing.JButton Reportes;
     private javax.swing.JButton cerrarSesion1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonAdminRH;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

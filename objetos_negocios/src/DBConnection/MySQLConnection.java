@@ -19,7 +19,7 @@ public class MySQLConnection implements IConnection {
 
     private final String URL = "jdbc:mysql://localhost:3306/AppRH";
     private final String USER = "root";
-    private final String PASSWORD = "Trufita.99";
+    private final String PASSWORD = "16934";
 
     private MySQLConnection() {}
 
