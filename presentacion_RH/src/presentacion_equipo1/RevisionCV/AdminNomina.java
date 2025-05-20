@@ -5,6 +5,7 @@
 package presentacion_equipo1.RevisionCV;
 
 import entidades.Candidato;
+import objetosnegocio.NominaON;
 import entidades.Reclutador;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -194,16 +195,6 @@ public class AdminNomina extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAgregarNominaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarNominaActionPerformed
-        // TODO add your handling code here:
-//        RegistroRH agregar = new RegistroRH();
-//        agregar.setVisible(true);
-//        agregar.addWindowListener(new java.awt.event.WindowAdapter() {
-//            @Override
-//            public void windowClosed(java.awt.event.WindowEvent e) {
-//                cargarReclutadoresEnTabla(); // Método que recarga la JTable
-//            }
-//        });
-
         int filaSeleccionada = jTablaRegistros.getSelectedRow();
         if (filaSeleccionada != -1) {
             String input = (String) JOptionPane.showInputDialog(
@@ -217,46 +208,68 @@ public class AdminNomina extends javax.swing.JFrame {
             );
 
             if (input != null && !input.trim().isEmpty()) {
-                float nomina = Float.parseFloat(input);
-                // Aquí puedes usar el valor para setearlo, por ejemplo:
+                try {
+                    float nomina = Float.parseFloat(input);
 
-                int confirmacion = JOptionPane.showConfirmDialog(
-                        null, //centra en pantalla
-                        "¿El monto '" + nomina + "' de la nomina es correcto?", //el mensaje que se muestra
-                        "confirmar monto", //titulo
-                        JOptionPane.YES_NO_OPTION, //tipo de ventana
-                        JOptionPane.WARNING_MESSAGE // icono
-                );
+                    int confirmacion = JOptionPane.showConfirmDialog(
+                            null, //centra en pantalla
+                            "¿El monto '" + nomina + "' de la nómina es correcto?", //el mensaje que se muestra
+                            "Confirmar monto", //titulo
+                            JOptionPane.YES_NO_OPTION, //tipo de ventana
+                            JOptionPane.WARNING_MESSAGE //icono
+                    );
 
-                if (confirmacion == JOptionPane.YES_OPTION) {
-                    int id = Integer.parseInt(jTablaRegistros.getValueAt(filaSeleccionada, 0).toString());
-                    String nombreCompleto = jTablaRegistros.getValueAt(filaSeleccionada, 1).toString();
-                    String apellidoPaterno = jTablaRegistros.getValueAt(filaSeleccionada, 2).toString();
-                    String apellidoMaterno = jTablaRegistros.getValueAt(filaSeleccionada, 3).toString();
-                    String puesto = jTablaRegistros.getValueAt(filaSeleccionada, 4).toString();
+                    if (confirmacion == JOptionPane.YES_OPTION) {
+                        int id = Integer.parseInt(jTablaRegistros.getValueAt(filaSeleccionada, 0).toString());
+                        String puesto = jTablaRegistros.getValueAt(filaSeleccionada, 4).toString();
 
-                    Reclutador r = new Reclutador(id, nombreCompleto, apellidoPaterno, apellidoMaterno, puesto, nomina);
-                    ReclutadorDAO.getInstance().actualizarNomina(r);
-                    cargarReclutadoresEnTabla();
-                    JOptionPane.showMessageDialog(null, "Nomina agregada con exito.",
-                            "eliminación exitosa", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Operación cancelada",
-                            "operacion cancelada", JOptionPane.INFORMATION_MESSAGE);
+                        NominaON nominaService = NominaON.getInstance();
+                        boolean esReclutador = puesto.contains("Reclutador") || puesto.contains("Seleccion");
+
+                        boolean resultado;
+                        if (esReclutador) {
+                            resultado = nominaService.actualizarNomina(id, nomina, 'R');
+                        } else {
+                            resultado = nominaService.actualizarNomina(id, nomina, 'C');
+                        }
+
+                        if (resultado) {
+                            JOptionPane.showMessageDialog(null,
+                                    "Nomina agregada con exito.",
+                                    "Operacion exitosa",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null,
+                                    "No se pudo actualizar la nomina.",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+
+                        cargarReclutadoresEnTabla();
+                    } else {
+                        JOptionPane.showMessageDialog(null,
+                                "Operacion cancelada",
+                                "Operacion cancelada",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null,
+                            "El valor ingresado no es un numero valido.",
+                            "Error de formato",
+                            JOptionPane.ERROR_MESSAGE);
                 }
-
-                // Si deseas hacer un INSERT a la base de datos, lo puedes usar así:
-                // String sql = "INSERT INTO reclutadores (...) VALUES (..., " + nomina + ")";
             } else {
-                System.out.println("No se ingresó un valor.");
+                JOptionPane.showMessageDialog(null,
+                        "No se ingreso un valor valido.",
+                        "Error",
+                        JOptionPane.WARNING_MESSAGE);
             }
         } else {
-            System.out.println("error");
-            JOptionPane.showMessageDialog(null, "Selecciona un empleado para agregar correctamente.",
-                    "Error de eliminar", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,
+                    "Selecciona un empleado para agregar correctamente la nómina.",
+                    "Error de selección",
+                    JOptionPane.ERROR_MESSAGE);
         }
-
-
     }//GEN-LAST:event_jButtonAgregarNominaActionPerformed
 
     private void jButtonCerrarVentanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCerrarVentanaActionPerformed
