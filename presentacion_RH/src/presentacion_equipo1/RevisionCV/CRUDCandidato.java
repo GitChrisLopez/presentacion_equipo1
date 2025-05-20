@@ -40,6 +40,7 @@ public class CRUDCandidato extends javax.swing.JFrame {
 
     public CRUDCandidato() {
         initComponents();
+        candidatoON = CandidatoON.getInstance();
         cargarCandidatosEnTabla();
 
     }
@@ -480,58 +481,76 @@ public class CRUDCandidato extends javax.swing.JFrame {
     }//GEN-LAST:event_nombreActionPerformed
 
     private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
-        if (nombre.getText().trim().isEmpty() || apellidoP.getText().trim().isEmpty() || apellidoM.getText().trim().isEmpty()
-                || telefono.getText().trim().isEmpty() || correo.getText().trim().isEmpty() || puesto.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios",
-                    "Error de validación", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        int id = Integer.parseInt(idCampo.getText());
-        String nom = nombre.getText().trim();
-        String apP = apellidoP.getText().trim();
-        String apM = apellidoM.getText().trim();
-        String tel = telefono.getText().trim();
-        String cor = correo.getText().trim();
-        String pue = puesto.getText().trim();
-        String estadoStr = (String) actividad.getSelectedItem();
-        boolean estadoActual = estadoStr.equals("Activo");
-
         try {
-            Candidato cand = new Candidato(
-                    id,
-                    nom,
-                    apP,
-                    apM,
-                    tel,
-                    cor,
-                    pue,
-                    estadoActual,
-                    rutaCVSeleccionado
-            );
+            // Validar campos obligatorios
+            if (nombre.getText().isEmpty() || apellidoP.getText().isEmpty()
+                    || telefono.getText().isEmpty() || correo.getText().isEmpty()
+                    || puesto.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this,
+                        "Todos los campos marcados son obligatorios.",
+                        "Error de validación", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-            candidatoON.getInstance().actualizarCandidato(cand);
+            // Crear objeto Candidato con los datos del formulario
+            Candidato candidato = new Candidato();
+            candidato.setNombre(nombre.getText());
+            candidato.setApellidoPaterno(apellidoP.getText());
+            candidato.setApellidoMaterno(apellidoM.getText());
+            candidato.setTelefono(telefono.getText());
+            candidato.setCorreo(correo.getText());
+            candidato.setPuesto(puesto.getText());
+
+            // Obtener estado del combobox
+            String estadoStr = actividad.getSelectedItem().toString();
+            candidato.setEstado(estadoStr.equals("Activo"));
+
+            // Asignar ruta del CV si existe
+            candidato.setRutaPDF(rutaCVSeleccionado);
+
+            // Inicializar nomina en 0 por defecto (puedes cambiarlo si tienes un campo para esto)
+            candidato.setNomina(0.0f);
+
+            // Verificar si es actualización o inserción
+            if (!idCampo.getText().isEmpty()) {
+                // Es una actualización
+                candidato.setId(Integer.parseInt(idCampo.getText()));
+                CandidatoON.getInstance().actualizarCandidato(candidato);
+                JOptionPane.showMessageDialog(this, "Candidato actualizado correctamente.",
+                        "Actualización exitosa", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                // Es una inserción
+                CandidatoON.getInstance().agregarCandidato(candidato);
+                JOptionPane.showMessageDialog(this, "Candidato guardado correctamente.",
+                        "Guardado exitoso", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+            // Recargar la tabla con los datos actualizados
             cargarCandidatosEnTabla();
 
-            //limpiar el form
+            // Limpiar el formulario y restaurar el botón guardar
             limpiarFormulario();
-
-            //hacer que el boton guardar funcione como antes
             guardar.setText("Guardar");
-            guardar.removeActionListener(guardar.getActionListeners()[0]);
-            guardar.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    guardarActionPerformed(evt);
-                }
-            });
 
-            JOptionPane.showMessageDialog(null, "Candidato actualizado correctamente.",
-                    "Actualización exitosa", JOptionPane.INFORMATION_MESSAGE);
+            // Restaurar el listener original del botón guardar si era una actualización
+            if (!idCampo.getText().isEmpty()) {
+                guardar.removeActionListener(guardar.getActionListeners()[0]);
+                guardar.addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        guardarActionPerformed(evt);
+                    }
+                });
+            }
 
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al guardar candidato: " + ex.getMessage(),
+                    "Error de base de datos", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(CRUDCandidato.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Error al actualizar: " + ex.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Error en formato de datos: " + ex.getMessage(),
+                    "Error de formato", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_guardarActionPerformed
 

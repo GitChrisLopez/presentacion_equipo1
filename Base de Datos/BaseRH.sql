@@ -29,10 +29,8 @@ CREATE TABLE candidatos(
 
 
 -- para revisar
--- select *
--- from reclutadores;
--- select *
--- from candidatos;
+select * from reclutadores;
+select *from candidatos;
 
 -- para probar datos en las tablas desde la bd, no necesariamente tienen que ejecutar estos
 INSERT INTO reclutadores (nombre, apellidoPaterno, apellidoMaterno, puesto, usuario, contrasena, estado, nomina) -- nomina
