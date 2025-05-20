@@ -21,11 +21,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
 /**
  *
  * @author Adrián
  */
 public class CRUDCandidato extends javax.swing.JFrame {
+
     private List<CandidatoDTO> candidatosMostrados;
 
     /**
@@ -34,17 +36,17 @@ public class CRUDCandidato extends javax.swing.JFrame {
     boolean estado = false;
     List<CandidatoDTO> listaCandidatos = new ArrayList<>();
     CandidatoON candidatoON;
+
     public CRUDCandidato() {
         initComponents();
         cargarCandidatosEnTabla();
     }
-    
-    
-        public void cargarCandidatosEnTabla() {
-        // Columnas que se mostrarán
-        DefaultTableModel modelo = new DefaultTableModel(new String[]{"ID","Nombre", "Apellido Paterno","Apellido Materno", "Teléfono", "Email", "Puesto", "Estado", "Archivo CV"}, 0);
-        
-        CandidatoON controlador= CandidatoON.getInstance();
+
+    public void cargarCandidatosEnTabla() {
+        DefaultTableModel modelo = new DefaultTableModel(new String[]{
+            "ID", "Nombre", "Apellido Paterno", "Apellido Materno", "Teléfono", "Email", "Puesto", "Estado", "Archivo CV"}, 0);
+
+        CandidatoON controlador = CandidatoON.getInstance();
         List<Candidato> lista = controlador.obtenerTodos();
 
         for (Candidato c : lista) {
@@ -53,6 +55,8 @@ public class CRUDCandidato extends javax.swing.JFrame {
                 c.getNombre(),
                 c.getApellidoPaterno(),
                 c.getApellidoMaterno(),
+                c.getTelefono(), // Agregado teléfono
+                c.getCorreo(), // Agregado correo
                 c.getPuesto(),
                 c.isEstado() ? "Activo" : "Inactivo",
                 c.getRutaPDF()
@@ -60,8 +64,8 @@ public class CRUDCandidato extends javax.swing.JFrame {
             modelo.addRow(fila);
         }
         tablaCandidato.setModel(modelo);
-
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -263,6 +267,10 @@ public class CRUDCandidato extends javax.swing.JFrame {
             }
         ));
         jScrollPane1.setViewportView(tablaCandidato);
+        if (tablaCandidato.getColumnModel().getColumnCount() > 0) {
+            tablaCandidato.getColumnModel().getColumn(4).setHeaderValue("Telefono");
+            tablaCandidato.getColumnModel().getColumn(5).setHeaderValue("Email");
+        }
 
         jLabel10.setText("Puesto");
 
@@ -394,7 +402,7 @@ public class CRUDCandidato extends javax.swing.JFrame {
 
                 Candidato c = new Candidato(id, nombre, apellidoPaterno, apellidoMaterno, telefono, correo, correo, estado, Rutapdf);
 
-                boolean actualizar = true;                
+                boolean actualizar = true;
                 try {
                     candidatoON.getInstance().actualizarCandidato(c);
                 } catch (SQLException ex) {
@@ -417,12 +425,12 @@ public class CRUDCandidato extends javax.swing.JFrame {
     }//GEN-LAST:event_actualizarBotonActionPerformed
 
     private void EliminarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarBotonActionPerformed
-         if (nombre.getText().trim().isEmpty() || apellidoP.getText().trim().isEmpty()|| apellidoM.getText().trim().isEmpty()
-            || telefono.getText().trim().isEmpty() || correo.getText().trim().isEmpty() || puesto.getText().trim().isEmpty()) {
+        if (nombre.getText().trim().isEmpty() || apellidoP.getText().trim().isEmpty() || apellidoM.getText().trim().isEmpty()
+                || telefono.getText().trim().isEmpty() || correo.getText().trim().isEmpty() || puesto.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios",
-                "Error de validación", JOptionPane.ERROR_MESSAGE);
+                    "Error de validación", JOptionPane.ERROR_MESSAGE);
             return;
-         }
+        }
         int filaSeleccionada = tablaCandidato.getSelectedRow();
         if (filaSeleccionada != -1) {
             int confirmacion = JOptionPane.showConfirmDialog(
@@ -443,10 +451,9 @@ public class CRUDCandidato extends javax.swing.JFrame {
                         "operacion cancelada", JOptionPane.INFORMATION_MESSAGE);
             }
 
-         }
+        }
 
-          
-        
+
     }//GEN-LAST:event_EliminarBotonActionPerformed
 
     private void nombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombreActionPerformed
@@ -454,19 +461,19 @@ public class CRUDCandidato extends javax.swing.JFrame {
     }//GEN-LAST:event_nombreActionPerformed
 
     private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
-        if (nombre.getText().trim().isEmpty() || apellidoP.getText().trim().isEmpty()|| apellidoM.getText().trim().isEmpty()
-            || telefono.getText().trim().isEmpty() || correo.getText().trim().isEmpty() || puesto.getText().trim().isEmpty()) {
+        if (nombre.getText().trim().isEmpty() || apellidoP.getText().trim().isEmpty() || apellidoM.getText().trim().isEmpty()
+                || telefono.getText().trim().isEmpty() || correo.getText().trim().isEmpty() || puesto.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios",
-                "Error de validación", JOptionPane.ERROR_MESSAGE);
+                    "Error de validación", JOptionPane.ERROR_MESSAGE);
             return;
-        //}
-        }else{
+            //}
+        } else {
             //Se extraen los strings de los text field
             String nom = nombre.getText().trim();
             String tel = telefono.getText().trim();
             String cor = correo.getText().trim();
             String pue = puesto.getText().trim();
-            
+
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos PDF", "pdf"));
 
@@ -483,40 +490,36 @@ public class CRUDCandidato extends javax.swing.JFrame {
                 }
 
                 // Guardar el archivo con la ruta relativa en el DTO
-                    File destino = new File(carpetaCVs, nombreArchivo);
-                        try {
+                File destino = new File(carpetaCVs, nombreArchivo);
+                try {
                     Files.copy(archivoSeleccionado.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-                // Guardar solo la ruta relativa al archivo en el DTO
+                    // Guardar solo la ruta relativa al archivo en el DTO
                     String rutaRelativa = "CVs/" + nombreArchivo;  // Guardamos solo la ruta relativa
-                    
+
                     Candidato cand = new Candidato(
-                        0,
-                        nom,
-                        apellidoP.getText(),
-                        apellidoM.getText(),
-                        tel,
-                        cor,
-                        pue,
-                        estado,
-                        rutaRelativa
+                            0,
+                            nom,
+                            apellidoP.getText(),
+                            apellidoM.getText(),
+                            tel,
+                            cor,
+                            pue,
+                            estado,
+                            rutaRelativa
                     );
 
-                candidatoON.getInstance().agregarCandidato(cand);
-                actualizarTabla(candidatoON.getInstance().obtenerCandidatos());
-                cargarCandidatosEnTabla();
-            } catch (IOException e) {
-              JOptionPane.showMessageDialog(this, "Error al copiar archivo: " + e.getMessage());
+                    candidatoON.getInstance().agregarCandidato(cand);
+                    actualizarTabla(candidatoON.getInstance().obtenerCandidatos());
+                    cargarCandidatosEnTabla();
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(this, "Error al copiar archivo: " + e.getMessage());
                 } catch (SQLException ex) {
                     Logger.getLogger(CRUDCandidato.class.getName()).log(Level.SEVERE, null, ex);
                 }
-          }
+            }
         }
     }//GEN-LAST:event_guardarActionPerformed
-
-    private void telefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_telefonoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_telefonoActionPerformed
 
     private void puestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_puestoActionPerformed
         // TODO add your handling code here:
@@ -524,15 +527,19 @@ public class CRUDCandidato extends javax.swing.JFrame {
 
     private void actividadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actividadActionPerformed
         //Se compara la seleccion del combo box   
-        if(evt.getSource() == actividad){
-                //se equivale la seleccion al estado seleccionado
-               String seleccion = (String)actividad.getSelectedItem();
-               //Si Seleccion es igual a "Activo", el estado se vuelve activo
-               if(seleccion.equals("Activo")){
-                   estado = true;
-               }
-           }
+        if (evt.getSource() == actividad) {
+            //se equivale la seleccion al estado seleccionado
+            String seleccion = (String) actividad.getSelectedItem();
+            //Si Seleccion es igual a "Activo", el estado se vuelve activo
+            if (seleccion.equals("Activo")) {
+                estado = true;
+            }
+        }
     }//GEN-LAST:event_actividadActionPerformed
+
+    private void telefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_telefonoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_telefonoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -569,7 +576,8 @@ public class CRUDCandidato extends javax.swing.JFrame {
             }
         });
     }
-        private void actualizarTabla(List<CandidatoDTO> lista) {
+
+    private void actualizarTabla(List<CandidatoDTO> lista) {
         DefaultTableModel model = (DefaultTableModel) tablaCandidato.getModel();
         model.setRowCount(0); // limpiar tabla
 

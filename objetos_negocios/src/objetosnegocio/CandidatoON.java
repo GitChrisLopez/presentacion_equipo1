@@ -36,26 +36,26 @@ public class CandidatoON {
     //cargamos los candidatos desde la base de datos
     private void cargarCandidatosDesdeDB() {
         listaCandidatos.clear(); //limpiamos la lista antes de cargar
-        
+
         List<Candidato> candidatos = obtenerTodos();
         for (Candidato c : candidatos) {
             CandidatoDTO dto = new CandidatoDTO(
-                c.getNombre(),
-                c.getApellidoPaterno(),
-                c.getApellidoMaterno(),
-                "", // No tenemos el telefono en la base de datos
-                "", // No tenemos el correo en la base de datos
-                c.getPuesto(),
-                c.isEstado(),
-                c.getRutaPDF(),
-                c.getNomina()
+                    c.getNombre(),
+                    c.getApellidoPaterno(),
+                    c.getApellidoMaterno(),
+                    c.getTelefono(),
+                    c.getCorreo(),
+                    c.getPuesto(),
+                    c.isEstado(),
+                    c.getRutaPDF(),
+                    c.getNomina()
             );
             listaCandidatos.add(dto);
         }
     }
 
     public void agregarCandidato(Candidato c) throws SQLException {
-        String sql = "INSERT INTO candidatos (nombre, apellidoPaterno, apellidoMaterno, puesto, estado, rutapdf, nomina) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO candidatos (nombre, apellidoPaterno, apellidoMaterno, telefono, correo, puesto, estado, rutapdf, nomina) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -66,10 +66,12 @@ public class CandidatoON {
             stmt.setString(1, c.getNombre());
             stmt.setString(2, c.getApellidoPaterno());
             stmt.setString(3, c.getApellidoMaterno());
-            stmt.setString(4, c.getPuesto());
-            stmt.setBoolean(5, c.isEstado());
-            stmt.setString(6, c.getRutaPDF());
-            stmt.setFloat(7, c.getNomina());
+            stmt.setString(4, c.getTelefono());
+            stmt.setString(5, c.getCorreo());
+            stmt.setString(6, c.getPuesto());
+            stmt.setBoolean(7, c.isEstado());
+            stmt.setString(8, c.getRutaPDF());
+            stmt.setFloat(9, c.getNomina());
 
             int filas = stmt.executeUpdate();
 
@@ -83,8 +85,12 @@ public class CandidatoON {
             throw new SQLException("Error al insertar el candidato", e);
         } finally {
             try {
-                if (stmt != null) stmt.close();
-                if (conn != null) conexion.closeConnection(conn);
+                if (stmt != null) {
+                    stmt.close();
+                }
+                if (conn != null) {
+                    conexion.closeConnection(conn);
+                }
             } catch (SQLException e) {
                 System.out.println("Error al cerrar la conexión: " + e.getMessage());
             }
@@ -92,17 +98,19 @@ public class CandidatoON {
     }
 
     public void actualizarCandidato(Candidato c) throws SQLException {
-        String sql = "UPDATE candidatos SET nombre = ?, apellidoPaterno = ?, apellidoMaterno = ?, puesto = ?, estado = ?, rutapdf = ?, nomina = ? WHERE id = ?";
+        String sql = "UPDATE candidatos SET nombre = ?, apellidoPaterno = ?, apellidoMaterno = ?, telefono = ?, correo = ?, puesto = ?, estado = ?, rutapdf = ?, nomina = ? WHERE id = ?";
 
         try (Connection conn = conexion.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, c.getNombre());
             stmt.setString(2, c.getApellidoPaterno());
             stmt.setString(3, c.getApellidoMaterno());
-            stmt.setString(4, c.getPuesto());
-            stmt.setBoolean(5, c.isEstado());
-            stmt.setString(6, c.getRutaPDF());
-            stmt.setFloat(7, c.getNomina());
-            stmt.setInt(8, c.getId());
+            stmt.setString(4, c.getTelefono());
+            stmt.setString(5, c.getCorreo());
+            stmt.setString(6, c.getPuesto());
+            stmt.setBoolean(7, c.isEstado());
+            stmt.setString(8, c.getRutaPDF());
+            stmt.setFloat(9, c.getNomina());
+            stmt.setInt(10, c.getId());
 
             int filas = stmt.executeUpdate();
 
@@ -151,6 +159,8 @@ public class CandidatoON {
                 c.setNombre(rs.getString("nombre"));
                 c.setApellidoPaterno(rs.getString("apellidoPaterno"));
                 c.setApellidoMaterno(rs.getString("apellidoMaterno"));
+                c.setTelefono(rs.getString("telefono"));
+                c.setCorreo(rs.getString("correo"));
                 c.setPuesto(rs.getString("puesto"));
                 c.setEstado(rs.getBoolean("estado"));
                 c.setRutaPDF(rs.getString("rutapdf"));
@@ -162,9 +172,15 @@ public class CandidatoON {
             System.out.println("Error al obtener candidatos: " + e.getMessage());
         } finally {
             try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-                if (conn != null) conexion.closeConnection(conn);
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+                if (conn != null) {
+                    conexion.closeConnection(conn);
+                }
             } catch (SQLException e) {
                 System.out.println("Error al cerrar recursos: " + e.getMessage());
             }

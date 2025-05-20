@@ -19,6 +19,8 @@ CREATE TABLE candidatos(
     nombre VARCHAR(100),
     apellidoPaterno VARCHAR(50),
     apellidoMaterno VARCHAR(50),
+    telefono VARCHAR(20),
+    correo VARCHAR(30),
     puesto VARCHAR(50),
     estado boolean,
 	rutapdf text,
@@ -42,12 +44,12 @@ INSERT INTO reclutadores (nombre, apellidoPaterno, apellidoMaterno, puesto, usua
 VALUES 
 ('Lucía', 'Mendoza', 'Ruiz', 'Reclutadora Junior', 'lmendoza', 'clave789', TRUE);
 
-INSERT INTO candidatos (nombre, apellidoPaterno, apellidoMaterno, puesto, estado, rutapdf, nomina) 
+INSERT INTO candidatos (nombre, apellidoPaterno, apellidoMaterno, telefono, correo, puesto, estado, rutapdf, nomina) 
 VALUES 
-('Laura', 'Sánchez', 'García', 'Diseñadora Gráfica', TRUE, 'CVs/laura_sanchez.pdf', 12000.00),
-('José', 'Martínez', 'Lopez', 'Desarrollador Backend', TRUE, 'CVs/jose_martinez.pdf', 18000.00),
-('Ana', 'Pérez', 'Rodríguez', 'Marketing Digital', TRUE, 'CVs/ana_perez.pdf', 15000.00),
-('Carlos', 'Gomez', 'Lopez', 'Ingeniero en Software', TRUE, 'CVs/carlos_gomez.pdf', 12000.00),
-('Francisco', 'Mercado', 'Franco', 'Contador Público', TRUE, 'CVs/francisco_mercado.pdf', 18000.00),
-('Jacqueline', 'Thompson', 'Blue', 'Marketing Digital', TRUE, 'CVs/jacqueline_thompson.pdf', 15000.00),
-('Julian', 'Alonso', 'Barrera', 'Abogado', TRUE, 'CVs/julian_alonso.pdf', 17500.00);
+('Laura', 'Sánchez', 'García','(52)2345678', 'LauraS@gmail.com', 'Diseñadora Gráfica', TRUE, 'CVs/laura_sanchez.pdf', 12000.00),
+('José', 'Martínez', 'Lopez','(51)24334478', 'JoseM@gmail.com', 'Desarrollador Backend', TRUE, 'CVs/jose_martinez.pdf', 18000.00),
+('Ana', 'Pérez', 'Rodríguez','(1)21314478', 'AnaP@gmail.com', 'Marketing Digital', TRUE, 'CVs/ana_perez.pdf', 15000.00),
+('Carlos', 'Gomez', 'Lopez','(2)24222278', 'CarlosG@gmail.com','Ingeniero en Software', TRUE, 'CVs/carlos_gomez.pdf', 12000.00),
+('Francisco', 'Mercado', 'Franco','(42)567846', 'FranciscoM@gmail.com', 'Contador Público', TRUE, 'CVs/francisco_mercado.pdf', 18000.00),
+('Jacqueline', 'Thompson', 'Blue','(58)8589150', 'JacquelineT@gmail.com', 'Marketing Digital', TRUE, 'CVs/jacqueline_thompson.pdf', 15000.00),
+('Julian', 'Alonso', 'Barrera','(51)644133223', 'JulianA@gmail.com', 'Abogado', TRUE, 'CVs/julian_alonso.pdf', 17500.00);
