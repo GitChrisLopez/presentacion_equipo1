@@ -47,7 +47,13 @@ public class CRUDCandidato extends javax.swing.JFrame {
 
     public void cargarCandidatosEnTabla() {
         DefaultTableModel modelo = new DefaultTableModel(new String[]{
-            "ID", "Nombre", "ApellidoPaterno", "ApellidoMaterno", "Teléfono", "Email", "Puesto", "Estado", "Archivo CV"}, 0);
+            "ID", "Nombre", "ApellidoPaterno", "ApellidoMaterno", "Teléfono", "Email", "Puesto", "Estado", "Archivo CV"}, 0) {
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; //hace que ninguna celda sea editable
+            }
+        };
 
         CandidatoON controlador = CandidatoON.getInstance();
         List<Candidato> lista = controlador.obtenerTodos();
