@@ -29,6 +29,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class CRUDCandidato extends javax.swing.JFrame {
 
     private List<CandidatoDTO> candidatosMostrados;
+    private String rutaCVSeleccionado = null;
 
     /**
      * Creates new form CRUDCandidato
@@ -40,11 +41,12 @@ public class CRUDCandidato extends javax.swing.JFrame {
     public CRUDCandidato() {
         initComponents();
         cargarCandidatosEnTabla();
+
     }
 
     public void cargarCandidatosEnTabla() {
         DefaultTableModel modelo = new DefaultTableModel(new String[]{
-            "ID", "Nombre", "Apellido Paterno", "Apellido Materno", "Teléfono", "Email", "Puesto", "Estado", "Archivo CV"}, 0);
+            "ID", "Nombre", "ApellidoPaterno", "ApellidoMaterno", "Teléfono", "Email", "Puesto", "Estado", "Archivo CV"}, 0);
 
         CandidatoON controlador = CandidatoON.getInstance();
         List<Candidato> lista = controlador.obtenerTodos();
@@ -63,7 +65,9 @@ public class CRUDCandidato extends javax.swing.JFrame {
             };
             modelo.addRow(fila);
         }
+
         tablaCandidato.setModel(modelo);
+
     }
 
     /**
@@ -104,6 +108,7 @@ public class CRUDCandidato extends javax.swing.JFrame {
         puesto = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         idCampo = new javax.swing.JTextField();
+        guardarCV = new javax.swing.JButton();
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -187,6 +192,8 @@ public class CRUDCandidato extends javax.swing.JFrame {
                 .addGap(439, 439, 439))
         );
 
+        volverButton.setBackground(new java.awt.Color(0, 0, 51));
+        volverButton.setForeground(new java.awt.Color(255, 255, 255));
         volverButton.setText("Volver");
         volverButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -289,6 +296,13 @@ public class CRUDCandidato extends javax.swing.JFrame {
             }
         });
 
+        guardarCV.setText("CV");
+        guardarCV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarCVActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -296,36 +310,42 @@ public class CRUDCandidato extends javax.swing.JFrame {
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(apellidoM, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
-                    .addComponent(jLabel4)
-                    .addComponent(nombre)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6)
-                    .addComponent(apellidoP)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel9)
-                    .addComponent(telefono, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
-                    .addComponent(correo)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(puesto)
-                    .addComponent(actividad, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7)
-                    .addComponent(volverButton)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(idCampo))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addComponent(guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(77, 77, 77)
-                        .addComponent(actualizarBoton, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(EliminarBoton))
-                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(apellidoM, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                            .addComponent(jLabel4)
+                            .addComponent(nombre)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6)
+                            .addComponent(apellidoP)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel9)
+                            .addComponent(telefono, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                            .addComponent(correo)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(puesto)
+                            .addComponent(actividad, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(idCampo))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 921, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 921, Short.MAX_VALUE)
+                                .addContainerGap())
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(volverButton, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(actualizarBoton, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(67, 67, 67)
+                                .addComponent(EliminarBoton)
+                                .addGap(24, 24, 24))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(guardarCV, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -365,16 +385,17 @@ public class CRUDCandidato extends javax.swing.JFrame {
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(actividad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
-                        .addComponent(volverButton))
+                        .addGap(18, 18, 18)
+                        .addComponent(guardarCV, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(EliminarBoton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(actualizarBoton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap())
+                            .addComponent(actualizarBoton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(volverButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         pack();
@@ -389,56 +410,47 @@ public class CRUDCandidato extends javax.swing.JFrame {
     private void actualizarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarBotonActionPerformed
         int filaSeleccionada = tablaCandidato.getSelectedRow();
         if (filaSeleccionada != -1) {
-            int confirmacion = JOptionPane.showConfirmDialog(
-                    null, //centra en pantalla
-                    "¿Seguro que quieres actualizar a este reclutador?", //el mensaje que se muestra
-                    "confirmar de actualizar", //titulo
-                    JOptionPane.YES_NO_OPTION, //tipo de ventana
-                    JOptionPane.WARNING_MESSAGE // icono
-            );
-            if (confirmacion == JOptionPane.YES_OPTION) {
-                int id = Integer.parseInt(tablaCandidato.getValueAt(filaSeleccionada, 0).toString());
-                String nombre = tablaCandidato.getValueAt(filaSeleccionada, 1).toString();
-                String apellidoPaterno = tablaCandidato.getValueAt(filaSeleccionada, 2).toString();
-                String apellidoMaterno = tablaCandidato.getValueAt(filaSeleccionada, 3).toString();
-                String telefono = tablaCandidato.getValueAt(filaSeleccionada, 4).toString();
-                String correo = tablaCandidato.getValueAt(filaSeleccionada, 5).toString();
-                String puesto = tablaCandidato.getValueAt(filaSeleccionada, 6).toString();
-                boolean estado = Boolean.parseBoolean(tablaCandidato.getValueAt(filaSeleccionada, 6).toString());
-                String Rutapdf = tablaCandidato.getValueAt(filaSeleccionada, 7).toString();
+            //cargar los datos del candidato seleccionado en los campos de texto
+            idCampo.setText(tablaCandidato.getValueAt(filaSeleccionada, 0).toString());
+            nombre.setText(tablaCandidato.getValueAt(filaSeleccionada, 1).toString());
+            apellidoP.setText(tablaCandidato.getValueAt(filaSeleccionada, 2).toString());
+            apellidoM.setText(tablaCandidato.getValueAt(filaSeleccionada, 3).toString());
+            telefono.setText(tablaCandidato.getValueAt(filaSeleccionada, 4).toString());
+            correo.setText(tablaCandidato.getValueAt(filaSeleccionada, 5).toString());
+            puesto.setText(tablaCandidato.getValueAt(filaSeleccionada, 6).toString());
 
-                Candidato c = new Candidato(id, nombre, apellidoPaterno, apellidoMaterno, telefono, correo, correo, estado, Rutapdf);
+            String estadoStr = tablaCandidato.getValueAt(filaSeleccionada, 7).toString();
+            actividad.setSelectedItem(estadoStr); //celecciona "Activo" o "Inactivo"
+            estado = estadoStr.equals("Activo"); //actualiza el estado
 
-                boolean actualizar = true;
-                try {
-                    candidatoON.getInstance().actualizarCandidato(c);
-                } catch (SQLException ex) {
-                    Logger.getLogger(CRUDCandidato.class.getName()).log(Level.SEVERE, null, ex);
+            // Almacenar la ruta actual del CV
+            rutaCVSeleccionado = tablaCandidato.getValueAt(filaSeleccionada, 8).toString();
+
+            //cambiar el la accion de guardar para actualizar y no insertar
+            guardar.setText("Guardar Cambios");
+            guardar.removeActionListener(guardar.getActionListeners()[0]);
+            guardar.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    guardarActionPerformed(evt);
                 }
-                cargarCandidatosEnTabla();
-                actualizarTabla(candidatoON.getInstance().obtenerCandidatos());
-                JOptionPane.showMessageDialog(null, "Candidato actualizado con exito.",
-                        "actualización exitosa", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(null, "Operación cancelada",
-                        "operacion cancelada", JOptionPane.INFORMATION_MESSAGE);
-            }
+            });
 
+            JOptionPane.showMessageDialog(null, "Puede editar los campos y luego guardar los cambios.",
+                    "Modo edición", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            System.out.println("error");
-            JOptionPane.showMessageDialog(null, "Selecciona un Candidato  para eliminar correctamente.",
-                    "Error de eliminar", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Debe seleccionar un candidato para actualizar.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_actualizarBotonActionPerformed
 
     private void EliminarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarBotonActionPerformed
-        if (nombre.getText().trim().isEmpty() || apellidoP.getText().trim().isEmpty() || apellidoM.getText().trim().isEmpty()
-                || telefono.getText().trim().isEmpty() || correo.getText().trim().isEmpty() || puesto.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios",
-                    "Error de validación", JOptionPane.ERROR_MESSAGE);
+        int filaSeleccionada = tablaCandidato.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(null, "Selecciona un candidato para eliminar.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        int filaSeleccionada = tablaCandidato.getSelectedRow();
+
         if (filaSeleccionada != -1) {
             int confirmacion = JOptionPane.showConfirmDialog(
                     null, //centra en pantalla
@@ -473,58 +485,53 @@ public class CRUDCandidato extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios",
                     "Error de validación", JOptionPane.ERROR_MESSAGE);
             return;
-            //}
-        } else {
-            //Se extraen los strings de los text field
-            String nom = nombre.getText().trim();
-            String tel = telefono.getText().trim();
-            String cor = correo.getText().trim();
-            String pue = puesto.getText().trim();
+        }
 
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos PDF", "pdf"));
+        int id = Integer.parseInt(idCampo.getText());
+        String nom = nombre.getText().trim();
+        String apP = apellidoP.getText().trim();
+        String apM = apellidoM.getText().trim();
+        String tel = telefono.getText().trim();
+        String cor = correo.getText().trim();
+        String pue = puesto.getText().trim();
+        String estadoStr = (String) actividad.getSelectedItem();
+        boolean estadoActual = estadoStr.equals("Activo");
 
-            int resultado = fileChooser.showOpenDialog(this);
-            if (resultado == JFileChooser.APPROVE_OPTION) {
-                File archivoSeleccionado = fileChooser.getSelectedFile();
-                String nombreArchivo = archivoSeleccionado.getName();
+        try {
+            Candidato cand = new Candidato(
+                    id,
+                    nom,
+                    apP,
+                    apM,
+                    tel,
+                    cor,
+                    pue,
+                    estadoActual,
+                    rutaCVSeleccionado
+            );
 
-                // Ruta base dinámica
-                String rutaBase = System.getProperty("user.dir");
-                File carpetaCVs = new File(rutaBase, "../objetos_negocios/src/CVs");
-                if (!carpetaCVs.exists()) {
-                    carpetaCVs.mkdirs();
+            candidatoON.getInstance().actualizarCandidato(cand);
+            cargarCandidatosEnTabla();
+
+            //limpiar el form
+            limpiarFormulario();
+
+            //hacer que el boton guardar funcione como antes
+            guardar.setText("Guardar");
+            guardar.removeActionListener(guardar.getActionListeners()[0]);
+            guardar.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    guardarActionPerformed(evt);
                 }
+            });
 
-                // Guardar el archivo con la ruta relativa en el DTO
-                File destino = new File(carpetaCVs, nombreArchivo);
-                try {
-                    Files.copy(archivoSeleccionado.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            JOptionPane.showMessageDialog(null, "Candidato actualizado correctamente.",
+                    "Actualización exitosa", JOptionPane.INFORMATION_MESSAGE);
 
-                    // Guardar solo la ruta relativa al archivo en el DTO
-                    String rutaRelativa = "CVs/" + nombreArchivo;  // Guardamos solo la ruta relativa
-
-                    Candidato cand = new Candidato(
-                            0,
-                            nom,
-                            apellidoP.getText(),
-                            apellidoM.getText(),
-                            tel,
-                            cor,
-                            pue,
-                            estado,
-                            rutaRelativa
-                    );
-
-                    candidatoON.getInstance().agregarCandidato(cand);
-                    actualizarTabla(candidatoON.getInstance().obtenerCandidatos());
-                    cargarCandidatosEnTabla();
-                } catch (IOException e) {
-                    JOptionPane.showMessageDialog(this, "Error al copiar archivo: " + e.getMessage());
-                } catch (SQLException ex) {
-                    Logger.getLogger(CRUDCandidato.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDCandidato.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error al actualizar: " + ex.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_guardarActionPerformed
 
@@ -551,6 +558,47 @@ public class CRUDCandidato extends javax.swing.JFrame {
     private void idCampoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idCampoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_idCampoActionPerformed
+
+    private void guardarCVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarCVActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos PDF", "pdf"));
+
+        int resultado = fileChooser.showOpenDialog(this);
+        if (resultado == JFileChooser.APPROVE_OPTION) {
+            File archivoSeleccionado = fileChooser.getSelectedFile();
+            String nombreArchivo = archivoSeleccionado.getName();
+
+            //Ruta base dinamica
+            String rutaBase = System.getProperty("user.dir");
+            File carpetaCVs = new File(rutaBase, "../objetos_negocios/src/CVs");
+            if (!carpetaCVs.exists()) {
+                carpetaCVs.mkdirs();
+            }
+
+            File destino = new File(carpetaCVs, nombreArchivo);
+            try {
+                Files.copy(archivoSeleccionado.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                rutaCVSeleccionado = "CVs/" + nombreArchivo;
+
+                JOptionPane.showMessageDialog(this, "CV guardado correctamente.");
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Error al copiar archivo: " + e.getMessage());
+                rutaCVSeleccionado = null;
+            }
+        }
+    }//GEN-LAST:event_guardarCVActionPerformed
+
+    private void limpiarFormulario() {
+        idCampo.setText("");
+        nombre.setText("");
+        apellidoP.setText("");
+        apellidoM.setText("");
+        telefono.setText("");
+        correo.setText("");
+        puesto.setText("");
+        actividad.setSelectedItem("Activo");
+        rutaCVSeleccionado = null;
+    }
 
     /**
      * @param args the command line arguments
@@ -618,6 +666,7 @@ public class CRUDCandidato extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JTextField correo;
     private javax.swing.JButton guardar;
+    private javax.swing.JButton guardarCV;
     private javax.swing.JTextField idCampo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

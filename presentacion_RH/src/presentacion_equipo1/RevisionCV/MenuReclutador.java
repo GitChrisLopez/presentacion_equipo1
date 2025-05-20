@@ -4,7 +4,7 @@
  */
 package presentacion_equipo1.RevisionCV;
 
-import mensajeria.MenuEmisor;
+import mensajeria.MenuEmail;
 import negocios_reportes.MenuRH;
 /**
  *
@@ -212,7 +212,7 @@ public class MenuReclutador extends javax.swing.JFrame {
 
     private void MensajeriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MensajeriaActionPerformed
         // TODO add your handling code here:
-        new MenuEmisor().setVisible(true);
+        new MenuEmail().setVisible(true);
     }//GEN-LAST:event_MensajeriaActionPerformed
 
     private void jButtonAdminRHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdminRHActionPerformed

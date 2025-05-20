@@ -234,8 +234,24 @@ public class BusquedaYFiltro extends javax.swing.JFrame {
         if (!keyWords.isEmpty()) {
             resultados = busqueda.buscarPorPalabrasClave(keyWords);
         } else {
-            //si no hay palabras clave, buscar por el texto en la barra de busqueda
+            //buscar en diferentes campos
+            //por nombre
             resultados = busqueda.buscarPorNombre(textoBusqueda);
+
+            //por apellido materno
+            if (resultadosVacios(resultados)) {
+                resultados = busqueda.buscarPorApellidoMaterno(textoBusqueda);
+            }
+
+            //por apellido paterno
+            if (resultadosVacios(resultados)) {
+                resultados = busqueda.buscarPorApellidoPaterno(textoBusqueda);
+            }
+
+            //por puesto
+            if (resultadosVacios(resultados)) {
+                resultados = busqueda.buscarPorPuesto(textoBusqueda);
+            }
         }
 
         //mostrar resultados
@@ -249,9 +265,8 @@ public class BusquedaYFiltro extends javax.swing.JFrame {
         if (!textoBusqueda.isEmpty() && !keyWords.contains(textoBusqueda)) {
             keyWords.add(textoBusqueda);
             listModel.addElement(textoBusqueda);
-            barraBusqueda.setText(""); // Limpiar la barra de búsqueda
+            barraBusqueda.setText(""); //limpiar la barra de busqueda
         }
-
     }//GEN-LAST:event_jBtnFiltrarActionPerformed
 
     private void VolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VolverActionPerformed
@@ -356,6 +371,24 @@ public class BusquedaYFiltro extends javax.swing.JFrame {
             List<Reclutador> reclutadores = (List<Reclutador>) resultados.get(1);
             actualizarTabla(candidatos, reclutadores);
         }
+    }
+
+    /**
+     * Comprueba si los resultados de búsqueda están vacíos
+     *
+     * @param resultados Lista de resultados a verificar
+     * @return true si los resultados están vacíos, false en caso contrario
+     */
+    private boolean resultadosVacios(List<Object> resultados) {
+        if (resultados == null || resultados.size() < 2) {
+            return true;
+        }
+
+        List<Candidato> candidatos = (List<Candidato>) resultados.get(0);
+        List<Reclutador> reclutadores = (List<Reclutador>) resultados.get(1);
+
+        return (candidatos == null || candidatos.isEmpty())
+                && (reclutadores == null || reclutadores.isEmpty());
     }
 
     private void actualizarTabla(List<Candidato> listaC, List<Reclutador> listaR) {

@@ -171,11 +171,11 @@ public class IniciarSesionRH extends javax.swing.JFrame {
 
     private void iniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarSesionActionPerformed
         Map<String, String> usuariosValidos = new HashMap<>();
-        usuariosValidos.put("Chris", "12345");
-        usuariosValidos.put("Paula", "1234");
-        usuariosValidos.put("Adrian", "1234");
+        usuariosValidos.put("chris", "12345");
+        usuariosValidos.put("paula", "1234");
+        usuariosValidos.put("adrian", "1234");
 
-        String usuarioIngresado = txtUser.getText().trim();
+        String usuarioIngresado = txtUser.getText().toLowerCase().trim();
         String contraIngresada = txtContra.getText().trim();
 
         if (usuarioIngresado.isEmpty() || contraIngresada.isEmpty()) {
