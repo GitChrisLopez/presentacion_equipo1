@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import objetosnegocio.BusquedaON;
 import objetosnegocio.CandidatoON;
-import objetosnegocio.ReclutadorON;
+import objetosnegocio.ReclutadorDAO;
 
 /**
  *
@@ -36,7 +36,7 @@ public class BusquedaYFiltro extends javax.swing.JFrame {
     CandidatoON candidatoON;
 
     List<Reclutador> listaReclutador = new ArrayList<>();
-    ReclutadorON reclutadorON;
+    ReclutadorDAO reclutadorON;
 
     private List<Candidato> candidatosMostrados;
     private List<Reclutador> reclutadoresMostrados;
@@ -58,7 +58,7 @@ public class BusquedaYFiltro extends javax.swing.JFrame {
         listModel = new DefaultListModel<>();
         jListPalabrasClave.setModel(listModel);
         jListPalabrasClave.setCellRenderer(new RendererConBtn());
-           jListPalabrasClave.addMouseListener(new java.awt.event.MouseAdapter() {
+        jListPalabrasClave.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int index = jListPalabrasClave.locationToIndex(evt.getPoint());
@@ -74,8 +74,8 @@ public class BusquedaYFiltro extends javax.swing.JFrame {
                     }
                 }
             }
-    });
-                   }
+        });
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -195,9 +195,12 @@ public class BusquedaYFiltro extends javax.swing.JFrame {
         }
         keyWords.add(barraBusqueda.getText());
         List<Candidato> todosC = candidatoON.getInstance().obtenerTodos();
-        List<Reclutador> todosR= reclutadorON.getInstance().obtenerTodos();
-        busqueda.BusquedaCandidatoNombre(barraBusqueda.getText());
-        // Actualizar los candidatos y Reclutadores mostrados y la tabla
+        List<Reclutador> todosR = reclutadorON.getInstance().obtenerTodos();
+        busqueda.BuscarPorNombre(barraBusqueda.getText());
+        busqueda.BuscarPorApellidoPaterno(barraBusqueda.getText());
+        busqueda.BuscarPorApellidoMaterno(barraBusqueda.getText());
+        busqueda.BuscarPorPuesto(barraBusqueda.getText());
+         // Actualizar los candidatos y Reclutadores mostrados y la tabla
         
     }//GEN-LAST:event_jBtnFiltrarActionPerformed
 
@@ -241,7 +244,8 @@ public class BusquedaYFiltro extends javax.swing.JFrame {
             }
         });
     }
-        private void actualizarTabla(List<Candidato> listaC, List<Reclutador> listaR) {
+
+    private void actualizarTabla(List<Candidato> listaC, List<Reclutador> listaR) {
         DefaultTableModel model = (DefaultTableModel) tablaCendidatosyReclutadores.getModel();
         model.setRowCount(0); // limpiar tabla
 
