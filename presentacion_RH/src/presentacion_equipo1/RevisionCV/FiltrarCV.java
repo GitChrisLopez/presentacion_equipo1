@@ -377,7 +377,13 @@ public class FiltrarCV extends javax.swing.JFrame {
     private void botonBorrarClave(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBorrarClave
         keyWords.clear();
         listModel.clear();
-        jTxtPalabraClave.setText(null);
+        jTxtPalabraClave.setText("");
+
+        //actualizar tabla despues de borrar los filtros
+        System.out.println("Cargando candidatos en la tabla...");
+        List<CandidatoDTO> candidatos = candidatoON.obtenerCandidatos();
+        System.out.println("Candidatos obtenidos: " + candidatos.size());
+        actualizarTabla(candidatos);
     }//GEN-LAST:event_botonBorrarClave
 
     private void BtnResumenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnResumenActionPerformed

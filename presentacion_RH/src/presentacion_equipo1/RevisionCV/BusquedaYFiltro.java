@@ -41,20 +41,20 @@ public class BusquedaYFiltro extends javax.swing.JFrame {
     private List<Candidato> candidatosMostrados;
     private List<Reclutador> reclutadoresMostrados;
 
-    /**
-     * Creates new form BusquedaYFiltro
-     */
     public BusquedaYFiltro() {
         initComponents();
         candidatosMostrados = new ArrayList<>();
         reclutadoresMostrados = new ArrayList<>();
         this.setLocationRelativeTo(null);
 
+        busqueda = BusquedaON.getInstance();
+        candidatoON = CandidatoON.getInstance(); // si es singleton
+        reclutadorON = ReclutadorDAO.getInstance();
+
         tablaCendidatosyReclutadores.setEnabled(true);
 
-        //Codigo para pruebas
-        keyWords = new ArrayList<>();//Lista de palabras clave
-
+// Código para pruebas
+        keyWords = new ArrayList<>();
         listModel = new DefaultListModel<>();
         jListPalabrasClave.setModel(listModel);
         jListPalabrasClave.setCellRenderer(new RendererConBtn());
@@ -66,8 +66,6 @@ public class BusquedaYFiltro extends javax.swing.JFrame {
                 if (bounds != null && index >= 0) {
                     int xRelativo = evt.getX() - bounds.x;
                     int ancho = bounds.width;
-
-                    // Detectar si se clicó cerca del lado derecho (simula la "X")
                     if (xRelativo >= ancho - 20) {
                         keyWords.remove(listModel.get(index));
                         listModel.remove(index);
@@ -75,6 +73,30 @@ public class BusquedaYFiltro extends javax.swing.JFrame {
                 }
             }
         });
+
+        System.out.println("Cargando candidatos en la tabla...");
+        List<CandidatoDTO> candidatosDTO = candidatoON.obtenerCandidatos();
+        List<Candidato> candidatos = new ArrayList<>();
+
+        for (CandidatoDTO dto : candidatosDTO) {
+            Candidato c = new Candidato();
+            c.setNombre(dto.getNombre());
+            c.setApellidoPaterno(dto.getApellidoPaterno());
+            c.setApellidoMaterno(dto.getApellidoMaterno());
+            c.setTelefono(dto.getTelefono());
+            c.setCorreo(dto.getCorreo());
+            c.setPuesto(dto.getPuesto());
+            c.setEstado(dto.isEstado());
+            c.setRutaPDF(dto.getRutaPDF());
+            candidatos.add(c);
+        }
+        System.out.println("Candidatos obtenidos: " + candidatos.size());
+
+        System.out.println("Cargando reclutadores en la tabla...");
+        List<Reclutador> reclutadores = reclutadorON.obtenerTodos();
+        System.out.println("Reclutadores obtenidos: " + reclutadores.size());
+
+        actualizarTabla(candidatos, reclutadores);
     }
 
     /**
@@ -94,6 +116,7 @@ public class BusquedaYFiltro extends javax.swing.JFrame {
         jListPalabrasClave = new javax.swing.JList<>();
         jScrollPane4 = new javax.swing.JScrollPane();
         tablaCendidatosyReclutadores = new javax.swing.JTable();
+        btnReiniciar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -137,18 +160,26 @@ public class BusquedaYFiltro extends javax.swing.JFrame {
         tablaCendidatosyReclutadores.setEnabled(false);
         jScrollPane4.setViewportView(tablaCendidatosyReclutadores);
 
+        btnReiniciar.setText("Reiniciar");
+        btnReiniciar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReiniciarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(Volver)
-                        .addGap(45, 45, 45)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnReiniciar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane4)
                     .addGroup(layout.createSequentialGroup()
@@ -174,7 +205,9 @@ public class BusquedaYFiltro extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(Volver)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(Volver)
+                            .addComponent(btnReiniciar))
                         .addGap(0, 28, Short.MAX_VALUE))
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
@@ -188,16 +221,36 @@ public class BusquedaYFiltro extends javax.swing.JFrame {
     }//GEN-LAST:event_barraBusquedaActionPerformed
 
     private void jBtnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnFiltrarActionPerformed
-        String palabraClave = barraBusqueda.getText().trim();
-        if (keyWords.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Selecciona al menos una palabra clave.");
+        String textoBusqueda = barraBusqueda.getText().trim();
+
+        if (textoBusqueda.isEmpty() && keyWords.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese un término de búsqueda o seleccione palabras clave.");
             return;
         }
-        keyWords.add(barraBusqueda.getText());
-        List<Candidato> todosC = candidatoON.getInstance().obtenerTodos();
-        List<Reclutador> todosR = reclutadorON.getInstance().obtenerTodos();
-        busqueda.BuscarPorNombre(barraBusqueda.getText());
-        // Actualizar los candidatos y Reclutadores mostrados y la tabla
+
+        List<Object> resultados;
+
+        //buscar por palabras clave
+        if (!keyWords.isEmpty()) {
+            resultados = busqueda.buscarPorPalabrasClave(keyWords);
+        } else {
+            //si no hay palabras clave, buscar por el texto en la barra de busqueda
+            resultados = busqueda.buscarPorNombre(textoBusqueda);
+        }
+
+        //mostrar resultados
+        if (resultados != null && resultados.size() >= 2) {
+            List<Candidato> candidatos = (List<Candidato>) resultados.get(0);
+            List<Reclutador> reclutadores = (List<Reclutador>) resultados.get(1);
+            actualizarTabla(candidatos, reclutadores);
+        }
+
+        //agregar la palabra actual a las palabras clave
+        if (!textoBusqueda.isEmpty() && !keyWords.contains(textoBusqueda)) {
+            keyWords.add(textoBusqueda);
+            listModel.addElement(textoBusqueda);
+            barraBusqueda.setText(""); // Limpiar la barra de búsqueda
+        }
 
     }//GEN-LAST:event_jBtnFiltrarActionPerformed
 
@@ -206,6 +259,32 @@ public class BusquedaYFiltro extends javax.swing.JFrame {
         Menu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_VolverActionPerformed
+
+    private void btnReiniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReiniciarActionPerformed
+        keyWords.clear();             //limpia palabras clave
+        listModel.clear();            //limpia lista visual de palabras clave
+        barraBusqueda.setText("");    //limpia el campo de texto
+
+        //actualizar tabla despues de borrar el filtro
+        List<CandidatoDTO> candidatosDTO = candidatoON.obtenerCandidatos();
+        List<Candidato> todosCandidatos = new ArrayList<>();
+
+        for (CandidatoDTO dto : candidatosDTO) {
+            Candidato c = new Candidato();
+            c.setNombre(dto.getNombre());
+            c.setApellidoPaterno(dto.getApellidoPaterno());
+            c.setApellidoMaterno(dto.getApellidoMaterno());
+            c.setTelefono(dto.getTelefono());
+            c.setCorreo(dto.getCorreo());
+            c.setPuesto(dto.getPuesto());
+            c.setEstado(dto.isEstado());
+            c.setRutaPDF(dto.getRutaPDF());
+            todosCandidatos.add(c);
+        }
+        List<Reclutador> todosReclutadores = reclutadorON.obtenerTodos();
+
+        actualizarTabla(todosCandidatos, todosReclutadores);
+    }//GEN-LAST:event_btnReiniciarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -242,44 +321,86 @@ public class BusquedaYFiltro extends javax.swing.JFrame {
         });
     }
 
-    private void actualizarTabla(List<Candidato> listaC, List<Reclutador> listaR) {
-        DefaultTableModel model = (DefaultTableModel) tablaCendidatosyReclutadores.getModel();
-        model.setRowCount(0); // limpiar tabla
+    //buscar criterio
+    private void buscarPorCriterio(String criterio, String tipo) {
+        List<Object> resultados = null;
 
-        //se almacena la nueva lista de candidatos mostrados
-        this.candidatosMostrados = new ArrayList<>(listaC);
-        this.reclutadoresMostrados = new ArrayList<>(listaR);
-        for (Candidato c : listaC) {
-            model.addRow(new Object[]{
-                c.getNombre(),
-                c.getApellidoPaterno(),
-                c.getApellidoMaterno(),
-                c.getTelefono(),
-                c.getCorreo(),
-                c.getPuesto(),
-                c.isEstado() ? "Aprobado" : "Rechazado",
-                c.getRutaPDF()
-            });
+        switch (tipo.toLowerCase()) {
+            case "nombre":
+                resultados = busqueda.buscarPorNombre(criterio);
+                break;
+            case "apellidopaterno":
+                resultados = busqueda.buscarPorApellidoPaterno(criterio);
+                break;
+            case "apellidomaterno":
+                resultados = busqueda.buscarPorApellidoMaterno(criterio);
+                break;
+            case "puesto":
+                resultados = busqueda.buscarPorPuesto(criterio);
+                break;
         }
-        for (Reclutador r : listaR) {
-            model.addRow(new Object[]{
-                r.getNombreCompleto(),
-                r.getApellidoPaterno(),
-                r.getApellidoMaterno(),
-                r.getPuesto(),
-                r.isEstado() ? "Aprobado" : "Rechazado"
-            });
+
+        if (resultados != null && resultados.size() >= 2) {
+            List<Candidato> candidatos = (List<Candidato>) resultados.get(0);
+            List<Reclutador> reclutadores = (List<Reclutador>) resultados.get(1);
+            actualizarTabla(candidatos, reclutadores);
         }
+    }
+
+    //buscar por estado del candidato o reclutador
+    private void buscarPorEstado(boolean estado) {
+        List<Object> resultados = busqueda.buscarPorEstado(estado);
+
+        if (resultados != null && resultados.size() >= 2) {
+            List<Candidato> candidatos = (List<Candidato>) resultados.get(0);
+            List<Reclutador> reclutadores = (List<Reclutador>) resultados.get(1);
+            actualizarTabla(candidatos, reclutadores);
+        }
+    }
+
+    private void actualizarTabla(List<Candidato> listaC, List<Reclutador> listaR) {
+        String[] columnas = {"Nombre", "Apellido Paterno", "Apellido Materno", "Puesto", "Estado"};
+        DefaultTableModel model = new DefaultTableModel(columnas, 0); // limpiar tabla
+
+        this.candidatosMostrados = new ArrayList<>(listaC != null ? listaC : new ArrayList<>());
+        this.reclutadoresMostrados = new ArrayList<>(listaR != null ? listaR : new ArrayList<>());
+
+        if (listaC != null) {
+            for (Candidato c : listaC) {
+                model.addRow(new Object[]{
+                    c.getNombre(),
+                    c.getApellidoPaterno(),
+                    c.getApellidoMaterno(),
+                    c.getPuesto(),
+                    c.isEstado() ? "Aprobado" : "Rechazado",
+                    c.getRutaPDF()
+                });
+            }
+        }
+
+        if (listaR != null) {
+            for (Reclutador r : listaR) {
+                model.addRow(new Object[]{
+                    r.getNombreCompleto(),
+                    r.getApellidoPaterno(),
+                    r.getApellidoMaterno(),
+                    r.getPuesto(),
+                    r.isEstado() ? "Aprobado" : "Rechazado",
+                    "" // RutaPDF (vacío para reclutadores)
+                });
+            }
+        }
+        tablaCendidatosyReclutadores.setModel(model);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Volver;
     private javax.swing.JTextField barraBusqueda;
+    private javax.swing.JButton btnReiniciar;
     private javax.swing.JButton jBtnFiltrar;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JList<String> jListPalabrasClave;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable tablaCendidatosyReclutadores;
     // End of variables declaration//GEN-END:variables
