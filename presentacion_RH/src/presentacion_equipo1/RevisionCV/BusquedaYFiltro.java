@@ -200,6 +200,7 @@ public class BusquedaYFiltro extends javax.swing.JFrame {
         busqueda.BuscarPorApellidoPaterno(barraBusqueda.getText());
         busqueda.BuscarPorApellidoMaterno(barraBusqueda.getText());
         busqueda.BuscarPorPuesto(barraBusqueda.getText());
+        //
          // Actualizar los candidatos y Reclutadores mostrados y la tabla
         
     }//GEN-LAST:event_jBtnFiltrarActionPerformed
