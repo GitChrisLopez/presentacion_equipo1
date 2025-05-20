@@ -25,11 +25,16 @@ public class AdminNomina extends javax.swing.JFrame {
         initComponents();
         cargarReclutadoresEnTabla();
     }
-    
+
     public void cargarReclutadoresEnTabla() {
         // Columnas que se mostrarán
         String[] columnas = {"ID", "Nombre", "Apellido Paterno", "Apellido Materno", "Puesto", "Nomina"};
-        DefaultTableModel modelo = new DefaultTableModel(columnas, 0); // 0 filas iniciales
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
 
         ReclutadorDAO controladorReclutador = ReclutadorDAO.getInstance();
         CandidatoON controladorCandidatos = CandidatoON.getInstance();
@@ -47,7 +52,7 @@ public class AdminNomina extends javax.swing.JFrame {
             };
             modelo.addRow(fila);
         }
-        
+
         for (Candidato c : listaCandidato) {
             Object[] fila = new Object[]{
                 c.getId(),
@@ -202,27 +207,27 @@ public class AdminNomina extends javax.swing.JFrame {
         int filaSeleccionada = jTablaRegistros.getSelectedRow();
         if (filaSeleccionada != -1) {
             String input = (String) JOptionPane.showInputDialog(
-                null,
-                "Ingresa el valor de la nómina:",
-                "Entrada de nómina",
-                JOptionPane.PLAIN_MESSAGE,
-                null,
-                null,
-                jTablaRegistros.getValueAt(filaSeleccionada, 5) // Valor predefinido
+                    null,
+                    "Ingresa el valor de la nómina:",
+                    "Entrada de nómina",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    null,
+                    jTablaRegistros.getValueAt(filaSeleccionada, 5) // Valor predefinido
             );
-            
+
             if (input != null && !input.trim().isEmpty()) {
                 float nomina = Float.parseFloat(input);
                 // Aquí puedes usar el valor para setearlo, por ejemplo:
-                
+
                 int confirmacion = JOptionPane.showConfirmDialog(
-                null, //centra en pantalla
-                "¿El monto '"+ nomina+ "' de la nomina es correcto?", //el mensaje que se muestra
-                "confirmar monto", //titulo
-                JOptionPane.YES_NO_OPTION, //tipo de ventana
-                JOptionPane.WARNING_MESSAGE // icono
+                        null, //centra en pantalla
+                        "¿El monto '" + nomina + "' de la nomina es correcto?", //el mensaje que se muestra
+                        "confirmar monto", //titulo
+                        JOptionPane.YES_NO_OPTION, //tipo de ventana
+                        JOptionPane.WARNING_MESSAGE // icono
                 );
-                
+
                 if (confirmacion == JOptionPane.YES_OPTION) {
                     int id = Integer.parseInt(jTablaRegistros.getValueAt(filaSeleccionada, 0).toString());
                     String nombreCompleto = jTablaRegistros.getValueAt(filaSeleccionada, 1).toString();
@@ -234,12 +239,12 @@ public class AdminNomina extends javax.swing.JFrame {
                     ReclutadorDAO.getInstance().actualizarNomina(r);
                     cargarReclutadoresEnTabla();
                     JOptionPane.showMessageDialog(null, "Nomina agregada con exito.",
-                        "eliminación exitosa", JOptionPane.INFORMATION_MESSAGE);
+                            "eliminación exitosa", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(null, "Operación cancelada",
-                        "operacion cancelada", JOptionPane.INFORMATION_MESSAGE);
+                            "operacion cancelada", JOptionPane.INFORMATION_MESSAGE);
                 }
-                
+
                 // Si deseas hacer un INSERT a la base de datos, lo puedes usar así:
                 // String sql = "INSERT INTO reclutadores (...) VALUES (..., " + nomina + ")";
             } else {
@@ -248,11 +253,10 @@ public class AdminNomina extends javax.swing.JFrame {
         } else {
             System.out.println("error");
             JOptionPane.showMessageDialog(null, "Selecciona un empleado para agregar correctamente.",
-                "Error de eliminar", JOptionPane.ERROR_MESSAGE);
+                    "Error de eliminar", JOptionPane.ERROR_MESSAGE);
         }
-        
-        
-        
+
+
     }//GEN-LAST:event_jButtonAgregarNominaActionPerformed
 
     private void jButtonCerrarVentanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCerrarVentanaActionPerformed

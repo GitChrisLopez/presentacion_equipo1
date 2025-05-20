@@ -96,7 +96,6 @@ public class CRUDCandidato extends javax.swing.JFrame {
         guardar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaCandidato = new javax.swing.JTable();
-        Consultar = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
         puesto = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
@@ -265,10 +264,6 @@ public class CRUDCandidato extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tablaCandidato);
 
-        Consultar.setBackground(new java.awt.Color(0, 0, 51));
-        Consultar.setForeground(new java.awt.Color(255, 255, 255));
-        Consultar.setText("Consultar");
-
         jLabel10.setText("Puesto");
 
         puesto.addActionListener(new java.awt.event.ActionListener() {
@@ -310,13 +305,11 @@ public class CRUDCandidato extends javax.swing.JFrame {
                         .addComponent(guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(77, 77, 77)
                         .addComponent(actualizarBoton, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 423, Short.MAX_VALUE)
-                        .addComponent(Consultar)
-                        .addGap(88, 88, 88)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(EliminarBoton))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 921, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -364,7 +357,6 @@ public class CRUDCandidato extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Consultar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(EliminarBoton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(actualizarBoton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
@@ -599,7 +591,6 @@ public class CRUDCandidato extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Consultar;
     private javax.swing.JButton EliminarBoton;
     private javax.swing.JComboBox<String> actividad;
     private javax.swing.JButton actualizarBoton;

@@ -6,6 +6,8 @@ package presentacion_equipo1.RevisionCV;
 
 import dto.ReclutadorDTO;
 import javax.swing.JOptionPane;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -168,13 +170,28 @@ public class IniciarSesionRH extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUserActionPerformed
 
     private void iniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarSesionActionPerformed
-        if (txtUser.getText().trim().isEmpty() || txtContra.getText().trim().isEmpty()) {
+        Map<String, String> usuariosValidos = new HashMap<>();
+        usuariosValidos.put("Chris", "12345");
+        usuariosValidos.put("Paula", "1234");
+        usuariosValidos.put("Adrian", "1234");
+
+        String usuarioIngresado = txtUser.getText().trim();
+        String contraIngresada = txtContra.getText().trim();
+
+        if (usuarioIngresado.isEmpty() || contraIngresada.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios",
-                "Error de validación", JOptionPane.ERROR_MESSAGE);
+                    "Error de validación", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        ReclutadorDTO reclutador = new ReclutadorDTO(txtUser.getText().trim(), txtContra.getText().trim());
+        if (!usuariosValidos.containsKey(usuarioIngresado)
+                || !usuariosValidos.get(usuarioIngresado).equals(contraIngresada)) {
+            JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos",
+                    "Error de autenticación", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        ReclutadorDTO reclutador = new ReclutadorDTO(usuarioIngresado, contraIngresada);
 
         MenuReclutador menu = new MenuReclutador();
         menu.setVisible(true);

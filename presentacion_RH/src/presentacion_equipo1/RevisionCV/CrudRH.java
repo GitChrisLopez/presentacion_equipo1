@@ -16,8 +16,6 @@ import objetosnegocio.ReclutadorDAO;
  */
 public class CrudRH extends javax.swing.JFrame {
 
-    ReclutadorDAO reclutadorON;
-
     /**
      * Creates new form CrudRH
      */
@@ -261,9 +259,9 @@ public class CrudRH extends javax.swing.JFrame {
             }
 
         } else {
-            System.out.println("error");
-            JOptionPane.showMessageDialog(null, "Selecciona un reclutador para actualizar correctamente.",
-                    "Error de eliminar", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Debes seleccionar un reclutador de la tabla a actualizar.",
+                              "Seleccion requerida", JOptionPane.WARNING_MESSAGE);
+
         }
 
 
@@ -282,7 +280,7 @@ public class CrudRH extends javax.swing.JFrame {
             );
             if (confirmacion == JOptionPane.YES_OPTION) {
                 Object id = jTablaReclutadores.getValueAt(filaSeleccionada, 0);
-                reclutadorON.getInstance().eliminarReclutador((int) id);
+                ReclutadorDAO.getInstance().eliminarReclutador((int) id);
                 cargarReclutadoresEnTabla();
                 JOptionPane.showMessageDialog(null, "Reclutador eliminado con exito.",
                         "eliminación exitosa", JOptionPane.INFORMATION_MESSAGE);
@@ -292,9 +290,9 @@ public class CrudRH extends javax.swing.JFrame {
             }
 
         } else {
-            System.out.println("error");
-            JOptionPane.showMessageDialog(null, "Selecciona un reclutador para eliminar correctamente.",
-                    "Error de eliminar", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Debes seleccionar un reclutador de la tabla a eliminar.",
+                              "Seleccion requerida", JOptionPane.WARNING_MESSAGE);
+
         }
 
     }//GEN-LAST:event_jButtonEliminarReclutaActionPerformed

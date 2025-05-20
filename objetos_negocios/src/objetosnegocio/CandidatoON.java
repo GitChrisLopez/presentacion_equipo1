@@ -4,10 +4,6 @@
  */
 package objetosnegocio;
 
-/**
- *
- * @author chris
- */
 import DBConnection.IConnection;
 import DBConnection.MySQLConnection;
 import dto.CandidatoDTO;
@@ -18,15 +14,16 @@ import java.sql.SQLException;
 import java.util.*;
 import java.sql.ResultSet;
 
-
+/*Chris Pau Adrian*/
 public class CandidatoON {
 
     private static CandidatoON instancia;
-    List<CandidatoDTO> listaCandidatos = new ArrayList<>();
+    private List<CandidatoDTO> listaCandidatos = new ArrayList<>();
     private IConnection conexion;
 
     private CandidatoON() {
         conexion = MySQLConnection.getInstance();
+        cargarCandidatosDesdeDB(); // Cargamos los candidatos al inicializar la instancia
     }
 
     public static synchronized CandidatoON getInstance() {
@@ -34,6 +31,27 @@ public class CandidatoON {
             instancia = new CandidatoON();
         }
         return instancia;
+    }
+
+    //cargamos los candidatos desde la base de datos
+    private void cargarCandidatosDesdeDB() {
+        listaCandidatos.clear(); //limpiamos la lista antes de cargar
+        
+        List<Candidato> candidatos = obtenerTodos();
+        for (Candidato c : candidatos) {
+            CandidatoDTO dto = new CandidatoDTO(
+                c.getNombre(),
+                c.getApellidoPaterno(),
+                c.getApellidoMaterno(),
+                "", // No tenemos el telefono en la base de datos
+                "", // No tenemos el correo en la base de datos
+                c.getPuesto(),
+                c.isEstado(),
+                c.getRutaPDF(),
+                c.getNomina()
+            );
+            listaCandidatos.add(dto);
+        }
     }
 
     public void agregarCandidato(Candidato c) throws SQLException {
@@ -57,6 +75,7 @@ public class CandidatoON {
 
             if (filas > 0) {
                 System.out.println("Candidato insertado correctamente.");
+                cargarCandidatosDesdeDB();
             } else {
                 System.out.println("No se insertó el candidato.");
             }
@@ -75,8 +94,6 @@ public class CandidatoON {
     public void actualizarCandidato(Candidato c) throws SQLException {
         String sql = "UPDATE candidatos SET nombre = ?, apellidoPaterno = ?, apellidoMaterno = ?, puesto = ?, estado = ?, rutapdf = ?, nomina = ? WHERE id = ?";
 
-        listaCandidatos.remove(c);
-
         try (Connection conn = conexion.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, c.getNombre());
             stmt.setString(2, c.getApellidoPaterno());
@@ -91,6 +108,7 @@ public class CandidatoON {
 
             if (filas > 0) {
                 System.out.println("Candidato actualizado correctamente.");
+                cargarCandidatosDesdeDB();
             } else {
                 System.out.println("No se actualizó el candidato.");
             }
@@ -106,13 +124,13 @@ public class CandidatoON {
             int rows = stmt.executeUpdate();
             if (rows > 0) {
                 System.out.println("Candidato eliminado.");
+                cargarCandidatosDesdeDB();
             } else {
                 System.out.println("No se logró encontrar al candidato.");
             }
         } catch (SQLException e) {
             System.out.println("Error al realizar la operación: " + e.getMessage());
         }
-        listaCandidatos.removeIf(c -> c.hashCode() == id); // ajusta si usas hashCode como id
     }
 
     public List<Candidato> obtenerTodos() {
@@ -156,6 +174,10 @@ public class CandidatoON {
     }
 
     public synchronized List<CandidatoDTO> obtenerCandidatos() {
+        //si la lista está vacía, cargamos desde la BD los candidatos
+        if (listaCandidatos.isEmpty()) {
+            cargarCandidatosDesdeDB();
+        }
         return listaCandidatos;
     }
 }

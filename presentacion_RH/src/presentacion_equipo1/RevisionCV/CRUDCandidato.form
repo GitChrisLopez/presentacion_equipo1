@@ -154,14 +154,12 @@
                       <Component id="guardar" min="-2" pref="81" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="77" max="-2" attributes="0"/>
                       <Component id="actualizarBoton" min="-2" pref="84" max="-2" attributes="0"/>
-                      <EmptySpace pref="423" max="32767" attributes="0"/>
-                      <Component id="Consultar" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="88" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Component id="EliminarBoton" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" pref="921" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -214,7 +212,6 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="guardar" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
-                          <Component id="Consultar" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
                           <Component id="EliminarBoton" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
                           <Component id="actualizarBoton" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
                       </Group>
@@ -466,17 +463,6 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="Consultar">
-      <Properties>
-        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="33" green="0" red="0" type="rgb"/>
-        </Property>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Consultar"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JLabel" name="jLabel10">
       <Properties>
         <Property name="text" type="java.lang.String" value="Puesto"/>

@@ -33,7 +33,7 @@ import objetosnegocio.CandidatoON;
 
 /**
  *
- * @author Ragzard
+ * @author chris y mucho cafe
  */
 public class FiltrarCV extends javax.swing.JFrame {
 
@@ -43,15 +43,10 @@ public class FiltrarCV extends javax.swing.JFrame {
     List<String> keyWords;
     DefaultListModel<String> listModel;
 
-    //Codigo para pruebas
-    List<CandidatoDTO> listaCandidatos = new ArrayList<>();
     CandidatoON candidatoON;
 
     private List<CandidatoDTO> candidatosMostrados;
 
-    /**
-     * Creates new form FiltroCV
-     */
     public FiltrarCV() {
         initComponents();
 
@@ -60,8 +55,10 @@ public class FiltrarCV extends javax.swing.JFrame {
 
         jTableCV.setEnabled(true);
 
-        //Codigo para pruebas
-        keyWords = new ArrayList<>();//Lista de palabras clave
+        //inicializar candidatoON
+        candidatoON = CandidatoON.getInstance();
+
+        keyWords = new ArrayList<>();//palabras clave
 
         listModel = new DefaultListModel<>();
         jListPalabrasClave.setModel(listModel);
@@ -76,7 +73,7 @@ public class FiltrarCV extends javax.swing.JFrame {
                     int xRelativo = evt.getX() - bounds.x;
                     int ancho = bounds.width;
 
-                    // Detectar si se clicó cerca del lado derecho (simula la "X")
+                    //detectar si se clickeo cerca del lado derecho (simula la "X")
                     if (xRelativo >= ancho - 20) {
                         keyWords.remove(listModel.get(index));
                         listModel.remove(index);
@@ -86,23 +83,26 @@ public class FiltrarCV extends javax.swing.JFrame {
         });
 
         //Definir el modelo de la tabla
-        DefaultTableModel modelo = new DefaultTableModel(new String[]{"Nombre", "Apellido", "Teléfono", "Email", "Puesto", "Estado", "Archivo CV"}, 0);
+        DefaultTableModel modelo = new DefaultTableModel(new String[]{"Nombre", "Apellido Pat", "Apellido Mat", "Puesto", "Estado", "Archivo CV"}, 0);
 
         //Asignar el modelo de la tabla al jTable
         jTableCV.setModel(modelo);
 
-        // Actualizar tabla
-        actualizarTabla(candidatoON.getInstance().obtenerCandidatos());
+        //actualizar tabla
+        System.out.println("Cargando candidatos en la tabla...");
+        List<CandidatoDTO> candidatos = candidatoON.obtenerCandidatos();
+        System.out.println("Candidatos obtenidos: " + candidatos.size());
+        actualizarTabla(candidatos);
 
-        // Listener para la celda del CV
+        //Listener para la celda del CV
         jTableCV.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int row = jTableCV.rowAtPoint(e.getPoint());
                 int column = jTableCV.columnAtPoint(e.getPoint());
 
-                // Si la columna es la del archivo PDF (ajusta según el índice)
-                if (column == 6 && e.getClickCount() == 2) {
+                //si la columna es la del archivo PDF (ajusta según el índice)
+                if (column == 5 && e.getClickCount() == 2) {
                     if (row >= 0 && row < candidatosMostrados.size()) {
                         CandidatoDTO candidato = candidatosMostrados.get(row);
                         abrirPDFenSistema(candidato.getRutaPDF());
@@ -323,24 +323,10 @@ public class FiltrarCV extends javax.swing.JFrame {
                 // Guardar solo la ruta relativa al archivo en el DTO
                 String rutaRelativa = "CVs/" + nombreArchivo;  // Guardamos solo la ruta relativa
 
-                Candidato candidato = new Candidato(
-                        "NombreDemo",
-                        "ApellidoDemo",
-                        "ApellidoDemo2",
-                        "1234567890",
-                        "correo@demo.com",
-                        "Puesto Demo",
-                        rutaRelativa,
-                        false// Usamos la ruta relativa aquí
-                );
-
-                candidatoON.getInstance().agregarCandidato(candidato);
-                actualizarTabla(candidatoON.getInstance().obtenerCandidatos());
+                actualizarTabla(candidatoON.obtenerCandidatos());
 
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(this, "Error al copiar archivo: " + e.getMessage());
-            } catch (SQLException ex) {
-                Logger.getLogger(FiltrarCV.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
@@ -353,11 +339,28 @@ public class FiltrarCV extends javax.swing.JFrame {
             return;
         }
 
-        List<CandidatoDTO> todos = candidatoON.getInstance().obtenerCandidatos();
-        List<CandidatoDTO> filtrados = subFiltro.filtrarPorPalabrasClave(todos, keyWords);
+        try {
+            List<CandidatoDTO> todos = candidatoON.obtenerCandidatos();
+            System.out.println("Obtenidos " + todos.size() + " candidatos para filtrar");
 
-        // Actualizar los candidatos mostrados y la tabla
-        actualizarTabla(filtrados);
+            List<CandidatoDTO> filtrados = subFiltro.filtrarPorPalabrasClave(todos, keyWords);
+
+            if (filtrados.isEmpty()) {
+                JOptionPane.showMessageDialog(this,
+                        "No se encontraron candidatos que coincidan con las palabras clave seleccionadas.",
+                        "Sin resultados",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+
+            // Actualizar los candidatos mostrados y la tabla
+            actualizarTabla(filtrados);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "Error al filtrar candidatos: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jBtnFiltrarActionPerformed
 
     private void jTxtPalabraClaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtPalabraClaveActionPerformed
@@ -393,9 +396,13 @@ public class FiltrarCV extends javax.swing.JFrame {
             //pasamos la lista de palabras clave del reclutador al metodo obtenerResultados
             String resultadoAnalisis = filtroIA.obtenerResultados(candidato, keyWords);
 
-            boolean aceptado = resultadoAnalisis.toLowerCase().contains("apto")|| 
-                  resultadoAnalisis.toLowerCase().contains("cumple con los requisitos");
+            boolean aceptado = resultadoAnalisis.toLowerCase().contains("apto")
+                    || resultadoAnalisis.toLowerCase().contains("cumple con los requisitos");
             candidato.setEstado(aceptado);
+
+            // Actualizar el estado en la tabla
+            DefaultTableModel model = (DefaultTableModel) jTableCV.getModel();
+            model.setValueAt(aceptado ? "Aprobado" : "Rechazado", filaSeleccionada, 4);
 
             JTextArea textArea = new JTextArea(20, 50);
             textArea.setText(resultadoAnalisis);
@@ -419,21 +426,22 @@ public class FiltrarCV extends javax.swing.JFrame {
 
     private void actualizarTabla(List<CandidatoDTO> lista) {
         DefaultTableModel model = (DefaultTableModel) jTableCV.getModel();
-        model.setRowCount(0); // limpiar tabla
+        model.setRowCount(0); //limpiar tabla
+
+        System.out.println("Actualizando tabla con " + lista.size() + " candidatos");
 
         //se almacena la nueva lista de candidatos mostrados
         this.candidatosMostrados = new ArrayList<>(lista);
 
         for (CandidatoDTO c : lista) {
+            System.out.println("Añadiendo candidato a la tabla: " + c.getNombre() + ", PDF: " + c.getRutaPDF());
             model.addRow(new Object[]{
                 c.getNombre(),
                 c.getApellidoPaterno(),
                 c.getApellidoMaterno(),
-                c.getTelefono(),
-                c.getCorreo(),
                 c.getPuesto(),
                 c.isEstado() ? "Aprobado" : "Rechazado",
-                c.getRutaPDF()
+                c.getRutaPDF() != null ? c.getRutaPDF() : "Sin archivo"
             });
         }
     }

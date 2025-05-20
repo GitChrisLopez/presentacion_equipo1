@@ -24,11 +24,24 @@ public class FiltroCV implements IFiltroCV {
         List<CandidatoDTO> filtrados = new ArrayList<>();
         String rutaBase = System.getProperty("user.dir");
 
+        System.out.println("Filtrando " + candidatos.size() + " candidatos con " + palabrasClave.size() + " palabras clave");
+        System.out.println("Ruta base: " + rutaBase);
+
         for (CandidatoDTO candidato : candidatos) {
-            File archivo = new File(rutaBase + "/../objetos_negocios/src/" + candidato.getRutaPDF());
+            // Verificar que el candidato tenga una ruta de PDF válida
+            if (candidato.getRutaPDF() == null || candidato.getRutaPDF().isEmpty()) {
+                System.err.println("Candidato sin ruta PDF: " + candidato.getNombre());
+                continue;
+            }
+
+            // Construir la ruta completa del archivo
+            String rutaCompleta = rutaBase + "/../objetos_negocios/src/" + candidato.getRutaPDF();
+            File archivo = new File(rutaCompleta);
+
+            System.out.println("Verificando archivo: " + rutaCompleta);
 
             if (!archivo.exists()) {
-                System.err.println("El archivo no existe: " + archivo.getAbsolutePath());
+                System.err.println("El archivo no existe: " + rutaCompleta);
                 continue;
             }
 
@@ -36,18 +49,26 @@ public class FiltroCV implements IFiltroCV {
                 PDFTextStripper stripper = new PDFTextStripper();
                 String texto = stripper.getText(documento).toLowerCase();
 
+                boolean contienePalabra = false;
                 for (String palabra : palabrasClave) {
                     if (texto.contains(palabra.toLowerCase())) {
-                        filtrados.add(candidato);
+                        contienePalabra = true;
+                        System.out.println("Candidato: " + candidato.getNombre() + " contiene palabra: " + palabra);
                         break;
                     }
                 }
+
+                if (contienePalabra) {
+                    filtrados.add(candidato);
+                }
+
             } catch (IOException e) {
-                System.err.println("Error al leer el archivo PDF: " + archivo.getAbsolutePath());
+                System.err.println("Error al leer el archivo PDF: " + rutaCompleta);
                 e.printStackTrace();
             }
         }
 
+        System.out.println("Total candidatos filtrados: " + filtrados.size());
         return filtrados;
     }
 
@@ -71,20 +92,23 @@ public class FiltroCV implements IFiltroCV {
         //usamos una palabara y signos especificos en el prompt poder eliminarlo
         String promptIdentifier = "###INSTRUCCIONES###";
         String promptContent = String.format("""
-                          Eres un empleado de RRHH. INSTRUCCIONES IMPORTANTES:
-                          1. Lee el CV del candidato y evalua si cumple con %s.
-                          2. NO repitas información del CV original bajo ninguna circunstancia.
-                          3. Tu respuesta debe comenzar DIRECTAMENTE con "ANÁLISIS:" seguido de tu evaluación.
-                          4. Proporciona un análisis breve en ESPAÑOL del candidato de máximo 120 palabras.
-                          5. Concluye con la palabra 'APTO' o 'NO APTO' en mayúsculas.
-                          """, requisitos.toString());
+                      Eres un empleado de RRHH. INSTRUCCIONES IMPORTANTES:
+                      1. Lee el CV del candidato y evalua si cumple con %s.
+                      2. NO repitas información del CV original bajo ninguna circunstancia.
+                      3. Tu respuesta debe comenzar DIRECTAMENTE con "ANÁLISIS:" seguido de tu evaluación.
+                      4. Proporciona un análisis conciso en ESPAÑOL del candidato, usando **menos de 120 palabras exactas**.
+                      5. Se estricto al evaluar, si el candidato **NO cumple con TODOS** los requisitos entonces NO es apto, se muy estricto, formal y critico. requisitos: %s.
+                      6. Concluye con la palabra 'APTO' o 'NO APTO' en mayúsculas.
+                      """,
+                requisitos.toString().replace("%", "%%"),
+                requisitos.toString().replace("%", "%%"));
 
         String prompt = promptIdentifier + "\n" + promptContent + "\n\n" + contenidoCV;
 
         String requestBody = "{\"inputs\": " + escapeJsonString(prompt) + "}";
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://api-inference.huggingface.co/models/mistralai/Mistral-Nemo-Instruct-2407"))
+                .uri(URI.create("https://api-inference.huggingface.co/models/mistralai/Mixtral-8x7B-Instruct-v0.1"))
                 .header("Authorization", "Bearer " + apiKey)
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody, StandardCharsets.UTF_8))
