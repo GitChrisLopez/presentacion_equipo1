@@ -282,6 +282,13 @@ public class CRUDCandidato extends javax.swing.JFrame {
 
         jLabel11.setText("ID");
 
+        idCampo.setEnabled(false);
+        idCampo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                idCampoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -540,6 +547,10 @@ public class CRUDCandidato extends javax.swing.JFrame {
     private void telefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_telefonoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_telefonoActionPerformed
+
+    private void idCampoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idCampoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_idCampoActionPerformed
 
     /**
      * @param args the command line arguments

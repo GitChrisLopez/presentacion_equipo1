@@ -58,7 +58,7 @@ public class BusquedaYFiltro extends javax.swing.JFrame {
         listModel = new DefaultListModel<>();
         jListPalabrasClave.setModel(listModel);
         jListPalabrasClave.setCellRenderer(new RendererConBtn());
-           jListPalabrasClave.addMouseListener(new java.awt.event.MouseAdapter() {
+        jListPalabrasClave.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int index = jListPalabrasClave.locationToIndex(evt.getPoint());
@@ -74,8 +74,8 @@ public class BusquedaYFiltro extends javax.swing.JFrame {
                     }
                 }
             }
-    });
-                   }
+        });
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -195,10 +195,10 @@ public class BusquedaYFiltro extends javax.swing.JFrame {
         }
         keyWords.add(barraBusqueda.getText());
         List<Candidato> todosC = candidatoON.getInstance().obtenerTodos();
-        List<Reclutador> todosR= reclutadorON.getInstance().obtenerTodos();
+        List<Reclutador> todosR = reclutadorON.getInstance().obtenerTodos();
         busqueda.BuscarPorNombre(barraBusqueda.getText());
         // Actualizar los candidatos y Reclutadores mostrados y la tabla
-        
+
     }//GEN-LAST:event_jBtnFiltrarActionPerformed
 
     private void VolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VolverActionPerformed
@@ -241,7 +241,8 @@ public class BusquedaYFiltro extends javax.swing.JFrame {
             }
         });
     }
-        private void actualizarTabla(List<Candidato> listaC, List<Reclutador> listaR) {
+
+    private void actualizarTabla(List<Candidato> listaC, List<Reclutador> listaR) {
         DefaultTableModel model = (DefaultTableModel) tablaCendidatosyReclutadores.getModel();
         model.setRowCount(0); // limpiar tabla
 
