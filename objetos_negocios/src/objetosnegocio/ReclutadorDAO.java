@@ -42,9 +42,10 @@ public class ReclutadorDAO {
 
         Connection conn = null;
         PreparedStatement stmt = null;
+        ResultSet generatedKeys = null;
         try {
-            conn = (Connection) conexion.getConnection(); // ← obtiene conexión
-            stmt = conn.prepareStatement(sql); // ← prepara consulta
+            conn = (Connection) conexion.getConnection();
+            stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 
             stmt.setString(1, r.getNombreCompleto());
             stmt.setString(2, r.getApellidoPaterno());
@@ -54,31 +55,34 @@ public class ReclutadorDAO {
             stmt.setString(6, r.getContrasena());
             stmt.setBoolean(7, r.isEstado());
 
-            int filas = stmt.executeUpdate(); // ← ejecuta inserción
+            int filas = stmt.executeUpdate();
 
             if (filas > 0) {
-                System.out.println("Reclutador insertado correctamente.");
+                generatedKeys = stmt.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int idGenerado = generatedKeys.getInt(1);
+                    r.setId(idGenerado);  // **Asignas el id al objeto**
+                }
+                System.out.println("Reclutador insertado correctamente con ID: " + r.getId());
             } else {
                 System.out.println("No se insertó el reclutador.");
             }
         } catch (SQLException e) {
             System.out.println("Error al insertar reclutador: " + e.getMessage());
-//            e.printStackTrace(); // ← muestra el error completo en consola
-                throw new SQLException("Error al insertar el usuario", e);
-                
+            throw new SQLException("Error al insertar el usuario", e);
         } finally {
-            try {
-                if (stmt != null) {
-                    stmt.close();
-                }
-                if (conn != null) {
-                    conexion.closeConnection(conn); // usa tu método personalizado
-                }
-            } catch (SQLException e) {
-                System.out.println("Error al cerrar la conexión: " + e.getMessage());
+            if (generatedKeys != null) try {
+                generatedKeys.close();
+            } catch (Exception e) {
+            }
+            if (stmt != null) try {
+                stmt.close();
+            } catch (Exception e) {
+            }
+            if (conn != null) {
+                conexion.closeConnection(conn);
             }
         }
-
     }
 
     // READ
@@ -130,13 +134,12 @@ public class ReclutadorDAO {
 
         return lista;
     }
-    
+
     // DELETE
     public void eliminarReclutador(int id) {
         String sql = "DELETE FROM reclutadores WHERE id = ?";
 
-        try (Connection conn = conexion.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = conexion.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
             int rows = stmt.executeUpdate();
@@ -147,16 +150,15 @@ public class ReclutadorDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("Error al eliminar reclutador: " + e.getMessage());
+            System.err.println("Error al eliminar reclutador con ID " + id + ": " + e.getMessage());
         }
     }
-    
-     // UPDATE
+
+    // UPDATE
     public void actualizarReclutador(Reclutador r) {
         String sql = "UPDATE reclutadores SET nombre = ?, apellidoPaterno = ?, apellidoMaterno = ?, puesto = ?, usuario = ?, estado = ? WHERE id = ?";
 
-        try (Connection conn = conexion.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = conexion.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, r.getNombreCompleto());
             stmt.setString(2, r.getApellidoPaterno());
@@ -177,12 +179,11 @@ public class ReclutadorDAO {
             System.out.println("Error al actualizar reclutador: " + e.getMessage());
         }
     }
-    
+
     public void actualizarNomina(Reclutador r) {
         String sql = "UPDATE reclutadores SET nomina = ? WHERE id = ?";
 
-        try (Connection conn = conexion.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = conexion.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, Float.toString(r.getNomina()));
             stmt.setInt(2, r.getId());
@@ -198,7 +199,5 @@ public class ReclutadorDAO {
             System.out.println("Error al actualizar reclutador: " + e.getMessage());
         }
     }
-    
-
 
 }

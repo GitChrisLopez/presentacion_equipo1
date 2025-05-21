@@ -216,13 +216,15 @@ public class AdminNomina extends javax.swing.JFrame {
                             "¿El monto '" + nomina + "' de la nómina es correcto?", //el mensaje que se muestra
                             "Confirmar monto", //titulo
                             JOptionPane.YES_NO_OPTION, //tipo de ventana
-                            JOptionPane.WARNING_MESSAGE //icono
+                            JOptionPane.WARNING_MESSAGE // icono
                     );
 
                     if (confirmacion == JOptionPane.YES_OPTION) {
                         int id = Integer.parseInt(jTablaRegistros.getValueAt(filaSeleccionada, 0).toString());
                         String puesto = jTablaRegistros.getValueAt(filaSeleccionada, 4).toString();
 
+                        //se determina si el candidato o reclutador basado en algún criterio (por ejemplo, el nombre de la tabla)
+                        // En este caso lo determinamos por la fila seleccionada
                         NominaON nominaService = NominaON.getInstance();
                         boolean esReclutador = puesto.contains("Reclutador") || puesto.contains("Seleccion");
 

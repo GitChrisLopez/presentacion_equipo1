@@ -11,7 +11,7 @@ CREATE TABLE reclutadores (
     usuario VARCHAR(50) UNIQUE,
     contrasena VARCHAR(100),
     estado BOOLEAN,
-    nomina float default(0)
+    nomina FLOAT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE candidatos(
@@ -24,7 +24,7 @@ CREATE TABLE candidatos(
     puesto VARCHAR(50),
     estado boolean,
 	rutapdf text,
-    nomina float default(0)
+    nomina FLOAT NOT NULL DEFAULT 0
 );
 
 

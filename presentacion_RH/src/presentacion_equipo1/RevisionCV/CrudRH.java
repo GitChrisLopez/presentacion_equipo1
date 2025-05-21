@@ -16,6 +16,9 @@ import objetosnegocio.ReclutadorDAO;
  */
 public class CrudRH extends javax.swing.JFrame {
 
+    private float nomina = 0f; // Valor por defecto
+
+    
     /**
      * Creates new form CrudRH
      */
@@ -162,7 +165,7 @@ public class CrudRH extends javax.swing.JFrame {
                         .addComponent(jButtonEliminarRecluta)
                         .addGap(121, 121, 121)
                         .addComponent(jButtonCerrarVentana)))
-                .addContainerGap(105, Short.MAX_VALUE))
+                .addContainerGap(113, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,9 +189,7 @@ public class CrudRH extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 8, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -236,7 +237,8 @@ public class CrudRH extends javax.swing.JFrame {
                 String apellidoPaterno = jTablaReclutadores.getValueAt(filaSeleccionada, 3).toString();
                 String apellidoMaterno = jTablaReclutadores.getValueAt(filaSeleccionada, 4).toString();
                 String puesto = jTablaReclutadores.getValueAt(filaSeleccionada, 5).toString();
-                boolean estado = Boolean.parseBoolean(jTablaReclutadores.getValueAt(filaSeleccionada, 6).toString());
+                String estadoTexto = jTablaReclutadores.getValueAt(filaSeleccionada, 6).toString();
+                boolean estado = estadoTexto.equalsIgnoreCase("Activo");
 
                 Reclutador r = new Reclutador(id, nombreCompleto, apellidoPaterno, apellidoMaterno, puesto, usuario, estado);
                 boolean actualizar = true;
@@ -260,7 +262,7 @@ public class CrudRH extends javax.swing.JFrame {
 
         } else {
             JOptionPane.showMessageDialog(this, "Debes seleccionar un reclutador de la tabla a actualizar.",
-                              "Seleccion requerida", JOptionPane.WARNING_MESSAGE);
+                    "Seleccion requerida", JOptionPane.WARNING_MESSAGE);
 
         }
 
@@ -279,7 +281,9 @@ public class CrudRH extends javax.swing.JFrame {
                     JOptionPane.WARNING_MESSAGE // icono
             );
             if (confirmacion == JOptionPane.YES_OPTION) {
-                Object id = jTablaReclutadores.getValueAt(filaSeleccionada, 0);
+                int id = Integer.parseInt(jTablaReclutadores.getValueAt(filaSeleccionada, 0).toString());
+                ReclutadorDAO.getInstance().eliminarReclutador(id);
+
                 ReclutadorDAO.getInstance().eliminarReclutador((int) id);
                 cargarReclutadoresEnTabla();
                 JOptionPane.showMessageDialog(null, "Reclutador eliminado con exito.",
@@ -291,7 +295,7 @@ public class CrudRH extends javax.swing.JFrame {
 
         } else {
             JOptionPane.showMessageDialog(this, "Debes seleccionar un reclutador de la tabla a eliminar.",
-                              "Seleccion requerida", JOptionPane.WARNING_MESSAGE);
+                    "Seleccion requerida", JOptionPane.WARNING_MESSAGE);
 
         }
 
